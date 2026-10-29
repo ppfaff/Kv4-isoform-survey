@@ -1,0 +1,7 @@
+# raw per-cell quantification tables and downloads live on the lab machines, not here
+*.pkl
+*.hdf5
+*.fastq*
+quant/
+fastq/
+sra/
