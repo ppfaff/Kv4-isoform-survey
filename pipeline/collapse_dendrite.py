@@ -39,6 +39,8 @@ def load_tx_map(fa='ref/gencode.vM36.transcripts.fa.gz'):
 
 def main(samples='tables/dendrite_samples.tsv'):
     S = pd.read_csv(samples, sep='\t', dtype=str).fillna('')
+    if "extra" in S.columns:
+        S = S[S.extra.astype(str) != "1"]
     bad = S[(S.region == '?') | (S.compartment == '?') | (S.unit == '?')]
     if len(bad):
         sys.exit(f'{len(bad)} runs still have "?" in region/compartment/unit in {samples}; fix those first:\n'

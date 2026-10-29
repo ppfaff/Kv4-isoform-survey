@@ -81,40 +81,31 @@ def geo_samples(gse):
 
 
 # ---------------------------------------------------------------- design parsers
-REGION_RE = re.compile(r'\b(CA1|CA2|CA3|DG)\b', re.I)
+# Actual ENA sample titles (checked 2026-10-29):
+#   Farris:    CA1CB492, CA3DE502, CA2DE492-X ...  = subfield + CB (cell-body layer) / DE (dendritic layer) + animal id;
+#              "-X" marks 4 extra dendritic libraries (CA2 and DG, animals 492/502) beyond the paper's 24 -> flagged
+#              extra=1 and left out of the default runlist (set INCLUDE_EXTRA=1 to keep them)
+#   Middleton: Sample_H3D, Sample_I3S ...           = culture letter + neuron number + D (dendrite) / S (soma)
+FARRIS_RE = re.compile(r'\b(CA1|CA2|CA3|DG)(CB|DE)(\d+)(-X)?\b', re.I)
+MIDDLETON_RE = re.compile(r'Sample[_ ]?([A-Z])(\d+)([DS])\b', re.I)
 
 
 def parse_farris(text):
-    """Return (region, compartment, animal) from a Farris title/characteristics string.
-    Compartment: cell-body layer -> 'soma'; dendritic layer (s. radiatum / molecular layer / neuropil) -> 'dendrite'."""
-    t = text.replace('_', ' ')
-    rm = REGION_RE.search(t)
-    region = rm.group(1).upper() if rm else '?'
-    tl = t.lower()
-    if re.search(r'\bcb\b|cell.?body|pyramidal|granule.?cell|somat', tl):
-        comp = 'soma'
-    elif re.search(r'\bde\b|dendrit|radiatum|molecular|neuropil|\bsr\b|\bml\b', tl):
-        comp = 'dendrite'
-    else:
-        comp = '?'
-    am = re.search(r'(?:animal|mouse|rep(?:licate)?|biological)[^0-9]*(\d+)', tl) or re.search(r'(\d{3,4})\b', t)
-    animal = am.group(1) if am else '?'
-    return region, comp, animal
+    """Return (region, compartment, animal, extra) from a Farris title."""
+    m = FARRIS_RE.search(text)
+    if not m:
+        return '?', '?', '?', 0
+    region, layer, animal, x = m.groups()
+    return region.upper(), ('soma' if layer.upper() == 'CB' else 'dendrite'), animal, int(bool(x))
 
 
 def parse_middleton(text):
-    """Return ('culture', compartment, neuron id) from a Middleton title/characteristics string."""
-    t = text.replace('_', ' ')
-    tl = t.lower()
-    if re.search(r'dendrit|neurite|process', tl):
-        comp = 'dendrite'
-    elif re.search(r'soma|cell.?body', tl):
-        comp = 'soma'
-    else:
-        comp = '?'
-    nm = (re.search(r'(?:neuron|cell|pair|n)[^0-9a-z]*(\d+)', tl) or re.search(r'(\d+)', tl))
-    neuron = nm.group(1) if nm else '?'
-    return 'culture', comp, neuron
+    """Return ('culture', compartment, neuron id, 0) from a Middleton title (neuron id = culture letter + number)."""
+    m = MIDDLETON_RE.search(text)
+    if not m:
+        return 'culture', '?', '?', 0
+    batch, n, comp = m.groups()
+    return 'culture', ('dendrite' if comp.upper() == 'D' else 'soma'), f'{batch.upper()}{n}', 0
 
 
 PARSERS = {'farris': parse_farris, 'middleton': parse_middleton}
@@ -138,6 +129,7 @@ def build(name):
     m['region'] = [p[0] for p in parsed]
     m['compartment'] = [p[1] for p in parsed]
     m['unit'] = [p[2] for p in parsed]
+    m['extra'] = [p[3] for p in parsed]
     return m
 
 
@@ -145,14 +137,17 @@ def main(names):
     os.makedirs('tables', exist_ok=True)
     parts = [build(n) for n in names]
     S = pd.concat(parts, ignore_index=True)
-    cols = ['dataset', 'run_accession', 'experiment_accession', 'sample_accession', 'gsm', 'title', 'region', 'compartment', 'unit',
+    cols = ['dataset', 'run_accession', 'experiment_accession', 'sample_accession', 'gsm', 'title', 'region', 'compartment', 'unit', 'extra',
             'library_layout', 'instrument_model', 'read_count', 'base_count', 'characteristics', 'sample_title', 'sample_alias', 'fastq_ftp']
     S = S[[c for c in cols if c in S.columns]]
     S.to_csv('tables/dendrite_samples.tsv', sep='\t', index=False)
-    S[['run_accession', 'fastq_ftp']].to_csv('tables/dendrite_runlist.tsv', sep='\t', index=False, header=False)
+    keep = S if os.environ.get('INCLUDE_EXTRA') == '1' else S[S.extra == 0]
+    keep[['run_accession', 'fastq_ftp']].to_csv('tables/dendrite_runlist.tsv', sep='\t', index=False, header=False)
+    if (S.extra == 1).any():
+        print(f'{int((S.extra == 1).sum())} extra (-X) libraries flagged extra=1 and {"included" if len(keep) == len(S) else "left out of the runlist"}', file=sys.stderr)
     bad = S[(S.region == '?') | (S.compartment == '?') | (S.unit == '?')]
-    print(f'\n{len(S)} runs -> tables/dendrite_runlist.tsv; sample sheet -> tables/dendrite_samples.tsv', file=sys.stderr)
-    print(S.groupby(['dataset', 'region', 'compartment']).size().to_string(), file=sys.stderr)
+    print(f'\n{len(keep)} runs -> tables/dendrite_runlist.tsv; {len(S)}-row sample sheet -> tables/dendrite_samples.tsv', file=sys.stderr)
+    print(S.groupby(['dataset', 'region', 'compartment', 'extra']).size().to_string(), file=sys.stderr)
     if len(bad):
         print(f'\n{len(bad)} runs could not be fully parsed — edit region/compartment/unit in tables/dendrite_samples.tsv:', file=sys.stderr)
         print(bad[['dataset', 'run_accession', 'gsm', 'title', 'characteristics', 'sample_title']].to_string(index=False), file=sys.stderr)
