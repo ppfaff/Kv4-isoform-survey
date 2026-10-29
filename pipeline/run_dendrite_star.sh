@@ -26,7 +26,8 @@ for tool in STAR featureCounts samtools; do command -v $tool >/dev/null || { log
 
 if [ -z "$RUNS" ]; then
   RUNS=tables/farris_runs.txt
-  awk -F'\t' 'NR==1{for(i=1;i<=NF;i++){if($i=="dataset")d=i;if($i=="run_accession")r=i}} NR>1&&$d=="farris"{print $r}' "$SAMPLES" > "$RUNS"
+  # the paper's 24 libraries only: rows flagged extra=1 (the four "-X" dendritic re-runs) are skipped
+  awk -F'\t' 'NR==1{for(i=1;i<=NF;i++){if($i=="dataset")d=i;if($i=="run_accession")r=i;if($i=="extra")x=i}} NR>1&&$d=="farris"&&(x==""||$x!="1"){print $r}' "$SAMPLES" > "$RUNS"
 fi
 [ -s "$RUNS" ] || { log "no runs in $RUNS"; exit 1; }
 TOTAL=$(wc -l < "$RUNS"); log "$TOTAL Farris runs"

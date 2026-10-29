@@ -209,6 +209,8 @@ if os.path.exists(ei_path):
     print(f'\nSTAR/featureCounts: using strand setting -s {s_best}')
     E = E[E.strand_setting == s_best].pivot_table(index=['run', 'gene'], columns='feature', values='count').reset_index()
     run2sample = pd.read_csv(f'{TABLES}/dendrite_samples.tsv', sep='\t', dtype=str)
+    if 'extra' in run2sample.columns:
+        run2sample = run2sample[run2sample.extra != '1']
     run2sample['sample_id'] = run2sample.dataset + '_' + run2sample.region + '_' + run2sample.compartment + '_' + run2sample.unit
     E = E.merge(run2sample[['run_accession', 'sample_id', 'region', 'compartment', 'unit']], left_on='run', right_on='run_accession')
     E['exon_intron'] = (E.exon + 1) / (E.intron + 1)
