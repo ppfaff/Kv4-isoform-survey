@@ -1,0 +1,11 @@
+dataset,region,compartment,Kv4.1,Kv4.2,Kv4.3L,Kv4.3S
+farris,CA1,dendrite,0.067,0.618,0.039,0.276
+farris,CA1,soma,0.017,0.95,0.0,0.033
+farris,CA2,dendrite,0.084,0.403,0.1,0.413
+farris,CA2,soma,0.021,0.781,0.013,0.185
+farris,CA3,dendrite,0.046,0.395,0.078,0.481
+farris,CA3,soma,0.015,0.661,0.017,0.308
+farris,DG,dendrite,0.062,0.487,0.031,0.42
+farris,DG,soma,0.015,0.65,0.018,0.317
+middleton,culture,dendrite,0.031,0.483,0.0,0.486
+middleton,culture,soma,0.172,0.33,0.0,0.498

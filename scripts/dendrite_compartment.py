@@ -48,6 +48,32 @@ G = pd.read_csv(f'{TABLES}/dendrite_gene_tpm.csv.gz', index_col=0)
 meta = D[['dataset', 'sample_id', 'region', 'compartment', 'unit']].drop_duplicates().set_index('sample_id')
 print(f'{len(meta)} samples:'); print(meta.groupby(['dataset', 'region', 'compartment']).size().to_string())
 
+# ---------------------------------------------------------------- 0. renormalisation
+# Raw TPM is compositional: in the Farris dendritic layers 50-70% of TPM is mitochondrial (vs 11-23% in cell-body
+# layers) and in Middleton one unannotated locus (ENSMUSG00000135935, rRNA-like) takes 20-40% of TPM in most samples,
+# so every other gene's raw TPM is deflated there. We therefore compute DESeq-style median-of-ratios size factors
+# within each dataset on a 'clean' gene set (annotated nuclear genes: no mt-, rRNA/7SK/7SL, Bc1, Gm*, bare ENSMUSG ids)
+# that are reasonably expressed in every sample, and rescale all TPMs by them. Raw TPM is kept as an alternative.
+JUNK = r'^(mt-|Rn7|Rn18|Rn45|Rn4|Gm\d|ENSMUSG|Bc1$|Rpph1|Rmrp|Terc|Malat1$|Snhg|Mir\d|Snord|Snora|Vault)'
+clean = G.index[~G.index.str.match(JUNK)]
+sf = pd.Series(1.0, index=G.columns)
+for ds, m in meta.groupby('dataset'):
+    cols = m.index
+    X = G.loc[clean, cols]
+    X = X[(X >= 5).all(axis=1)]
+    lg = np.log(X)
+    ref = lg.mean(axis=1)
+    sf[cols] = np.exp((lg.sub(ref, axis=0)).median(axis=0))
+    print(f'{ds}: size factors from {len(X)} clean genes; range {sf[cols].min():.2f}-{sf[cols].max():.2f}')
+junk_frac = 1 - G.loc[clean].sum() / G.sum()
+qc0 = pd.DataFrame({'size_factor': sf, 'junk_tpm_frac': junk_frac, 'mt_tpm_frac': G.loc[G.index.str.startswith('mt-')].sum() / G.sum()}).join(meta)
+qc0.to_csv(f'{OUT}/tables/dendrite_norm_factors.csv')
+print(qc0.groupby(['dataset', 'compartment'])[['size_factor', 'junk_tpm_frac', 'mt_tpm_frac']].mean().round(3).to_string())
+GN = G / sf                                   # normalised gene TPM (all genes)
+D['TPM_raw'] = D.TPM
+D['TPM'] = D.TPM / D.sample_id.map(sf)        # normalised transcript TPM; reads untouched (variant fractions use reads)
+D['gene_tpm'] = D.groupby(['sample_id', 'gene']).TPM.transform('sum')
+
 
 def paired(df, value):
     """Pivot a sample-level column into (dataset, region, unit) rows with dendrite / soma columns."""
@@ -73,23 +99,46 @@ rows = []
 for g in DEND_MARKERS + SOMA_MARKERS:
     if g not in G.index:
         continue
-    s = G.loc[g].rename('TPM').to_frame().join(meta)
+    s = GN.loc[g].rename('TPM').to_frame().join(meta)
     p = paired(s.reset_index(), 'TPM')
     lr = np.log2((p.dendrite + PSEUDO) / (p.soma + PSEUDO))
     for ds, grp in lr.groupby(level='dataset'):
         rows.append((ds, g, 'dendritic' if g in DEND_MARKERS else 'somatic/nuclear', grp.mean(), grp.median(), len(grp)))
 M = pd.DataFrame(rows, columns=['dataset', 'gene', 'expected', 'mean_log2_dend_soma', 'median_log2', 'n_pairs'])
 M.to_csv(f'{OUT}/tables/dendrite_marker_qc.csv', index=False)
-print('\nmarker QC (mean log2 dendrite/soma):'); print(M.pivot_table(index=['expected', 'gene'], columns='dataset', values='mean_log2_dend_soma').round(2).to_string())
+print('\nmarker QC (mean log2 dendrite/soma, median-of-ratios normalised):'); print(M.pivot_table(index=['expected', 'gene'], columns='dataset', values='mean_log2_dend_soma').round(2).to_string())
+
+# cell-type composition of the compartments: the Farris 'dendritic' layers are neuropil, which also holds glia and
+# interneuron somata, so any gene those cells express will look dendritically enriched. This table is the reference
+# against which the Kv4-complex ratios have to be read (e.g. Dpp10 / Kcnip1 are interneuron genes).
+CT = {'interneuron': ['Gad1', 'Gad2', 'Sst', 'Pvalb', 'Vip', 'Lamp5', 'Npy', 'Reln'],
+      'astro': ['Gfap', 'Aqp4', 'Slc1a3', 'Aldoc'], 'oligo': ['Mbp', 'Plp1', 'Mog'], 'micro': ['Cx3cr1', 'P2ry12'],
+      'pyramidal/granule': ['Camk2a', 'Neurod6', 'Satb2', 'Prox1', 'Calb1'],
+      'dendritic mRNA': DEND_MARKERS, 'nuclear/somatic': SOMA_MARKERS,
+      'Kv4 complex': GENES}
+rows = []
+for cls, gl in CT.items():
+    for g in gl:
+        if g not in GN.index:
+            continue
+        p = paired(GN.loc[g].rename('v').to_frame().join(meta).reset_index(), 'v')
+        lr = np.log2((p.dendrite + PSEUDO) / (p.soma + PSEUDO))
+        for ds, grp in lr.groupby(level='dataset'):
+            rows.append((cls, g, ds, grp.mean(), grp.median(), len(grp),
+                         GN.loc[g, meta[(meta.dataset == ds) & (meta.compartment == 'soma')].index].mean()))
+CTR = pd.DataFrame(rows, columns=['class', 'gene', 'dataset', 'mean_log2_dend_soma', 'median_log2', 'n_pairs', 'mean_soma_TPM'])
+CTR.to_csv(f'{OUT}/tables/dendrite_celltype_marker_qc.csv', index=False)
+print('\ncell-type markers, mean log2 dendrite/soma (normalised):')
+print(CTR.pivot_table(index=['class', 'gene'], columns='dataset', values=['mean_log2_dend_soma', 'mean_soma_TPM']).round(2).to_string())
 
 # ---------------------------------------------------------------- 2. gene level
-gene_tpm = D.groupby(['dataset', 'sample_id', 'region', 'compartment', 'unit', 'gene'], as_index=False).agg(TPM=('TPM', 'sum'), reads=('reads', 'sum'))
-# alternative normalisation: TPM relative to the median of the dendritic-marker set, to guard against the
-# compartment's bulk composition (e.g. glial/axonal RNA in neuropil) shifting all neuronal TPMs together
-ref = G.loc[[g for g in DEND_MARKERS if g in G.index]].median()
+gene_tpm = D.groupby(['dataset', 'sample_id', 'region', 'compartment', 'unit', 'gene'], as_index=False).agg(TPM=('TPM', 'sum'), TPM_raw=('TPM_raw', 'sum'), reads=('reads', 'sum'))
+# third normalisation: relative to the median of the dendritic-marker set (neuron-dendrite content), to guard against
+# non-neuronal (glial / axonal) RNA in the neuropil layers diluting all neuronal dendritic mRNAs together
+ref = GN.loc[[g for g in DEND_MARKERS if g in GN.index]].median()
 gene_tpm['TPM_rel_dend_markers'] = gene_tpm.TPM / gene_tpm.sample_id.map(ref)
 res = []
-for val in ['TPM', 'TPM_rel_dend_markers']:
+for val in ['TPM', 'TPM_raw', 'TPM_rel_dend_markers']:
     for g in GENES:
         p = paired(gene_tpm[gene_tpm.gene == g], val)
         for (ds, rg), grp in p.groupby(level=['dataset', 'region']):
@@ -105,8 +154,11 @@ for val in ['TPM', 'TPM_rel_dend_markers']:
                 res.append((val, 'farris', 'all', g, PANEL_OF[g], pf.soma.mean(), pf.dendrite.mean(), lr.mean(), lr.std(ddof=1), len(lr), name, pv))
 R = pd.DataFrame(res, columns=['normalisation', 'dataset', 'region', 'gene', 'panel', 'mean_soma', 'mean_dendrite', 'mean_log2_dend_soma', 'sd_log2', 'n_pairs', 'test', 'p'])
 R.to_csv(f'{OUT}/tables/dendrite_gene_level.csv', index=False)
-print('\ngene level, log2(dendrite/soma) TPM:')
-print(R[R.normalisation == 'TPM'].pivot_table(index='gene', columns=['dataset', 'region'], values='mean_log2_dend_soma').round(2).reindex(GENES).to_string())
+for val, lab in [('TPM', 'median-of-ratios normalised'), ('TPM_raw', 'raw salmon TPM'), ('TPM_rel_dend_markers', 'relative to dendritic-marker median')]:
+    print(f'\ngene level, log2(dendrite/soma), {lab}:')
+    print(R[R.normalisation == val].pivot_table(index='gene', columns=['dataset', 'region'], values='mean_log2_dend_soma').round(2).reindex(GENES).to_string())
+print('\npaired tests (normalised):')
+print(R[(R.normalisation == 'TPM') & (R.region.isin(['all', 'culture']))][['dataset', 'gene', 'mean_soma', 'mean_dendrite', 'mean_log2_dend_soma', 'n_pairs', 'p']].round(3).to_string(index=False))
 
 # figure: one panel per dataset/region block, bars = mean log2 ratio with per-pair points
 blocks = [(ds, rg) for ds, rg in R[(R.normalisation == 'TPM')][['dataset', 'region']].drop_duplicates().values if rg != 'all']
@@ -121,8 +173,8 @@ for ax, (ds, rg) in zip(axes, blocks):
         ax.scatter(np.full(len(lr), i) + np.random.uniform(-0.15, 0.15, len(lr)), lr, s=10, color='k', zorder=3)
     ax.axhline(0, color='k', lw=0.8); ax.set_xticks(range(len(GENES))); ax.set_xticklabels(GENES, rotation=90, fontsize=8)
     ax.set_title(f'{ds} {rg}', fontsize=10)
-axes[0].set_ylabel('log2 (dendrite / soma) TPM')
-fig.suptitle('Kv4-complex genes: dendritic vs somatic compartment (points = animals / neurons)', fontsize=11)
+axes[0].set_ylabel('log2 (dendrite / soma), normalised TPM')
+fig.suptitle('Kv4-complex genes: dendritic vs somatic compartment (median-of-ratios normalised; points = animals / neurons)', fontsize=11)
 fig.tight_layout(); fig.savefig(f'{OUT}/figures/dendrite_gene_level.png', dpi=200); plt.close(fig)
 
 # ---------------------------------------------------------------- 3. variant composition by compartment
@@ -204,8 +256,11 @@ print('\nKv4 pool composition (fraction of Kv4-family reads):'); print(kv4.round
 ei_path = f'{TABLES}/star_exon_intron_counts.tsv'
 if os.path.exists(ei_path):
     E = pd.read_csv(ei_path, sep='\t')
-    # pick the strand setting that assigns the most exonic reads overall (TruSeq stranded -> expect s=2)
-    s_best = E[E.feature == 'exon'].groupby('strand_setting')['count'].sum().idxmax()
+    # pick the STRANDED setting (1 or 2) that assigns the most exonic reads (s=0 would always win, so it is excluded);
+    # salmon called these libraries ISF, i.e. read 1 on the transcript strand -> expect s=1
+    s_best = E[(E.feature == 'exon') & (E.strand_setting > 0)].groupby('strand_setting')['count'].sum().idxmax()
+    sx = E[E.feature == 'exon'].groupby('strand_setting')['count'].sum()
+    print(f'\nexonic reads by strand setting: s0={sx.get(0, 0):,} s1={sx.get(1, 0):,} s2={sx.get(2, 0):,}')
     print(f'\nSTAR/featureCounts: using strand setting -s {s_best}')
     E = E[E.strand_setting == s_best].pivot_table(index=['run', 'gene'], columns='feature', values='count').reset_index()
     run2sample = pd.read_csv(f'{TABLES}/dendrite_samples.tsv', sep='\t', dtype=str)

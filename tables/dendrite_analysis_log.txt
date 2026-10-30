@@ -1,0 +1,308 @@
+56 samples:
+dataset    region   compartment
+farris     CA1      dendrite        3
+                    soma            3
+           CA2      dendrite        3
+                    soma            3
+           CA3      dendrite        3
+                    soma            3
+           DG       dendrite        3
+                    soma            3
+middleton  culture  dendrite       16
+                    soma           16
+farris: size factors from 4196 clean genes; range 0.44-1.75
+middleton: size factors from 318 clean genes; range 0.34-2.34
+                       size_factor  junk_tpm_frac  mt_tpm_frac
+dataset   compartment                                         
+farris    dendrite           0.637          0.706        0.580
+          soma               1.618          0.315        0.159
+middleton dendrite           0.849          0.744        0.213
+          soma               1.614          0.378        0.061
+
+marker QC (mean log2 dendrite/soma, median-of-ratios normalised):
+dataset                   farris  middleton
+expected        gene                       
+dendritic       Actb       -0.80      -0.68
+                Arc         0.90      -0.73
+                Bdnf       -3.19       1.31
+                Calm1       0.27      -1.31
+                Camk2a      2.72       0.26
+                Ddn         2.27      -1.14
+                Dlg4        1.45      -0.48
+                Map1b      -1.05      -1.69
+                Map2        2.89       2.02
+                Shank1      3.20       0.43
+somatic/nuclear Gapdh      -0.43      -1.96
+                Kcnq1ot1    0.36       1.50
+                Malat1      0.23      -1.57
+                Meg3       -1.22      -3.65
+                Neat1       3.42       2.17
+                Rpl13a      1.34       0.55
+                Rps27a      0.66      -0.73
+                Snhg11     -0.49      -3.38
+                Xist       -0.21       0.77
+
+cell-type markers, mean log2 dendrite/soma (normalised):
+                           mean_log2_dend_soma           mean_soma_TPM          
+dataset                                 farris middleton        farris middleton
+class             gene                                                          
+Kv4 complex       Dpp10                   2.31      0.30          4.16      5.29
+                  Dpp6                   -1.63     -1.13        107.30      8.51
+                  Kcnd1                   0.21     -2.61          5.03      7.42
+                  Kcnd2                  -1.90     -0.84         97.04      4.96
+                  Kcnd3                   0.37     -1.79         19.96      7.35
+                  Kcnip1                  1.53     -3.59          5.41     31.74
+                  Kcnip2                 -0.81      0.05        102.32      2.38
+                  Kcnip3                  0.86     -0.71         22.13      1.14
+                  Kcnip4                 -1.45     -0.01         59.75      3.60
+astro             Aldoc                   3.56     -0.05         49.32     36.01
+                  Aqp4                    4.24      0.87         10.52      0.26
+                  Gfap                    4.16      0.22         12.21      0.32
+                  Slc1a3                  3.48      2.67         38.96     10.71
+dendritic mRNA    Actb                   -0.80     -0.68       1607.35    197.66
+                  Arc                     0.90     -0.73         53.60      1.05
+                  Bdnf                   -3.19      1.31         26.67      2.01
+                  Calm1                   0.27     -1.31        919.45    411.81
+                  Camk2a                  2.72      0.26        623.67      1.46
+                  Ddn                     2.27     -1.14        240.66     12.74
+                  Dlg4                    1.45     -0.48        198.72     17.52
+                  Map1b                  -1.05     -1.69        442.50    153.97
+                  Map2                    2.89      2.02        232.50     26.72
+                  Shank1                  3.20      0.43        126.00     14.77
+interneuron       Gad1                    1.85     -2.17         50.91    670.33
+                  Gad2                    2.56     -1.02         14.35    148.70
+                  Lamp5                   0.11     -2.41         18.28    110.09
+                  Npy                     2.32     -4.94         24.59   2682.21
+                  Pvalb                   0.03      1.56         14.47     86.94
+                  Reln                    3.65     -1.75          2.02     99.43
+                  Sst                     2.14      0.34         40.52      0.13
+                  Vip                     0.70      0.30          5.06      0.83
+micro             Cx3cr1                  3.98      1.35          2.72      0.55
+                  P2ry12                  4.30      0.73          6.63      0.03
+nuclear/somatic   Gapdh                  -0.43     -1.96       2347.46   2091.39
+                  Kcnq1ot1                0.36      1.50          2.06      9.90
+                  Malat1                  0.23     -1.57       2852.40    246.92
+                  Meg3                   -1.22     -3.65        150.89    367.41
+                  Neat1                   3.42      2.17          2.17      1.16
+                  Rpl13a                  1.34      0.55        150.24    674.94
+                  Rps27a                  0.66     -0.73         67.61   1249.01
+                  Snhg11                 -0.49     -3.38         69.11    397.60
+                  Xist                   -0.21      0.77          0.04      4.84
+oligo             Mbp                     3.08      0.52        174.65      0.60
+                  Mog                     3.02      1.17          4.76      0.01
+                  Plp1                    3.11      1.61         88.50      2.13
+pyramidal/granule Calb1                   0.37      1.37         79.73      0.92
+                  Camk2a                  2.72      0.26        623.67      1.46
+                  Neurod6                -2.23      0.38        258.54     15.67
+                  Prox1                   2.09      1.09         52.72      0.14
+                  Satb2                   1.57      1.42          8.24      1.37
+
+gene level, log2(dendrite/soma), median-of-ratios normalised:
+dataset farris                         middleton
+region     CA1   CA2   CA3    DG   all   culture
+gene                                            
+Kcnd1    -0.25  1.51 -0.43  0.00  0.21     -2.61
+Kcnd2    -2.04 -2.38 -1.33 -1.84 -1.90     -0.84
+Kcnd3     1.89  0.10  0.42 -0.93  0.37     -1.79
+Kcnip1    1.24  1.52  2.15  1.22  1.53     -3.59
+Kcnip2   -0.37 -0.86 -0.72 -1.28 -0.81      0.05
+Kcnip3    1.33  0.26  1.06  0.80  0.86     -0.71
+Kcnip4   -1.45 -1.51 -1.14 -1.71 -1.45     -0.01
+Dpp6     -1.54 -1.86 -1.02 -2.10 -1.63     -1.13
+Dpp10     1.93  2.61  2.43  2.27  2.31      0.30
+
+gene level, log2(dendrite/soma), raw salmon TPM:
+dataset farris                         middleton
+region     CA1   CA2   CA3    DG   all   culture
+gene                                            
+Kcnd1    -1.69  0.02 -1.56 -1.29 -1.13     -3.15
+Kcnd2    -3.51 -3.88 -2.49 -3.17 -3.26     -1.80
+Kcnd3     0.43 -1.41 -0.73 -2.25 -0.99     -2.69
+Kcnip1   -0.22  0.02  1.00 -0.07  0.18     -4.52
+Kcnip2   -1.85 -2.37 -1.88 -2.60 -2.18     -0.59
+Kcnip3   -0.14 -1.25 -0.10 -0.52 -0.50     -1.11
+Kcnip4   -2.92 -3.01 -2.30 -3.03 -2.81     -0.56
+Dpp6     -3.02 -3.37 -2.17 -3.42 -2.99     -2.12
+Dpp10     0.47  1.11  1.29  0.97  0.96     -0.70
+
+gene level, log2(dendrite/soma), relative to dendritic-marker median:
+dataset farris                         middleton
+region     CA1   CA2   CA3    DG   all   culture
+gene                                            
+Kcnd1    -0.23 -0.05 -0.23 -0.12 -0.16     -1.51
+Kcnd2    -2.32 -2.21 -1.40 -1.71 -1.91     -0.43
+Kcnd3    -0.01 -0.60 -0.43 -0.91 -0.49     -0.99
+Kcnip1   -0.12 -0.09  0.16 -0.03 -0.02     -2.28
+Kcnip2   -1.47 -1.78 -1.51 -1.70 -1.62      0.02
+Kcnip3   -0.27 -0.64 -0.17 -0.36 -0.36     -0.17
+Kcnip4   -1.70 -1.34 -1.08 -1.57 -1.42     -0.05
+Dpp6     -1.87 -2.27 -1.54 -2.03 -1.93     -0.44
+
+
+paired tests (normalised):
+  dataset   gene  mean_soma  mean_dendrite  mean_log2_dend_soma  n_pairs     p
+middleton  Kcnd1      7.423          0.633               -2.610       16 0.046
+   farris  Kcnd1      5.035          6.924                0.208       12 0.519
+middleton  Kcnd2      4.958          3.564               -0.843       16 0.404
+   farris  Kcnd2     97.042         25.629               -1.898       12 0.000
+middleton  Kcnd3      7.345          4.147               -1.793       16 0.105
+   farris  Kcnd3     19.964         20.969                0.370       12 0.470
+middleton Kcnip1     31.741          3.963               -3.591       16 0.001
+   farris Kcnip1      5.405         16.912                1.532       12 0.000
+middleton Kcnip2      2.380          3.597                0.055       16 0.875
+   farris Kcnip2    102.321         59.908               -0.808       12 0.001
+middleton Kcnip3      1.143          0.848               -0.711       16 0.477
+   farris Kcnip3     22.132         40.747                0.863       12 0.001
+middleton Kcnip4      3.604          3.023               -0.015       16 0.975
+   farris Kcnip4     59.750         22.401               -1.450       12 0.000
+middleton   Dpp6      8.506          6.883               -1.132       16 0.211
+   farris   Dpp6    107.295         34.983               -1.628       12 0.000
+middleton  Dpp10      5.292         15.887                0.299       16 0.821
+   farris  Dpp10      4.160         22.875                2.311       12 0.000
+
+variant fraction of gene, dendrite - soma (mean paired difference), |diff| > 0.05:
+  dataset  region   gene                 vclass  mean_frac_soma  mean_frac_dendrite  mean_diff  n_pairs     test     p
+   farris     CA1  Dpp10                 DPP10a           0.000               0.241      0.241        3 paired_t 0.193
+   farris     CA1  Dpp10                 DPP10c           0.347               0.257     -0.091        3 paired_t 0.300
+   farris     CA1  Dpp10                 DPP10d           0.653               0.502     -0.151        3 paired_t 0.511
+   farris     CA2  Dpp10                 DPP10c           0.192               0.105     -0.087        3 paired_t 0.415
+   farris     CA2  Dpp10                 DPP10d           0.778               0.895      0.117        3 paired_t 0.225
+   farris     CA3  Dpp10                 DPP10a           0.003               0.116      0.113        3 paired_t 0.423
+   farris     CA3  Dpp10                 DPP10c           0.301               0.226     -0.075        3 paired_t 0.196
+   farris      DG  Dpp10                 DPP10a           0.152               0.065     -0.087        3 paired_t 0.545
+   farris      DG  Dpp10                 DPP10c           0.478               0.084     -0.394        3 paired_t 0.020
+   farris      DG  Dpp10                 DPP10d           0.370               0.851      0.481        3 paired_t 0.107
+   farris     all  Dpp10                 DPP10a           0.046               0.105      0.059       12 wilcoxon 0.438
+   farris     all  Dpp10                 DPP10c           0.330               0.168     -0.162       12 wilcoxon 0.003
+   farris     all  Dpp10                 DPP10d           0.624               0.727      0.102       12 wilcoxon 0.233
+middleton culture  Dpp10                 DPP10c           0.636               0.924      0.288       16 wilcoxon 0.006
+middleton culture  Dpp10                 DPP10d           0.344               0.037     -0.308       16 wilcoxon 0.005
+   farris     CA2   Dpp6                  DPP6L           0.122               0.225      0.103        3 paired_t 0.486
+   farris     CA2   Dpp6                  DPP6S           0.848               0.533     -0.315        3 paired_t 0.371
+   farris     CA2   Dpp6                  DPP6a           0.001               0.220      0.219        3 paired_t 0.341
+   farris     CA3   Dpp6                  DPP6K           0.013               0.110      0.097        3 paired_t 0.194
+   farris     CA3   Dpp6                  DPP6L           0.152               0.245      0.093        3 paired_t 0.466
+   farris     CA3   Dpp6                  DPP6S           0.828               0.596     -0.232        3 paired_t 0.031
+   farris      DG   Dpp6                  DPP6S           0.795               0.634     -0.161        3 paired_t 0.366
+   farris      DG   Dpp6                  DPP6a           0.002               0.160      0.158        3 paired_t 0.425
+   farris     all   Dpp6                  DPP6S           0.848               0.677     -0.172       12 wilcoxon 0.042
+   farris     all   Dpp6                  DPP6a           0.002               0.107      0.105       12 wilcoxon 0.700
+middleton culture   Dpp6                  DPP6K           0.036               0.100      0.064       10 wilcoxon 0.875
+middleton culture   Dpp6                  DPP6L           0.631               0.176     -0.455       10 wilcoxon 0.039
+middleton culture   Dpp6                  DPP6S           0.274               0.203     -0.070       10 wilcoxon 0.812
+middleton culture   Dpp6                  DPP6a           0.030               0.311      0.280       10 wilcoxon 0.016
+   farris     CA1  Kcnd1                  Kv4.1           0.882               0.949      0.067        3 paired_t 0.391
+   farris     CA2  Kcnd1                  Kv4.1           0.920               0.802     -0.117        3 paired_t 0.350
+   farris     CA3  Kcnd1                  Kv4.1           0.767               0.954      0.187        3 paired_t 0.245
+   farris      DG  Kcnd1                  Kv4.1           0.916               0.972      0.056        3 paired_t 0.274
+   farris     CA1  Kcnd3                 Kv4.3L           0.006               0.107      0.101        3 paired_t 0.155
+   farris     CA1  Kcnd3                 Kv4.3S           0.987               0.893     -0.094        3 paired_t 0.152
+   farris     CA2  Kcnd3                 Kv4.3L           0.066               0.220      0.153        3 paired_t 0.132
+   farris     CA2  Kcnd3                 Kv4.3S           0.928               0.756     -0.172        3 paired_t 0.144
+   farris     CA3  Kcnd3                 Kv4.3L           0.051               0.144      0.093        3 paired_t 0.077
+   farris     CA3  Kcnd3                 Kv4.3S           0.945               0.842     -0.102        3 paired_t 0.114
+   farris     all  Kcnd3                 Kv4.3L           0.044               0.137      0.093       12 wilcoxon 0.003
+   farris     all  Kcnd3                 Kv4.3S           0.949               0.853     -0.096       12 wilcoxon 0.003
+   farris     CA1 Kcnip1                KChIP1a           0.277               0.419      0.143        3 paired_t 0.315
+   farris     CA1 Kcnip1                KChIP1b           0.542               0.364     -0.178        3 paired_t 0.070
+   farris     CA2 Kcnip1                KChIP1a           0.279               0.000     -0.279        3 paired_t 0.184
+   farris     CA2 Kcnip1                KChIP1b           0.430               0.298     -0.132        3 paired_t 0.498
+   farris     CA2 Kcnip1                KChIP1c           0.000               0.333      0.333        3 paired_t 0.423
+   farris     CA2 Kcnip1       Kcnip1-new_short           0.291               0.350      0.059        3 paired_t 0.876
+   farris     CA3 Kcnip1                KChIP1a           0.249               0.150     -0.099        3 paired_t 0.617
+   farris     CA3 Kcnip1       Kcnip1-new_short           0.170               0.249      0.080        3 paired_t 0.111
+   farris      DG Kcnip1                KChIP1b           0.641               0.313     -0.328        3 paired_t 0.505
+   farris      DG Kcnip1                KChIP1e           0.000               0.102      0.102        3 paired_t 0.184
+   farris      DG Kcnip1       Kcnip1-new_short           0.067               0.346      0.279        3 paired_t 0.280
+   farris     all Kcnip1                KChIP1a           0.264               0.202     -0.062       12 wilcoxon 0.492
+   farris     all Kcnip1                KChIP1b           0.544               0.389     -0.155       12 wilcoxon 0.233
+   farris     all Kcnip1                KChIP1c           0.006               0.083      0.077       12 wilcoxon 1.000
+   farris     all Kcnip1       Kcnip1-new_short           0.177               0.286      0.109       12 wilcoxon 0.102
+middleton culture Kcnip1                KChIP1c           0.337               0.180     -0.158        8 wilcoxon 0.375
+middleton culture Kcnip1       Kcnip1-new_short           0.645               0.585     -0.060        8 wilcoxon 0.547
+   farris     CA1 Kcnip2                KChIP2a           0.910               0.827     -0.083        3 paired_t 0.414
+   farris     CA1 Kcnip2                KChIP2x           0.000               0.098      0.098        3 paired_t 0.423
+   farris     CA2 Kcnip2                KChIP2a           0.943               0.344     -0.599        3 paired_t 0.089
+   farris     CA2 Kcnip2                KChIP2c           0.001               0.070      0.069        3 paired_t 0.068
+   farris     CA2 Kcnip2                KChIP2x           0.004               0.530      0.525        3 paired_t 0.138
+   farris     CA3 Kcnip2                KChIP2a           0.891               0.726     -0.165        3 paired_t 0.010
+   farris     CA3 Kcnip2                KChIP2x           0.058               0.213      0.156        3 paired_t 0.018
+   farris     all Kcnip2                KChIP2a           0.905               0.692     -0.214       12 wilcoxon 0.007
+   farris     all Kcnip2                KChIP2x           0.028               0.235      0.207       12 wilcoxon 0.008
+middleton culture Kcnip2                KChIP2a           0.333               0.000     -0.333        3 paired_t 0.423
+middleton culture Kcnip2                KChIP2x           0.667               1.000      0.333        3 paired_t 0.423
+   farris     CA1 Kcnip3                KChIP3a           0.810               0.945      0.134        3 paired_t 0.061
+   farris     CA1 Kcnip3    Kcnip3-new-cys_rich           0.187               0.044     -0.143        3 paired_t 0.071
+   farris     CA2 Kcnip3                KChIP3a           0.894               0.597     -0.297        3 paired_t 0.494
+   farris     CA2 Kcnip3                KChIP3x           0.000               0.108      0.108        3 paired_t 0.237
+   farris     CA2 Kcnip3    Kcnip3-new-cys_rich           0.106               0.285      0.179        3 paired_t 0.623
+   farris     CA3 Kcnip3                KChIP3a           0.796               0.971      0.175        3 paired_t 0.092
+   farris     CA3 Kcnip3    Kcnip3-new-cys_rich           0.196               0.000     -0.196        3 paired_t 0.019
+   farris      DG Kcnip3                KChIP3a           0.735               0.944      0.210        3 paired_t 0.073
+   farris      DG Kcnip3    Kcnip3-new-cys_rich           0.238               0.056     -0.182        3 paired_t 0.081
+   farris     all Kcnip3                KChIP3a           0.809               0.864      0.056       12 wilcoxon 0.042
+   farris     all Kcnip3    Kcnip3-new-cys_rich           0.182               0.096     -0.086       12 wilcoxon 0.042
+   farris     CA1 Kcnip4                KChIP4a           0.007               0.164      0.158        3 paired_t 0.207
+   farris     CA1 Kcnip4               KChIP4bL           0.935               0.636     -0.299        3 paired_t 0.269
+   farris     CA1 Kcnip4                KChIP4d           0.017               0.137      0.120        3 paired_t 0.419
+   farris     CA2 Kcnip4 Kcnip4 other/noncoding           0.003               0.060      0.057        3 paired_t 0.423
+   farris     CA3 Kcnip4                KChIP4a           0.000               0.075      0.075        3 paired_t 0.423
+   farris     CA3 Kcnip4                KChIP4b           0.019               0.244      0.225        3 paired_t 0.458
+   farris     CA3 Kcnip4               KChIP4bL           0.974               0.356     -0.618        3 paired_t 0.005
+   farris     CA3 Kcnip4                KChIP4d           0.007               0.126      0.119        3 paired_t 0.457
+   farris     CA3 Kcnip4 Kcnip4 other/noncoding           0.000               0.199      0.199        3 paired_t 0.423
+   farris      DG Kcnip4               KChIP4bL           0.935               0.883     -0.052        3 paired_t 0.643
+   farris     all Kcnip4                KChIP4a           0.006               0.060      0.053       12 wilcoxon 0.312
+   farris     all Kcnip4                KChIP4b           0.028               0.080      0.052       12 wilcoxon 0.652
+   farris     all Kcnip4               KChIP4bL           0.949               0.704     -0.245       12 wilcoxon 0.042
+   farris     all Kcnip4                KChIP4d           0.012               0.080      0.068       12 wilcoxon 0.557
+   farris     all Kcnip4 Kcnip4 other/noncoding           0.004               0.077      0.073       12 wilcoxon 0.438
+middleton culture Kcnip4                KChIP4a           0.333               0.000     -0.333        3 paired_t 0.423
+middleton culture Kcnip4                KChIP4b           0.218               0.000     -0.218        3 paired_t 0.423
+middleton culture Kcnip4 Kcnip4 other/noncoding           0.409               1.000      0.591        3 paired_t 0.147
+
+Kv4 pool composition (fraction of Kv4-family reads):
+vclass                         Kv4.1  Kv4.2  Kv4.3L  Kv4.3S
+dataset   region  compartment                              
+farris    CA1     dendrite     0.067  0.618   0.039   0.276
+                  soma         0.017  0.950   0.000   0.033
+          CA2     dendrite     0.084  0.403   0.100   0.413
+                  soma         0.021  0.781   0.013   0.185
+          CA3     dendrite     0.046  0.395   0.078   0.481
+                  soma         0.015  0.661   0.017   0.308
+          DG      dendrite     0.062  0.487   0.031   0.420
+                  soma         0.015  0.650   0.018   0.317
+middleton culture dendrite     0.031  0.483   0.000   0.486
+                  soma         0.172  0.330   0.000   0.498
+
+exonic reads by strand setting: s0=999,603 s1=996,328 s2=3,275
+
+STAR/featureCounts: using strand setting -s 1
+
+intronic fraction of gene reads (Farris), cell-body layer vs dendritic layer:
+       intron_frac_dendrite_layer                             intron_frac_soma_layer                            
+region                        CA1    CA2    CA3     DG    all                    CA1    CA2    CA3     DG    all
+gene                                                                                                            
+Kcnd1                       0.001  0.034  0.075  0.065  0.044                  0.017  0.011  0.010  0.063  0.025
+Kcnd2                       0.454  0.580  0.511  0.537  0.521                  0.464  0.276  0.348  0.663  0.438
+Kcnd3                       0.272  0.266  0.214  0.161  0.228                  0.213  0.150  0.159  0.350  0.218
+Kcnip1                      0.526  0.417  0.520  0.728  0.548                  0.464  0.373  0.463  0.658  0.490
+Kcnip2                      0.016  0.044  0.016  0.035  0.028                  0.062  0.037  0.039  0.090  0.057
+Kcnip3                      0.192  0.145  0.195  0.184  0.179                  0.162  0.077  0.136  0.278  0.163
+Kcnip4                      0.723  0.730  0.790  0.808  0.763                  0.856  0.747  0.785  0.904  0.823
+Dpp6                        0.331  0.371  0.314  0.362  0.345                  0.298  0.199  0.213  0.464  0.293
+Dpp10                       0.571  0.460  0.545  0.575  0.538                  0.397  0.437  0.400  0.547  0.445
+
+Kcnd2 per-intron mean depth per 1,000 exonic reads (Farris):
+k                        1       2        3       4       5
+region compartment                                         
+CA1    dendrite     52.604  48.013   66.567  30.299  90.398
+       soma         47.865  57.175   75.161  45.958  64.507
+CA2    dendrite     77.325  20.671  224.905  50.425  52.699
+       soma         45.218  68.006   82.207  39.710  64.743
+CA3    dendrite     48.689  66.558   75.924  50.440  52.384
+       soma         45.890  51.672   66.407  45.149  68.482
+DG     dendrite     45.531  66.007   88.716  64.066  85.624
+       soma         44.939  50.325   69.715  42.496  63.375
+
+done
