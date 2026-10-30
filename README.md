@@ -29,3 +29,8 @@ pipeline/make_intron_saf.py builds the merged-exon / intron SAF+BED for the 9 ge
 Junction check (scripts/dendrite_junctions.py): on Lambda, extract Kcnd3/Kcnip3 junctions from the STAR output with
   for f in star/*/SJ.out.tab; do r=$(basename $(dirname $f)); awk -v r=$r 'BEGIN{OFS="\t"} ($1=="chr3" && $2>105359000 && $3<105582000) || ($1=="chr2" && $2>127298000 && $3<127365000) {print r,$0}' $f; done > tables/sj_kcnd3_kcnip3.tsv
 Result: Kv4.3L exon inclusion 0.17 (cell-body layers) -> 0.58 (dendritic layers), p=0.001; Kcnip3 cys-rich acceptor 0.19 -> 0.04.
+Read-level Kcnd2 in DG granule cells (why are 18% of cells exonic-null but intronic-positive?):
+  cd ~/kv4_dendrite && cp ~/Kv4-isoform-survey/pipeline/{build_dg_runlist.py,run_dg_star.sh} .
+  python3 build_dg_runlist.py ~/allen_meta/hip_filtered_runlist.tsv ~/Kv4-isoform-survey/tables/dg_cells_markers.csv 150
+  T=16 nohup nice -n 19 bash run_dg_star.sh > run_dg_star.log 2>&1 &      # re-uses ref/star_idx, genome held in shared memory
+  python3 ~/Kv4-isoform-survey/scripts/dg_readlevel.py tables <repo>        # intron position / detained intron / residual junctions
