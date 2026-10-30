@@ -18,7 +18,11 @@ import sys, os, glob, gzip, json
 import pandas as pd
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(HERE, '..', 'scripts'))
+# hip_common lives in <repo>/scripts; look there, next to a copied script, in cwd, and in the usual clone locations
+for cand in [os.path.join(HERE, '..', 'scripts'), HERE, os.getcwd(),
+             os.path.expanduser('~/Kv4-isoform-survey/scripts'), os.path.expanduser('~/kv4-isoform-survey/scripts')]:
+    if os.path.exists(os.path.join(cand, 'hip_common.py')):
+        sys.path.insert(0, cand); break
 from hip_common import final_map, PANEL_OF  # noqa: E402
 
 GENES = ['Kcnd1', 'Kcnd2', 'Kcnd3', 'Dpp6', 'Dpp10', 'Kcnip1', 'Kcnip2', 'Kcnip3', 'Kcnip4']
