@@ -9,7 +9,9 @@ Run once on the Windows machine that holds the lab database, from this folder, w
 (or double-click run_add_kv4_dendrite_doc.bat, which does that and shows the log).
 
 Idempotent: if a document with the same title already exists, it saves a new VERSION of it
-(update_document) instead of adding a duplicate. The body is KV4_DENDRITE_COMPARTMENT.md from
+(update_document) instead of adding a duplicate. Only run it when the markdown has changed: a re-run with
+unchanged content still creates a version carrying this script's fixed change_note. Link entries use the
+LabDB schema {"label", "target"} (lab_forms._doc_render_links reads "target"). The body is KV4_DENDRITE_COMPARTMENT.md from
 this folder; figures are linked to the GitHub repo.
 """
 import os, sys
@@ -42,15 +44,15 @@ TAGS = ["Kv4.2", "Kcnd2", "deltaFosB", "dentate gyrus hyperactivity", "transcrip
         "splice variants", "laminar RNA-seq", "LCM", "hippocampus", "dentate gyrus", "V404M", "provisional"]
 LINKS = [
     {"label": "Code, tables and figures (GitHub)",
-     "url": "https://github.com/ppfaff/Kv4-isoform-survey"},
+     "target": "https://github.com/ppfaff/Kv4-isoform-survey"},
     {"label": "Companion document: isoform survey conclusions (Claude doc)",
-     "url": "https://claude.ai/artifact/BdsYCYmxtyRcaqM968Bj9Z"},
+     "target": "https://claude.ai/artifact/BdsYCYmxtyRcaqM968Bj9Z"},
     {"label": "Farris et al. 2019 data (GSE116342)",
-     "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE116342"},
+     "target": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE116342"},
     {"label": "Middleton et al. 2019 data (GSE115480)",
-     "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115480"},
+     "target": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE115480"},
     {"label": "Middleton et al. 2019, BMC Biology",
-     "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6344992"},
+     "target": "https://pmc.ncbi.nlm.nih.gov/articles/PMC6344992"},
 ]
 SESSIONS = []   # no electrophysiology recording sessions are associated with this document
 

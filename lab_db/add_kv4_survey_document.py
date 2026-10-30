@@ -9,7 +9,9 @@ Run once on the Windows machine that holds the lab database, from this folder, w
 (or double-click run_add_kv4_survey_doc.bat, which does that and shows the log).
 
 Idempotent: if a document with the same title already exists, it saves a new VERSION of it
-(update_document) instead of adding a duplicate. The body is KV4_SURVEY_CONCLUSIONS.md from
+(update_document) instead of adding a duplicate. Only run it when the markdown has changed: a re-run with
+unchanged content still creates a version carrying this script's fixed change_note. Link entries use the
+LabDB schema {"label", "target"} (lab_forms._doc_render_links reads "target"). The body is KV4_SURVEY_CONCLUSIONS.md from
 this folder (the markdown export of the Claude doc); figures are linked to the GitHub repo.
 """
 import os, sys
@@ -38,13 +40,13 @@ TAGS = ["Kv4.2", "V404M", "KChIP", "DPP6", "DPP10", "splice variants", "scRNA-se
         "hippocampus", "V1", "near-projecting", "dentate gyrus", "provisional"]
 LINKS = [
     {"label": "Live write-up (Claude doc, with embedded figures)",
-     "url": "https://claude.ai/artifact/BdsYCYmxtyRcaqM968Bj9Z"},
+     "target": "https://claude.ai/artifact/BdsYCYmxtyRcaqM968Bj9Z"},
     {"label": "Code, tables and figures (GitHub)",
-     "url": "https://github.com/ppfaff/Kv4-isoform-survey"},
+     "target": "https://github.com/ppfaff/Kv4-isoform-survey"},
     {"label": "Tasic 2016 data (GSE71585)",
-     "url": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE71585"},
+     "target": "https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE71585"},
     {"label": "Allen SSv4 mouse cortex + hippocampus (Yao 2021)",
-     "url": "https://brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-smart-seq"},
+     "target": "https://brain-map.org/atlases-and-data/rnaseq/mouse-whole-cortex-and-hippocampus-smart-seq"},
 ]
 SESSIONS = []   # no electrophysiology recording sessions are associated with this document
 
