@@ -16,7 +16,7 @@
 #   T=16 threads for STAR/featureCounts; STAR_RAM=48000000000 for index generation
 set -uo pipefail
 T=${T:-16}
-STAR_RAM=${STAR_RAM:-48000000000}
+STAR_RAM=${STAR_RAM:-32000000000}
 SAMPLES=${SAMPLES:-tables/dendrite_samples.tsv}
 RUNS=${RUNS:-}
 ROOT=$(pwd)

@@ -93,7 +93,8 @@ download_one() {
 }
 export -f download_one download_sra download_ena; export BUFFER DL_MODE
 ( awk -F'\t' '{print $1"\t"$2}' "$RUNLIST" | xargs -P "$N_DL" -L 1 bash -c 'download_one "$0" "$1"'; touch fastq/.all_downloaded ) &
-log "downloader started (pid $!, $N_DL parallel, mode $DL_MODE)"
+DL_PID=$!
+log "downloader started (pid $DL_PID, $N_DL parallel, mode $DL_MODE)"
 
 # ---------------------------------------------------------------- 3. quantifier loop
 quant_one() {
@@ -108,14 +109,17 @@ quant_one() {
     if [ "${KEEP_FASTQ:-0}" = 1 ]; then touch fastq/$run/.quantified; else rm -rf fastq/$run; fi
     echo "$run done $(grep -o '"percent_mapped": [0-9.]*' quant/$run/aux_info/meta_info.json) $(grep -o '"library_types": \[[^]]*\]' quant/$run/aux_info/meta_info.json)" >> logs/progress.log
   else
-    rm -rf fastq/$run quant/$run; echo "$run quant-failed" >> logs/failures.log
+    cp quant/$run/logs/salmon_quant.log logs/$run.salmon_quant.log 2>/dev/null
+    rm -rf fastq/$run quant/$run; echo "$run quant-failed $(date '+%F %T')" >> logs/failures.log
   fi
 }
 export -f quant_one; export IDX T_Q KEEP_FASTQ
 last_log=$(date +%s)
+MIN_FREE_GB=${MIN_FREE_GB:-10}   # don't start a salmon job unless this much memory is available (STAR may be running alongside)
 while true; do
-  running=$(jobs -rp | wc -l)
-  if [ "$running" -lt "$N_Q" ]; then
+  running=$(jobs -rp | grep -vx "$DL_PID" | wc -l)
+  avail=$(awk '/MemAvailable/{printf "%d", $2/1048576}' /proc/meminfo)
+  if [ "$running" -lt "$N_Q" ] && [ "$avail" -ge "$MIN_FREE_GB" ]; then
     next=$(for d in fastq/*/; do d=${d%/}; [ -f "$d/.ready" ] && { echo "${d#fastq/}"; break; }; done)
     if [ -n "$next" ]; then
       mv "fastq/$next/.ready" "fastq/$next/.claimed"
@@ -126,7 +130,7 @@ while true; do
   if [ "$running" -eq 0 ] && [ -f fastq/.all_downloaded ] && [ -z "$(find fastq -name .ready -print -quit 2>/dev/null)" ]; then break; fi
   now=$(date +%s)
   if [ $((now - last_log)) -ge 300 ]; then
-    log "quantified so far: $(ls quant | wc -l) / $TOTAL  (running: $running, ready: $(find fastq -name .ready 2>/dev/null | wc -l))"
+    log "quantified so far: $(ls quant | wc -l) / $TOTAL  (running: $running, ready: $(find fastq -name .ready 2>/dev/null | wc -l), mem avail ${avail} GB, failures: $(wc -l < logs/failures.log 2>/dev/null || echo 0))"
     last_log=$now
   fi
   sleep 10
