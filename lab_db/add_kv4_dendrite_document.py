@@ -33,8 +33,12 @@ SUMMARY = ("Tests whether Kv4-complex mRNAs (Kcnd2, Kcnip4, Kcnip2, Dpp6 and the
            "at the splice-junction level: Kv4.3L exon inclusion 0.17 -> 0.58 (p=0.001) and the Kcnip3 cys-rich "
            "acceptor 0.19 -> 0.04 (p=0.002; neuropil Kcnip3 is ~96% KChIP3a). Both are rated tentative; concerns "
            "(laminar interneurons, nuclear retention, single in vivo dataset) and six follow-up analyses are listed. "
-           "Also records that salmon underestimates Kv4.3L ~4-fold because only the Kv4.3S model carries the 3'UTR.")
-TAGS = ["Kv4.2", "Kcnd2", "dendritic mRNA", "mRNA localization", "neuropil", "KChIP3", "DREAM", "Kv4.3L",
+           "Also records that salmon underestimates Kv4.3L ~4-fold because only the Kv4.3S model carries the 3'UTR. "
+           "Read-level follow-up on the 446 Kv4-null DG cells: baseline Kcnd2 transcription present, burst state nearly absent (1% vs 45%), "
+           "no mature mRNA at matched pre-mRNA; null cells are the low-IEG, Calb1-low quiet granule cells. Lab dFosB staining shows the "
+           "V404M dentate granule layer is chronically hyperactive; going-forward plan: dFosB-positive fraction, re-analysis of existing "
+           "littermate bulk RNA-seq (variants, allele-specific Kcnd2, exon:intron, dFosB:FosB), then smFISH.")
+TAGS = ["Kv4.2", "Kcnd2", "deltaFosB", "dentate gyrus hyperactivity", "transcriptional bursting", "dendritic mRNA", "mRNA localization", "neuropil", "KChIP3", "DREAM", "Kv4.3L",
         "splice variants", "laminar RNA-seq", "LCM", "hippocampus", "dentate gyrus", "V404M", "provisional"]
 LINKS = [
     {"label": "Code, tables and figures (GitHub)",
@@ -66,7 +70,7 @@ def main():
     same = docs[docs["title"] == TITLE] if len(docs) else docs
     if len(same):
         doc_id = int(same.iloc[0]["id"])
-        ver = db.update_document(doc_id, change_note="read-level DG follow-up added (burst state absent in Kv4-null cells; no mature mRNA at matched pre-mRNA)",
+        ver = db.update_document(doc_id, change_note="added activity-state result, V404M dFosB observation and the going-forward plan (bulk littermate RNA-seq re-analysis, dFosB counts, smFISH)",
                                  body=body, summary=SUMMARY, tags=TAGS, links=LINKS,
                                  sessions=SESSIONS, status="provisional", doc_type="summary")
         print("updated document %d -> version %d" % (doc_id, ver))
