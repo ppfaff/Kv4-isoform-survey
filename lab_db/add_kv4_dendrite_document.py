@@ -32,7 +32,7 @@ SUMMARY = ("Tests whether Kv4-complex mRNAs (Kcnd2, Kcnip4, Kcnip2, Dpp6 and the
            "dendritic-localization reading in the Oct 29 document. Two variants survive cell-type-mixing controls "
            "at the splice-junction level: Kv4.3L exon inclusion 0.17 -> 0.58 (p=0.001) and the Kcnip3 cys-rich "
            "acceptor 0.19 -> 0.04 (p=0.002; neuropil Kcnip3 is ~96% KChIP3a). Both are rated tentative; concerns "
-           "(laminar interneurons, nuclear retention, single in vivo dataset) and six follow-up analyses are listed. "
+           "(laminar interneurons, nuclear retention, single in vivo dataset) and eight follow-up analyses are listed. "
            "Also records that salmon underestimates Kv4.3L ~4-fold because only the Kv4.3S model carries the 3'UTR. "
            "Read-level follow-up on the 446 Kv4-null DG cells: baseline Kcnd2 transcription present, burst state nearly absent (1% vs 45%), "
            "no mature mRNA at matched pre-mRNA; null cells are the low-IEG, Calb1-low quiet granule cells. Lab dFosB staining shows the "
