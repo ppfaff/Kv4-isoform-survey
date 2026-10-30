@@ -66,7 +66,7 @@ def main():
     same = docs[docs["title"] == TITLE] if len(docs) else docs
     if len(same):
         doc_id = int(same.iloc[0]["id"])
-        ver = db.update_document(doc_id, change_note="refreshed from KV4_DENDRITE_COMPARTMENT.md",
+        ver = db.update_document(doc_id, change_note="read-level DG follow-up added (burst state absent in Kv4-null cells; no mature mRNA at matched pre-mRNA)",
                                  body=body, summary=SUMMARY, tags=TAGS, links=LINKS,
                                  sessions=SESSIONS, status="provisional", doc_type="summary")
         print("updated document %d -> version %d" % (doc_id, ver))

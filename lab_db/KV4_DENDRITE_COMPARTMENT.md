@@ -10,6 +10,8 @@ The answer is no. In laser-microdissected hippocampal layers (Farris 2019; CA1, 
 
 The practical consequence for the survey is that **cells with low spliced Kcnd2 in the soma have low Kcnd2 mRNA, full stop**, and should be expected to have smaller A-currents unless another Kv4 gene compensates. In the survey the Kv4-null group was defined as zero reads on Kcnd1, Kcnd2 *and* Kcnd3, so for those cells (446 DG granule cells) there is no compensation at the level of detection.
 
+A read-level follow-up on those 446 cells (STAR alignment of all Kv4-null DG granule cells plus 150 Kv4-low and 150 Kv4-high controls, unique alignments only) then asked why they lack the mRNA. Baseline Kcnd2 pre-mRNA is present in 97% of null cells and lies at the level of the non-bursting half of expressing cells (median 270 vs 1,120 intronic reads; 0.08 vs 0.14 depth per base along the gene once burst-state cells are excluded), and it is spread along the whole 500-kb gene with no pile-up in intron 1 and no hotspot at the three small annotated genes inside it. What the null cells lack is (i) the high-transcription burst state, seen in 45% of Kv4-high cells but 1% of null cells, and (ii) any mature mRNA: at matched pre-mRNA level, expressing cells carry a median 77 exonic reads and null cells 0 (98% have none). Kcnip4, Dpp6 and Kcnip2 are identical across the groups. In expressing cells the mature-mRNA level is independent of the instantaneous pre-mRNA level, so mature Kcnd2 is an accumulated, long-lived pool fed by bursts. Two models fit this snapshot — a processing/stability block specific to the null cells, or burst dynamics with non-productive baseline transcription, in which the null cells are those that have not burst within an mRNA lifetime — and separating them needs time-resolved or activity-state data (see Recommended analyses). The survey's statement that null cells have "intronic Kcnd2 identical to the other groups" rested on an Allen-derived intronic measure that does not resolve the burst state (it is uncorrelated with the cells' own exon counts, ρ = −0.03) and is corrected here.
+
 Two splice variants do differ between compartments in a way that cell-type mixing cannot explain, and were confirmed at the level of raw splice-junction reads: the Kv4.3L cassette exon is included in 17% of Kcnd3 junction reads in the cell-body layers but 58% in the dendritic layers (p = 0.001), and the Kcnip3 cys-rich alternative acceptor falls from 19% to 4% (p = 0.002), so neuropil Kcnip3 is ~96% KChIP3a. These are the only two of ~30 testable variants that survive the controls. Their interpretation is open (see Concerns), and they are candidates, not conclusions.
 
 The companion single-neuron dataset (Middleton 2019, 16 cultured hippocampal neurons, paired soma and dendrite) is sparse at these genes and largely GABAergic; it agrees where it can speak (Kcnip1 and Kcnd1 soma-restricted) and does not contradict anything above.
@@ -76,6 +78,23 @@ Of the ~30 variants with enough reads to test, every compartment shift except tw
 
 **Figure 4.** Per-animal junction-read fractions for the Kv4.3L exon (left) and the Kcnip3 cys-rich acceptor (right); each line joins the cell-body layer (left point) to the dendritic layer (right point) of one animal in one subfield.
 
+### Read-level follow-up: Kcnd2 in Kv4-null DG granule cells
+
+| Conclusion | Evidence | Rating |
+| --- | --- | --- |
+| Kv4-null granule cells have ongoing baseline Kcnd2 transcription at roughly the level of non-bursting expressing cells | Intronic reads detected (≥20) in 97.5% of 446 null cells; median 270 (IQR 156–443) vs 1,120 (328–10,687) in Kv4-high; excluding burst-state cells, mean depth per base 0.084 vs 0.139; profile flat along the gene in both | Reliable |
+| The high-transcription burst state is nearly absent from null cells | >5,000 intronic reads in 45% of Kv4-high, 10% of Kv4-low, 1.1% of Kv4-null cells | Reliable |
+| Null cells have no mature Kcnd2 mRNA even at matched pre-mRNA level | At <450 intronic reads: Kv4-high n = 49, median 77 exonic reads, 0% zero; Kv4-null n = 337, median 0, 98% zero; 93% of null cells have no splice-junction read | Reliable |
+| Mature Kcnd2 mRNA in expressing cells is an accumulated pool, not a readout of current transcription | Exonic reads flat (72–125) across intronic bins from <150 to >5,000 | Reliable |
+| The Kcnd2 deficit is gene-specific | Kcnip4 (26k/23k/23k intronic), Dpp6 (12k/10k/10k) and Kcnip2 (286/219/245) identical across groups; exon counts likewise | Reliable |
+| The intronic signal is Kcnd2 pre-mRNA, not an intronic lncRNA/TEC | 10-kb windows: no hotspot at Gm42583 (21.26 Mb), ENSMUSG00000122200 (21.43 Mb, antisense) or Gm42584; depth uniform across intron 1 and introns 2–5 | Reliable (SSv4 is unstranded, so antisense cannot be excluded by strand, only by position) |
+| Mechanism: processing block vs burst dynamics | Not separable from a snapshot (see Concerns 7) | Open |
+| 14 "null" cells (3%) with >1,500 intronic reads do carry 30–50 exonic reads by STAR | Salmon/STAR discordance at the zero boundary; these are expressing cells misclassified by salmon's zero | Flagged (minor) |
+
+![Figure 5. Read-level Kcnd2 in DG granule cells](https://github.com/ppfaff/Kv4-isoform-survey/blob/main/figures/dg_kcnd2_readlevel.png?raw=true)
+
+**Figure 5.** A: per cell, Kcnd2 intronic vs exonic unique reads, coloured by the survey's Kv4 group; the dashed line marks the burst state. B: median exonic reads per intronic-read bin. C: mean depth per base per cell in 10-kb windows along the gene, burst-state cells excluded (exons shaded).
+
 ### Technical findings worth recording
 
 | Finding | Detail | Rating |
@@ -93,6 +112,7 @@ Of the ~30 variants with enough reads to test, every compartment shift except tw
 4. **Sensitivity floor.** Bulk laminar data cannot exclude a small dendritic Kcnd2 pool (tens of copies per dendrite) of the kind reported in cultured neurons (Lee et al. 2011; Gross et al. 2011). The conclusion is that no *substantial* fraction of Kcnd2 mRNA is dendritic in vivo. The direct FMRP–Kv4 protein interaction (Zhan et al. 2024) explains the Fmr1 A-current phenotype without a dendritic mRNA pool, which is consistent with these data.
 5. **Only one in vivo dataset.** Every Reliable rating above rests on Farris 2019 (3 animals). The same-direction result in all four subfields is strong internal replication, but an independent preparation has not been examined.
 6. **Middleton is weak at these genes.** The 32 single-neuron libraries are sparse (318 genes above 5 TPM in all samples), the neurons are largely GABAergic, and half are called unstranded. It should not be used for the auxiliary-subunit questions beyond the two significant somatic calls.
+7. **Why the null cells lack mRNA is not settled.** A processing/stability block and a burst-dynamics model (long-lived mRNA fed by bursts; non-productive baseline transcription in all cells; null cells = cells that have not burst within an mRNA lifetime) give the same snapshot. They differ in whether the null state is a stable cell property or transient. Activity-state markers (Arc, Fos, Egr1, Npas4) in null vs high cells from the same SSv4 data would be a first discriminator; metabolic labelling (SLAM-seq / TimeLapse-seq on DG) or smFISH with intron and exon probes in the same section would settle it. A miRNA acting on the accumulated pool (miR-324-5p is translational, not decay, per Gross 2016) is not excluded but is not needed.
 
 ## Recommended additional analyses
 
@@ -102,6 +122,7 @@ Of the ~30 variants with enough reads to test, every compartment shift except tw
 4. **Kcnip3 cys-rich acceptor: nuclear vs cytoplasmic.** Any nuclear/cytoplasmic fractionation RNA-seq of mouse brain (several exist) would show directly whether the 4-nt acceptor form is nuclear-retained. If it is, the cys-rich variant can be dropped from the functional variant list.
 5. **smFISH for Kcnd2 exon vs intron in DG (unchanged from the companion document).** The present result sharpens its prediction: Kcnd2-exon puncta should be somatic and should be reduced or absent in a ~18% subset of mature granule cells, while intronic puncta remain nuclear in all cells.
 6. **Kv4.3L in CA2.** CA2 stratum radiatum Kcnd3 is 88% L-form. If the Kv4.3L result survives (2) and (3), CA2 is where to look first, and the CA2 neuropil interneuron population is well characterised.
+7. **Burst dynamics vs processing block in the Kv4-null granule cells.** From existing data: Arc/Fos/Egr1/Npas4 and other activity-regulated genes in null vs high DG cells (Allen exon matrix), and whether null status is stable across the Allen cluster assignments. New data: SLAM-seq or TimeLapse-seq on dentate gyrus to measure Kcnd2 mRNA half-life and the productive fraction of baseline transcription; dual intron/exon smFISH (item 5) already distinguishes the two if nuclear intronic foci are present in exon-negative cells.
 
 ## Implications for Kv4.2-V404M
 
@@ -109,8 +130,8 @@ The companion document ranked cell types by exposure to the mutation using somat
 
 ## Data, code and provenance
 
-- Code: `pipeline/build_dendrite_runlist.py`, `run_dendrite_isoforms.sh`, `run_dendrite_star.sh`, `make_intron_saf.py`, `collapse_dendrite.py`; `scripts/dendrite_compartment.py`, `scripts/dendrite_junctions.py` in https://github.com/ppfaff/Kv4-isoform-survey.
-- Tables: `tables/dendrite_*.csv` (gene level, variant fractions, marker QC, exon/intron, junction PSI, variant-vs-mixing), `tables/star_*.tsv`, `tables/sj_kcnd3_kcnip3.tsv`.
+- Code: `pipeline/build_dendrite_runlist.py`, `run_dendrite_isoforms.sh`, `run_dendrite_star.sh`, `make_intron_saf.py`, `collapse_dendrite.py`; `scripts/dendrite_compartment.py`, `scripts/dendrite_junctions.py`; read-level DG follow-up `pipeline/build_dg_runlist.py`, `run_dg_star.sh`, `dg_kcnd2_windows.sh`, `scripts/dg_readlevel.py` in https://github.com/ppfaff/Kv4-isoform-survey.
+- Tables: `tables/dg_kcnd2_readlevel_summary.csv`, `tables/dg_kcnd2_per_cell_q255.csv`, `tables/kcnd2_locus_annotation.tsv` (DG read-level); `tables/dendrite_*.csv` (gene level, variant fractions, marker QC, exon/intron, junction PSI, variant-vs-mixing), `tables/star_*.tsv`, `tables/sj_kcnd3_kcnip3.tsv`.
 - Raw quantifications: `~/kv4_dendrite/` on PFAFF-LAMBDA (salmon quant for 56 libraries; STAR region BAMs, SJ.out.tab and featureCounts output for the 24 Farris libraries).
 - Reference: GENCODE vM36 / GRCm39 throughout; variant nomenclature as in the companion document.
 - Statistics are as of 2026-10-30.

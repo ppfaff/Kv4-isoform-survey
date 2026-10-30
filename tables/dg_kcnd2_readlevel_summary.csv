@@ -1,0 +1,4 @@
+grp,n,intron_med,intron_q25,intron_q75,pct_burst,pct_intron_detected,exon_med,pct_exon_zero
+Kv4-high,150,1120.4,327.5,10687.4,45.3,98.7,86.2,0.0
+Kv4-low,150,318.3,181.8,538.4,10.0,98.7,12.1,28.0
+Kv4-null,446,269.7,155.9,442.8,1.1,97.5,0.0,95.1
