@@ -27,7 +27,7 @@ SUMMARY = ("Survey of Kv4 (Kcnd1-3), KChIP (Kcnip1-4) and DPP (Dpp6/Dpp10) splic
            "(8,131 cells) and an Allen SSv4 VISp chemistry control (1,511 cells). Each conclusion is "
            "rated reliable / tentative / flagged. Key results: interneurons vs principal cells use "
            "disjoint KChIP programs; somatic Kv4-null cells (DG 18%, Vip 27%, Pvalb 20%) still "
-           "transcribe Kcnd2 (post-transcriptional, likely dendritic localization); hippocampus-"
+           "transcribe Kcnd2 (post-transcriptional; REVISED 2026-10-30: not dendritic localization, see compartment document); hippocampus-"
            "specific Sst and Lamp5 Lhx6 types have the KChIP genes off; near-projecting pyramidal "
            "cells carry a ~92% Kv4.2 pore with an interneuron-style KChIP1 complement and are the "
            "pyramidal class most exposed to Kv4.2-V404M; Vip/Sncg/Lamp5 interneurons (Kv4.3-based) "
@@ -64,7 +64,7 @@ def main():
     same = docs[docs["title"] == TITLE] if len(docs) else docs
     if len(same):
         doc_id = int(same.iloc[0]["id"])
-        ver = db.update_document(doc_id, change_note="refreshed from KV4_SURVEY_CONCLUSIONS.md",
+        ver = db.update_document(doc_id, change_note="Oct 30 revision note added: Kv4-null cells have low Kv4 mRNA, not dendritic mRNA (see compartment-analysis document)",
                                  body=body, summary=SUMMARY, tags=TAGS, links=LINKS,
                                  sessions=SESSIONS, status="provisional", doc_type="summary")
         print("updated document %d -> version %d" % (doc_id, ver))
