@@ -26,3 +26,6 @@ dendritic layers, CA1/CA2/CA3/DG x 3 animals) and Middleton 2019 (GSE115480 / PR
   python3 <repo>/scripts/dendrite_compartment.py tables <repo>         # figures/dendrite_*.png, tables/dendrite_*.csv
 pipeline/make_intron_saf.py builds the merged-exon / intron SAF+BED for the 9 genes from the vM36 GTF
 (called by run_dendrite_star.sh). KEEP_FASTQ=1 keeps the FASTQs so the STAR step does not re-download (~150 GB).
+Junction check (scripts/dendrite_junctions.py): on Lambda, extract Kcnd3/Kcnip3 junctions from the STAR output with
+  for f in star/*/SJ.out.tab; do r=$(basename $(dirname $f)); awk -v r=$r 'BEGIN{OFS="\t"} ($1=="chr3" && $2>105359000 && $3<105582000) || ($1=="chr2" && $2>127298000 && $3<127365000) {print r,$0}' $f; done > tables/sj_kcnd3_kcnip3.tsv
+Result: Kv4.3L exon inclusion 0.17 (cell-body layers) -> 0.58 (dendritic layers), p=0.001; Kcnip3 cys-rich acceptor 0.19 -> 0.04.
