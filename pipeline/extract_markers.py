@@ -11,7 +11,7 @@ Setup (Lambda, kv4 env):
 Output: one row per cell (all 73k cells in the release), columns = raw exon counts for each marker gene,
 plus total_exon_counts for CPM normalisation. Our 8,131 hippocampal cells are a subset; the join happens later.
 """
-import sys
+import sys, os
 import numpy as np, pandas as pd, h5py
 
 GENES = [
@@ -24,6 +24,11 @@ GENES = [
     # housekeeping sanity
     'Actb', 'Gapdh',
 ]
+
+# override the list from the command line:  GENES=Arc,Fos,Egr1 python3 extract_markers.py <hdf5> <out.csv>
+if os.environ.get('GENES'):
+    GENES = [g.strip() for g in os.environ['GENES'].split(',') if g.strip()]
+
 
 def main(h5path, out_csv):
     with h5py.File(h5path, 'r') as f:
