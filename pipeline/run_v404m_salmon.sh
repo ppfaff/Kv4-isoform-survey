@@ -112,13 +112,13 @@ while true; do
   if [ "$running" -eq 0 ] && [ -f "$STAGE_DIR/.all_staged" ] && [ -z "$(find "$STAGE_DIR" -name .ready -print -quit 2>/dev/null)" ]; then break; fi
   now=$(date +%s)
   if [ $((now - last)) -ge 300 ]; then
-    log "quantified $(ls quant 2>/dev/null | wc -l) / $TOTAL  (running $running, staged $(find "$STAGE_DIR" -name .ready 2>/dev/null | wc -l), failures $(wc -l < logs/v404m_failures.log 2>/dev/null || echo 0))"
+    log "quantified $(ls quant 2>/dev/null | wc -l) / $TOTAL  (running $running, staged $(find "$STAGE_DIR" -name .ready 2>/dev/null | wc -l), failures $(cat logs/v404m_failures.log 2>/dev/null | wc -l))"
     last=$now
   fi
   sleep 15
 done
 wait
-log "finished: $(ls quant | wc -l) / $TOTAL quantified; failures $(wc -l < logs/v404m_failures.log 2>/dev/null || echo 0)"
+log "finished: $(ls quant | wc -l) / $TOTAL quantified; failures $(cat logs/v404m_failures.log 2>/dev/null | wc -l)"
 log "library types seen: $(awk '{for(i=1;i<=NF;i++) if($i ~ /^\"I/) print $i}' logs/v404m_progress.log 2>/dev/null | sort | uniq -c | tr '\n' ' ')"
 if ls allele/*.tsv >/dev/null 2>&1; then
   { printf 'sample\tanchor\torientation\ttriplet\tcount\twindow\n'; cat allele/*.tsv; } > tables/v404m_allele_counts.tsv
