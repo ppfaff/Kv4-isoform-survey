@@ -43,7 +43,9 @@ stage_one() {   # $1 sample  $2 r1  $3 r2
   [ -f "$STAGE_DIR/$s/.ready" ] && return 0
   while [ "$(find "$STAGE_DIR" -name .ready 2>/dev/null | wc -l)" -ge "$BUFFER" ]; do sleep 20; done
   rm -rf "${STAGE_DIR:?}/$s"; mkdir -p "$STAGE_DIR/$s"
-  if cp "$r1" "$STAGE_DIR/$s/R1.fastq.gz" && cp "$r2" "$STAGE_DIR/$s/R2.fastq.gz"; then
+  # a sample may be several lane/run files (';'-separated); concatenated gzip members are a valid gzip stream
+  IFS=';' read -ra P1 <<< "$r1"; IFS=';' read -ra P2 <<< "$r2"
+  if cat "${P1[@]}" > "$STAGE_DIR/$s/R1.fastq.gz" && cat "${P2[@]}" > "$STAGE_DIR/$s/R2.fastq.gz"; then
     touch "$STAGE_DIR/$s/.ready"
   else
     rm -rf "${STAGE_DIR:?}/$s"; echo "$s stage-failed" >> logs/v404m_failures.log
