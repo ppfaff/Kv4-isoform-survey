@@ -86,7 +86,8 @@ quant_one() {
         | python3 -I "$HERE/v404m_allele_extract.py" "$s" tables/v404m_codon.tsv > "allele/$s.tsv.part" 2>> "logs/$s.allele.log"
       mv "allele/$s.tsv.part" "allele/$s.tsv"
     fi
-    lt=$(grep -o '"library_types": \[[^]]*\]' "quant/$s/aux_info/meta_info.json" | tr -d '\n')
+    # the JSON puts the library_types array across several lines, so strip whitespace before matching
+    lt=$(tr -d '\n ' < "quant/$s/aux_info/meta_info.json" | grep -o '"library_types":\[[^]]*\]')
     pm=$(grep -o '"percent_mapped": [0-9.]*' "quant/$s/aux_info/meta_info.json")
     np=$(grep -o '"num_processed": [0-9]*' "quant/$s/aux_info/meta_info.json")
     echo "$s done $np $pm $lt" >> logs/v404m_progress.log
