@@ -81,6 +81,16 @@ if os.path.exists(allele_path) and os.path.exists(codon_path):
        'non-wild-type fraction of Kcnd2 reads at the codon (0.5 = heterozygous and balanced)')
     pp(tot[tot.genotype == 'mutant'].groupby(['tissue', 'anchor']).alt_frac.agg(['median', 'min', 'max', 'size']).round(3),
        'mutant animals, by tissue and anchor')
+    if 'haplotype' in set(tot.anchor):
+        h = tot[tot.anchor == 'haplotype']
+        print('\nPRIMARY READOUT — whole-allele haplotype counts (immune to knock-in changes inside an anchor):')
+        print(h.groupby(['tissue', 'genotype']).alt_frac.agg(['median', 'min', 'max', 'size']).round(3).to_string())
+        hm = h[h.genotype == 'mutant'].alt_frac.median()
+        print(f'\nmutant animals: {hm:.3f} of Kcnd2 reads carry the knock-in allele -> '
+              + ('heterozygous, both alleles expressed about equally' if 0.4 <= hm <= 0.6 else
+                 'homozygous' if hm > 0.85 else
+                 'the knock-in allele is UNDER-represented relative to wild type — worth checking before '
+                 'interpreting any physiology'))
     agree = tot.pivot_table(index=['sample', 'genotype'], columns='anchor', values='alt_frac')
     if {'left', 'right'} <= set(agree.columns):
         d = (agree.left - agree.right).abs()
@@ -262,7 +272,8 @@ if os.path.exists(jp):
 fig, axes = plt.subplots(1, 3, figsize=(15, 4.2))
 ax = axes[0]
 if tot is not None and len(tot):
-    d = tot[tot.anchor == 'left'] if 'left' in set(tot.anchor) else tot
+    pref = 'haplotype' if 'haplotype' in set(tot.anchor) else ('right' if 'right' in set(tot.anchor) else 'left')
+    d = tot[tot.anchor == pref]
     for j, t in enumerate(tissues):
         for gt, dx, col in [('wildtype', -0.17, '#4C72B0'), ('mutant', 0.17, '#C44E52')]:
             v = d[(d.tissue == t) & (d.genotype == gt)].alt_frac.dropna()

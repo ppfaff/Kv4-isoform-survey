@@ -25,20 +25,20 @@ log(){ echo "[$(date '+%F %T')] $*"; }
 if command -v pigz >/dev/null 2>&1; then DECOMP="pigz -dc -p 2"; else DECOMP="zcat"; fi
 log "decompressor: $DECOMP"
 
-L=$(awk -F'\t' '$1=="left_anchor"{print $2}' "$CODON")
-R=$(awk -F'\t' '$1=="right_anchor"{print $2}' "$CODON")
-LRC=$(awk -F'\t' '$1=="left_anchor_rc"{print $2}' "$CODON")
-RRC=$(awk -F'\t' '$1=="right_anchor_rc"{print $2}' "$CODON")
-[ -n "$L" ] && [ -n "$R" ] || { log "anchors missing from $CODON"; exit 1; }
-log "anchors: L=$L R=$R"
-export L R LRC RRC DECOMP HERE CODON
+: > tables/v404m_patterns.txt
+for k in left_anchor right_anchor left_anchor_rc right_anchor_rc wt_haplotype mut_haplotype wt_haplotype_rc mut_haplotype_rc; do
+  awk -F'\t' -v k="$k" '$1==k && $2!=""{print $2}' "$CODON" >> tables/v404m_patterns.txt
+done
+grep -q . tables/v404m_patterns.txt || { log "no allele search patterns in $CODON"; exit 1; }
+log "allele search patterns: $(wc -l < tables/v404m_patterns.txt)"
+export DECOMP HERE CODON
 
 one() {   # $1 sample  $2 r1  $3 r2
   s=$1; r1=$2; r2=$3
   [ -s "allele/$s.tsv" ] && return 0
   [ -s "$r1" ] && [ -s "$r2" ] || { echo "$s missing-fastq" >> logs/v404m_allele_failures.log; return 0; }
   $DECOMP "$r1" "$r2" 2>/dev/null \
-    | LC_ALL=C grep -F -e "$L" -e "$R" -e "$LRC" -e "$RRC" \
+    | LC_ALL=C grep -F -f tables/v404m_patterns.txt \
     | python3 -I "$HERE/v404m_allele_extract.py" "$s" "$CODON" > "allele/$s.tsv.part" 2>> "logs/$s.allele.log"
   mv "allele/$s.tsv.part" "allele/$s.tsv"
   echo "[$(date '+%F %T')] $s $(awk '{n+=$5} END{print n+0}' "allele/$s.tsv") anchored reads" >> logs/v404m_allele_progress.log

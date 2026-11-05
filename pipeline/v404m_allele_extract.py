@@ -43,10 +43,24 @@ def main(sample, tsv='tables/v404m_codon.tsv', flank=FLANK):
             key = (anchor, orient, win)
             counts[key] = counts.get(key, 0) + 1
 
+    # whole-allele haplotypes, when set_v404m_haplotypes.py has recorded them: each allele is matched by its own
+    # sequence, so a knock-in change inside an anchor cannot hide it. This is the preferred readout.
+    haps = []           # (sequence to search for, orientation, forward-orientation haplotype used as the key)
+    off = int(cfg.get('haplotype_codon_offset', 0))
+    for key in ('wt_haplotype', 'mut_haplotype'):
+        h = cfg.get(key, '')
+        if h:
+            haps.append((h, 'fwd', h))
+            haps.append((rc(h), 'rev', h))
+
     for line in sys.stdin:
         s = line.strip()
         if not s or s[0] in '@+' or not set(s[:4]) <= set('ACGTN'):
             continue
+        for seq, orient, hap in haps:
+            if seq in s:
+                k = ('haplotype', orient, hap)
+                counts[k] = counts.get(k, 0) + 1
         i = s.find(L)
         if i >= 0:
             add('left', 'fwd', s[i + len(L):i + len(L) + width])
@@ -61,7 +75,7 @@ def main(sample, tsv='tables/v404m_codon.tsv', flank=FLANK):
             add('right', 'rev', rc(s[i + len(Rrc):i + len(Rrc) + width]))
 
     for (anchor, orient, win), n in sorted(counts.items(), key=lambda kv: -kv[1]):
-        trip = win[:3] if anchor == 'left' else win[-3:]
+        trip = win[off:off + 3] if anchor == 'haplotype' else (win[:3] if anchor == 'left' else win[-3:])
         print(f'{sample}\t{anchor}\t{orient}\t{trip}\t{n}\t{win}')
 
 

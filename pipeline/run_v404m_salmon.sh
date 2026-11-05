@@ -36,6 +36,17 @@ fi
 IDX=ref/salmon_idx_tx
 TOTAL=$(tail -n +2 "$SAMPLES" | wc -l); log "$TOTAL samples in $SAMPLES"
 
+# search patterns for the inline allele counting: both anchors and, when set_v404m_haplotypes.py has recorded
+# them, the two whole-allele haplotypes (which are what make the count immune to a knock-in change inside an anchor)
+if [ -s tables/v404m_codon.tsv ]; then
+  : > tables/v404m_patterns.txt
+  for k in left_anchor right_anchor left_anchor_rc right_anchor_rc wt_haplotype mut_haplotype wt_haplotype_rc mut_haplotype_rc; do
+    awk -F'\t' -v k="$k" '$1==k && $2!=""{print $2}' tables/v404m_codon.tsv >> tables/v404m_patterns.txt
+  done
+  log "allele search patterns: $(wc -l < tables/v404m_patterns.txt) ($(grep -c . tables/v404m_patterns.txt) non-empty)"
+  grep -q . tables/v404m_patterns.txt || log "WARNING: no allele patterns — allele counting will be skipped"
+fi
+
 # ---------------------------------------------------------------- stager (background)
 stage_one() {   # $1 sample  $2 r1  $3 r2
   s=$1; r1=$2; r2=$3
@@ -68,14 +79,10 @@ quant_one() {
   if [ -s "quant/$s/quant.sf" ]; then
     # count the V404M allele from the staged FASTQs while they are still local: this saves a second full pass
     # over the source drive later (set ALLELE=0 to skip, e.g. before tables/v404m_codon.tsv exists)
-    if [ "${ALLELE:-1}" = 1 ] && [ -s tables/v404m_codon.tsv ] && [ ! -s "allele/$s.tsv" ]; then
+    if [ "${ALLELE:-1}" = 1 ] && [ -s tables/v404m_patterns.txt ] && [ ! -s "allele/$s.tsv" ]; then
       mkdir -p allele
-      L=$(awk -F'\t' '$1=="left_anchor"{print $2}' tables/v404m_codon.tsv)
-      R=$(awk -F'\t' '$1=="right_anchor"{print $2}' tables/v404m_codon.tsv)
-      LRC=$(awk -F'\t' '$1=="left_anchor_rc"{print $2}' tables/v404m_codon.tsv)
-      RRC=$(awk -F'\t' '$1=="right_anchor_rc"{print $2}' tables/v404m_codon.tsv)
       zcat "$STAGE_DIR/$s/R1.fastq.gz" "$STAGE_DIR/$s/R2.fastq.gz" 2>/dev/null \
-        | LC_ALL=C grep -F -e "$L" -e "$R" -e "$LRC" -e "$RRC" \
+        | LC_ALL=C grep -F -f tables/v404m_patterns.txt \
         | python3 -I "$HERE/v404m_allele_extract.py" "$s" tables/v404m_codon.tsv > "allele/$s.tsv.part" 2>> "logs/$s.allele.log"
       mv "allele/$s.tsv.part" "allele/$s.tsv"
     fi
