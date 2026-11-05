@@ -1,40 +1,47 @@
 #!/usr/bin/env python3
-"""Tabulate the trinucleotide at a codon from raw reads, given flanking anchors (no alignment).
+"""Read out the sequence at a codon directly from raw reads, given flanking anchors (no alignment).
 
 Reads anchor definitions from tables/v404m_codon.tsv and FASTQ sequence lines from stdin (normally pre-filtered
-with `grep -F`, so only candidate reads arrive here). For every read it reports the three bases sitting at the
-codon position, resolved four ways:
+with `grep -F`, so only candidate reads arrive here). Each anchor reports the codon *and the flank on its far
+side*, so the two anchors between them see both sides of the codon:
 
-    left/fwd   read contains LEFT_ANCHOR            -> the 3 bases after it
-    left/rev   read contains rc(LEFT_ANCHOR)        -> the 3 bases before it, reverse-complemented
-    right/fwd  read contains RIGHT_ANCHOR           -> the 3 bases before it
-    right/rev  read contains rc(RIGHT_ANCHOR)       -> the 3 bases after it, reverse-complemented
+    left/fwd   read contains LEFT_ANCHOR       -> codon + FLANK bases downstream
+    left/rev   read contains rc(LEFT_ANCHOR)   -> same, from a reverse-complement read
+    right/fwd  read contains RIGHT_ANCHOR      -> FLANK bases upstream + codon
+    right/rev  read contains rc(RIGHT_ANCHOR)  -> same, from a reverse-complement read
 
-The left and right anchors are independent: agreement between them means neither anchor overlaps an engineered
-change in the knock-in allele. Every observed triplet is reported, not just the two expected ones, so an
-unexpected mutant sequence (extra silent edits) shows up rather than being silently dropped.
+Knock-in alleles usually carry silent changes besides the intended one (here, one introducing a diagnostic
+restriction site). Such a change may fall inside an anchor, in which case that anchor stops matching the mutant
+allele and would under-report it. Two independent anchors make that visible: the affected one loses roughly half
+its reads in heterozygotes while the other still sees both alleles, and the captured flank from the intact anchor
+spells out the real mutant haplotype, which can then be used to redefine the anchors exactly.
 
-Usage:  zcat R1.fastq.gz R2.fastq.gz | grep -F -e ... | python3 v404m_allele_extract.py SAMPLE [codon.tsv]
-Prints TSV rows: sample, anchor, orientation, triplet, count
+Usage:  zcat R1.fastq.gz R2.fastq.gz | grep -F -e ... | python3 v404m_allele_extract.py SAMPLE [codon.tsv] [FLANK]
+Prints TSV rows: sample, anchor, orientation, triplet, count, window
+  (window is the captured sequence; the codon is its first 3 bases for the left anchor, its last 3 for the right)
 """
 import sys
 
 COMP = str.maketrans('ACGTN', 'TGCAN')
+FLANK = 12
 
 
 def rc(s):
     return s.translate(COMP)[::-1]
 
 
-def main(sample, tsv='tables/v404m_codon.tsv'):
+def main(sample, tsv='tables/v404m_codon.tsv', flank=FLANK):
+    flank = int(flank)
+    width = 3 + flank
     cfg = dict(l.rstrip('\n').split('\t', 1) for l in open(tsv) if '\t' in l)
     L, R = cfg['left_anchor'], cfg['right_anchor']
     Lrc, Rrc = rc(L), rc(R)
     counts = {}
 
-    def add(anchor, orient, trip):
-        if len(trip) == 3 and set(trip) <= set('ACGT'):
-            counts[(anchor, orient, trip)] = counts.get((anchor, orient, trip), 0) + 1
+    def add(anchor, orient, win):
+        if len(win) == width and set(win) <= set('ACGT'):
+            key = (anchor, orient, win)
+            counts[key] = counts.get(key, 0) + 1
 
     for line in sys.stdin:
         s = line.strip()
@@ -42,19 +49,20 @@ def main(sample, tsv='tables/v404m_codon.tsv'):
             continue
         i = s.find(L)
         if i >= 0:
-            add('left', 'fwd', s[i + len(L):i + len(L) + 3])
+            add('left', 'fwd', s[i + len(L):i + len(L) + width])
         i = s.find(Lrc)
-        if i >= 3:
-            add('left', 'rev', rc(s[i - 3:i]))
+        if i >= width:
+            add('left', 'rev', rc(s[i - width:i]))
         i = s.find(R)
-        if i >= 3:
-            add('right', 'fwd', s[i - 3:i])
+        if i >= width:
+            add('right', 'fwd', s[i - width:i])
         i = s.find(Rrc)
         if i >= 0:
-            add('right', 'rev', rc(s[i + len(Rrc):i + len(Rrc) + 3]))
+            add('right', 'rev', rc(s[i + len(Rrc):i + len(Rrc) + width]))
 
-    for (anchor, orient, trip), n in sorted(counts.items(), key=lambda kv: -kv[1]):
-        print(f'{sample}\t{anchor}\t{orient}\t{trip}\t{n}')
+    for (anchor, orient, win), n in sorted(counts.items(), key=lambda kv: -kv[1]):
+        trip = win[:3] if anchor == 'left' else win[-3:]
+        print(f'{sample}\t{anchor}\t{orient}\t{trip}\t{n}\t{win}')
 
 
 if __name__ == '__main__':

@@ -114,7 +114,7 @@ wait
 log "finished: $(ls quant | wc -l) / $TOTAL quantified; failures $(wc -l < logs/v404m_failures.log 2>/dev/null || echo 0)"
 log "library types seen: $(awk '{for(i=1;i<=NF;i++) if($i ~ /^\"I/) print $i}' logs/v404m_progress.log 2>/dev/null | sort | uniq -c | tr '\n' ' ')"
 if ls allele/*.tsv >/dev/null 2>&1; then
-  { printf 'sample\tanchor\torientation\ttriplet\tcount\n'; cat allele/*.tsv; } > tables/v404m_allele_counts.tsv
+  { printf 'sample\tanchor\torientation\ttriplet\tcount\twindow\n'; cat allele/*.tsv; } > tables/v404m_allele_counts.tsv
   log "allele counts for $(ls allele/*.tsv | wc -l) samples -> tables/v404m_allele_counts.tsv"
 fi
 log "next: python3 collapse_v404m.py"

@@ -48,7 +48,7 @@ export -f one
 tail -n +2 "$SAMPLES" | awk -F'\t' '{print $1"\t"$5"\t"$6}' \
   | xargs -P "$P" -d '\n' -I{} bash -c 'IFS=$'"'"'\t'"'"' read -r s r1 r2 <<< "{}"; one "$s" "$r1" "$r2"'
 
-{ printf 'sample\tanchor\torientation\ttriplet\tcount\n'; cat allele/*.tsv; } > tables/v404m_allele_counts.tsv
+{ printf 'sample\tanchor\torientation\ttriplet\tcount\twindow\n'; cat allele/*.tsv; } > tables/v404m_allele_counts.tsv
 log "done: $(ls allele/*.tsv 2>/dev/null | wc -l) samples -> tables/v404m_allele_counts.tsv"
 log "triplets seen overall:"
 awk -F'\t' 'NR>1{n[$4]+=$5} END{for(t in n) print "   ", t, n[t]}' tables/v404m_allele_counts.tsv | sort -k3,3nr

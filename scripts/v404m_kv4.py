@@ -38,6 +38,10 @@ for i, b1 in enumerate('TCAG'):
 
 meta = load_meta(TABLES)
 tissues = [t for t in TISSUE_ORDER if t in set(meta.tissue)]
+C, source = load_counts(TABLES)
+common = [s for s in C.columns if s in meta.index]
+C, m2 = C[common], meta.loc[common]
+kcnd2_cpm = (C.loc['Kcnd2'] / C.sum() * 1e6) if 'Kcnd2' in C.index else None
 
 
 def pp(df, title):
@@ -81,16 +85,39 @@ if os.path.exists(allele_path) and os.path.exists(codon_path):
     if {'left', 'right'} <= set(agree.columns):
         d = (agree.left - agree.right).abs()
         print(f'\nleft vs right anchor agreement: median |difference| {d.median():.3f}, max {d.max():.3f} '
-              f'({"anchors agree — neither overlaps an engineered change" if d.max() < 0.1 else "ANCHORS DISAGREE — one overlaps an edit in the knock-in allele; use the other"})')
+              f'({"anchors agree — neither overlaps an engineered change" if d.max() < 0.1 else "ANCHORS DISAGREE — one overlaps an edit in the knock-in allele; trust the one that still recovers both alleles"})')
+
+    # The knock-in carries at least one silent change besides V404M (a diagnostic restriction site). If it falls
+    # inside an anchor, that anchor stops matching the mutant allele. Two signatures reveal it: the captured
+    # windows (the mutant haplotype is simply a second window sequence), and a drop in anchored reads in mutants
+    # relative to their Kcnd2 expression — if BOTH anchors were blind to the mutant allele, heterozygotes would
+    # show ~0% alt while recovering only ~half as many anchored reads as wild types.
+    if 'window' in A.columns:
+        W = A.groupby(['genotype', 'anchor', 'window'], as_index=False)['count'].sum()
+        W['frac_within'] = W['count'] / W.groupby(['genotype', 'anchor'])['count'].transform('sum')
+        pp(W[W.frac_within > 0.005].sort_values(['anchor', 'genotype', 'count'], ascending=[True, True, False]).round(4),
+           'sequence windows captured around the codon (left anchor = codon + 12 nt downstream; '
+           'right anchor = 12 nt upstream + codon). A second window in mutants only is the knock-in haplotype.')
+    if kcnd2_cpm is not None:
+        depth = tot.groupby(['sample', 'genotype', 'tissue'], as_index=False).reads.sum()
+        depth['kcnd2_cpm'] = depth['sample'].map(kcnd2_cpm)
+        depth['anchored_per_cpm'] = depth.reads / depth.kcnd2_cpm.replace(0, np.nan)
+        s = depth.groupby('genotype').anchored_per_cpm.median()
+        pp(depth.groupby(['tissue', 'genotype']).anchored_per_cpm.agg(['median', 'size']).round(2),
+           'anchored reads per unit of Kcnd2 expression (a mutant value near half the wild-type one means the '
+           'anchors are blind to the knock-in allele, NOT that the mutant mRNA is absent)')
+        if {'mutant', 'wildtype'} <= set(s.index) and s['wildtype'] > 0:
+            r = s['mutant'] / s['wildtype']
+            print(f'\nmutant / wild-type anchored-read recovery: {r:.2f} '
+                  + ('(both alleles are being counted)' if r > 0.8 else
+                     'WARNING: mutant reads are being lost — redefine the anchors from the windows above and re-run '
+                     'count_v404m_allele.sh'))
 else:
     tot = None
     print('(no allele counts — run find_v404m_codon.py then count_v404m_allele.sh, and copy '
           'tables/v404m_allele_counts.tsv and tables/v404m_codon.tsv here)')
 
 # ---------------------------------------------------------------- 2. Kv4-complex genes and variants
-C, source = load_counts(TABLES)
-common = [s for s in C.columns if s in meta.index]
-C, m2 = C[common], meta.loc[common]
 L = cpm_log(C.round().astype(int))
 rows = []
 for g in GENES:
