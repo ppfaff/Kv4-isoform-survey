@@ -34,3 +34,22 @@ Read-level Kcnd2 in DG granule cells (why are 18% of cells exonic-null but intro
   python3 build_dg_runlist.py ~/allen_meta/hip_filtered_runlist.tsv ~/Kv4-isoform-survey/tables/dg_cells_markers.csv 150
   T=16 nohup nice -n 19 bash run_dg_star.sh > run_dg_star.log 2>&1 &      # re-uses ref/star_idx, genome held in shared memory
   python3 ~/Kv4-isoform-survey/scripts/dg_readlevel.py tables <repo>        # intron position / detained intron / residual junctions
+
+V404M vs wild-type bulk RNA-seq (3-month littermates; cortex, hippocampus, thalamus, cerebellum; 48 paired-end
+libraries, ~45-60 M pairs each). Sample sheet: tables/v404m_sample_info.csv. On Lambda, in ~/kv4_v404m:
+  sudo mkdir -p /mnt/t && sudo mount -t drvfs 'T:' /mnt/t        # network drives are not auto-mounted in WSL
+  conda activate kv4
+  cp ~/Kv4-isoform-survey/pipeline/{build_v404m_runlist.py,run_v404m_salmon.sh,run_v404m_star.sh,find_v404m_codon.py,v404m_allele_extract.py,count_v404m_allele.sh,collapse_v404m.py,make_intron_saf.py} .
+  mkdir -p ref tables && ln -sf ~/kv4_dendrite/ref/star_idx ref/ \
+    && ln -sf ~/kv4_dendrite/ref/GRCm39.primary_assembly.genome.fa ref/ \
+    && ln -sf ~/kv4_dendrite/ref/gencode.vM36.primary_assembly.annotation.gtf.gz ref/ \
+    && ln -sf ~/kv4_cortex/ref/gencode.vM36.transcripts.fa.gz ref/
+  cp ~/Kv4-isoform-survey/tables/v404m_sample_info.csv tables/
+  python3 build_v404m_runlist.py tables/v404m_sample_info.csv "/mnt/t/Laurence David/RNA_Seq_VM_3mo"
+  python3 find_v404m_codon.py                                   # -> tables/v404m_codon.tsv (V404M anchors)
+  N_Q=2 T_Q=12 nohup nice -n 19 bash run_v404m_salmon.sh > run_v404m_salmon.log 2>&1 &   # ~5 h; also counts the allele
+  python3 collapse_v404m.py
+  N_A=2 T=12 nohup nice -n 19 bash run_v404m_star.sh > run_v404m_star.log 2>&1 &         # ~11 h
+Analysis (in the container, on the small tables): scripts/v404m_stress.py (ISR/UPR/apoptosis/gliosis panels, DESeq2
+per tissue) and scripts/v404m_kv4.py (allele ratio, Kv4 variants, Kcnd2 exon:intron, XBP1/dFosB/Kv4.3L junctions).
+Each sample is staged to local disk before processing, so the source drive only needs ~30 MB/s to keep up.
