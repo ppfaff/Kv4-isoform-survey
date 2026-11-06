@@ -53,7 +53,7 @@ from scipy.spatial.distance import pdist, squareform
 from sklearn.metrics import silhouette_score, adjusted_rand_score, normalized_mutual_info_score
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from hip_common import load_hip, load_ctx, final_map, PANEL_OF
+from hip_common import load_hip, load_ctx, final_map, PANEL_OF, _read_percell
 
 RNG       = np.random.default_rng(0)
 MIN_READS = int(os.environ.get('MIN_READS', 20))    # per panel, per cell
@@ -351,7 +351,11 @@ def main():
     except Exception as e:
         print(f'[warn] Allen HPF not loaded: {e}')
     if os.path.exists(VISP_PKL):
-        v = pd.read_pickle(VISP_PKL)
+        # .csv or .pkl -- the VISp data is an annotated CSV from the same collapse step as the others
+        v = _read_percell(VISP_PKL)
+        miss = [c for c in ('transcript', 'gene', 'reads', 'sample_name') if c not in v.columns]
+        if miss:
+            sys.exit(f'VISp table {VISP_PKL} is missing columns {miss}; found {list(v.columns)}')
         v['vclass'] = v['transcript'].map(final_map)
         v = v.dropna(subset=['vclass']).copy()
         v = v[~((v['biotype'] == 'retained_intron')
