@@ -95,6 +95,23 @@ def categorise(X, thr):
 CATS = ['1 no Kv4', '2 Kv4 but no Kv4.2', '3 Kv4 only', '4 Kv4+DPP, no KChIP',
         '5 Kv4+KChIP, no DPP', '6 Kv4+KChIP+DPP']
 
+# The six categories above conflate two independent questions, because 3-6 all require Kcnd2 specifically
+# and so never characterise the auxiliary complement of a cell that has Kv4.1/Kv4.3 without Kv4.2. That
+# makes "% full complex" read lower than it should: those cells have an A-current and, as the cross-tab
+# shows, generally the full auxiliary set too. The two axes below separate the questions, and the
+# A-current-bearing population (any Kv4) is the right denominator for anything about recordings.
+PORE = ['no Kv4', 'Kv4.2 present', 'Kv4 without Kv4.2']
+AUX  = ['neither', 'DPP only', 'KChIP only', 'KChIP+DPP']
+
+
+def axes(X, thr):
+    kv4, k2 = X.kv4 >= thr, X.kcnd2 >= thr
+    kc, dp = X.kchip >= thr, X.dpp >= thr
+    pore = pd.Series(np.where(~kv4, PORE[0], np.where(k2, PORE[1], PORE[2])), index=X.index)
+    aux = pd.Series(np.where(kc & dp, AUX[3], np.where(kc, AUX[2], np.where(dp, AUX[1], AUX[0]))),
+                    index=X.index)
+    return pore, aux
+
 
 def bh(p):
     """Benjamini-Hochberg, inline so the script does not need statsmodels (the worker envs lack it)."""
@@ -210,6 +227,50 @@ def main():
     for _, r in show.iterrows():
         print(f'{r.dataset:7} {str(r.cell_type)[:18]:18} {int(r.n_cells):4d} '
               + ' '.join(f'{r[c]:6.1f}' for c in CATS))
+
+    # --- cross-tab: pore subunit x auxiliary complement, on the A-current-bearing population
+    print('\n' + '=' * 118)
+    print(f'PORE SUBUNIT x AUXILIARY COMPLEMENT  (>= {MAIN_THR} reads).  % of ALL cells in each combination,')
+    print('  then the quantities that matter at the rig, computed on cells that HAVE a Kv4 subunit:')
+    print('    A-current capable = any Kv4 detected;  V404M-insensitive = of those, the ones without Kv4.2')
+    print('=' * 118)
+    xt = []
+    for name, d in ds.items():
+        X = per_cell(d)
+        lab = 'cluster' if X['cluster'].nunique() > X['subclass'].nunique() else 'subclass'
+        for ct, sub in X.groupby(lab):
+            if len(sub) < MIN_CELLS or (types and ct not in types):
+                continue
+            pore, aux = axes(sub, MAIN_THR)
+            n = len(sub)
+            has_kv4 = pore != PORE[0]
+            r = dict(dataset=name, cell_type=ct, n_cells=n,
+                     pct_any_Kv4=float(has_kv4.mean() * 100),
+                     pct_no_Kv4=float((~has_kv4).mean() * 100))
+            for a in AUX:
+                r['Acurr_' + a] = float((aux[has_kv4] == a).mean() * 100) if has_kv4.any() else np.nan
+            r['Acurr_pct_no_Kv4.2'] = (float((pore[has_kv4] == PORE[2]).mean() * 100)
+                                       if has_kv4.any() else np.nan)
+            # does the Kv4.2-negative group really carry the full auxiliary set?
+            m = pore == PORE[2]
+            r['noKv42_pct_full_aux'] = float((aux[m] == AUX[3]).mean() * 100) if m.any() else np.nan
+            r['withKv42_pct_full_aux'] = (float((aux[pore == PORE[1]] == AUX[3]).mean() * 100)
+                                          if (pore == PORE[1]).any() else np.nan)
+            xt.append(r)
+    XT = pd.DataFrame(xt)
+    XT.to_csv(f'{OUT}/tables/complex_pore_by_aux.csv', index=False)
+    hdr = (f'{"dataset":7} {"cell type":18} {"n":>4} {"anyKv4":>7} | of A-current cells: '
+           f'{"KChIP+DPP":>9} {"DPPonly":>7} {"KCPonly":>7} {"neither":>7} {"noKv4.2":>8} | '
+           f'{"fullaux|noKv4.2":>15}')
+    print(hdr)
+    for _, r in XT.sort_values(['dataset', 'cell_type']).iterrows():
+        print(f'{r.dataset:7} {str(r.cell_type)[:18]:18} {int(r.n_cells):4d} {r.pct_any_Kv4:7.1f} | '
+              f'{r["Acurr_KChIP+DPP"]:21.1f} {r["Acurr_DPP only"]:7.1f} {r["Acurr_KChIP only"]:7.1f} '
+              f'{r["Acurr_neither"]:7.1f} {r["Acurr_pct_no_Kv4.2"]:8.1f} | '
+              f'{r["noKv42_pct_full_aux"]:15.1f}')
+    print('\nLast column tests the assumption that Kv4.2-negative cells still carry the full auxiliary')
+    print('complement. If it tracks the KChIP+DPP column, they are ordinary A-current cells using')
+    print('Kv4.1/Kv4.3, and the right denominator for a recording is the any-Kv4 population.')
 
     print('\n' + '=' * 118)
     print('N-TYPE INACTIVATION (DPP6a + DPP10a share of DPP) and DPP6K')
