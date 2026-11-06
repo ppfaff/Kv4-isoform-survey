@@ -128,14 +128,20 @@ def cell_matrix(d, min_reads=MIN_READS, pseudo=PSEUDO, thin_to=None):
             C = pd.DataFrame(
                 [RNG.multinomial(thin_to, r / r.sum()) if r.sum() > 0 else np.zeros(len(r))
                  for _, r in C.iterrows()], index=C.index, columns=C.columns, dtype=float)
-        A = C.to_numpy() + pseudo
-        A = A / A.sum(axis=1, keepdims=True)
-        clr = np.log(A) - np.log(A).mean(axis=1, keepdims=True)
-        feats.append(clr); names += [f'{p}:{v}' for v in C.columns]
-    # inter-panel abundance ratios (2 independent log-ratios for 3 panels)
-    T = np.column_stack([totals[p].loc[keep].to_numpy() + pseudo for p in PANELS])
-    T = np.log(T) - np.log(T).mean(axis=1, keepdims=True)
-    feats.append(T); names += [f'logratio:{p}' for p in PANELS]
+        # Hellinger coordinates, NOT centred-log-ratio. CLR needs a pseudocount, and a structural zero then
+        # contributes log(pseudo/total), which is depth-dependent: two cells with identical composition at
+        # 100 vs 5000 reads differ by log(50) ~ 3.9 in every zero entry. On synthetic cells with identical
+        # composition, true zeros and depths spread over 100-5000, that inflated within-group spread by 12x
+        # against a true value of 1. Since these libraries differ 12-fold in depth between datasets and
+        # widely within them, CLR distances here were largely a depth readout -- which is why the first run
+        # returned "split" for 24 of 28 groupings on R^2 of 0.01-0.22. sqrt(0) = 0 at any depth.
+        A = C.to_numpy().astype(float)
+        A = A / np.maximum(A.sum(axis=1, keepdims=True), 1e-12)
+        feats.append(np.sqrt(A)); names += [f'{p}:{v}' for v in C.columns]
+    # relative abundance of the three panels, same geometry
+    T = np.column_stack([totals[p].loc[keep].to_numpy() for p in PANELS]).astype(float)
+    T = T / np.maximum(T.sum(axis=1, keepdims=True), 1e-12)
+    feats.append(np.sqrt(T)); names += [f'panelfrac:{p}' for p in PANELS]
 
     X = pd.DataFrame(np.column_stack(feats), index=V.index[keep], columns=names)
     return X, meta.loc[X.index], retention
@@ -419,6 +425,10 @@ def main():
         print(f'{"":14} -> {r.verdict}')
     print(f'\nwrote {OUT}/channel_phenotype_{{variance,cells,agreement,names,retention}}.csv')
     print('Read p_location and p_dispersion together; the R2 column alone does not answer the question.')
+    print('\nWARNING: these verdicts key off p-values with no effect-size floor, so at n>1000 a centroid')
+    print('offset explaining ~1% of variance still returns p=0.001. Run channel_noise_floor.py first and')
+    print('treat a grouping as genuinely split only where its subclasses also clear the noise floor. The')
+    print('"thinned" rows are a weak control and should not be read as a depth correction.')
 
 
 if __name__ == '__main__':
