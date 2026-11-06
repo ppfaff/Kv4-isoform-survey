@@ -96,6 +96,22 @@ CATS = ['1 no Kv4', '2 Kv4 but no Kv4.2', '3 Kv4 only', '4 Kv4+DPP, no KChIP',
         '5 Kv4+KChIP, no DPP', '6 Kv4+KChIP+DPP']
 
 
+def bh(p):
+    """Benjamini-Hochberg, inline so the script does not need statsmodels (the worker envs lack it)."""
+    p = np.asarray(p, dtype=float)
+    n = len(p)
+    if n == 0:
+        return p
+    order = np.argsort(p)
+    q = np.empty(n)
+    prev = 1.0
+    for rank, idx in enumerate(order[::-1], start=1):
+        i = n - rank + 1
+        prev = min(prev, p[idx] * n / i)
+        q[idx] = prev
+    return q
+
+
 def depth_check(X, mask_neg, label):
     """Are the cells called negative simply the shallow ones?"""
     if mask_neg.sum() == 0 or (~mask_neg).sum() == 0:
@@ -240,8 +256,7 @@ def main():
         if not res:
             continue
         P = pd.DataFrame(res)
-        from statsmodels.stats.multitest import multipletests
-        P['q'] = multipletests(P.p, method='fdr_bh')[1]
+        P['q'] = bh(P.p.to_numpy())
         sig = P[P.q < 0.05].sort_values('q')
         print(f'  {len(sig)} of {len(P)} pairwise comparisons differ at FDR 5%')
         for _, r in sig.head(12).iterrows():
