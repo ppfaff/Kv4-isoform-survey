@@ -688,9 +688,62 @@ are the shortest. DPP6, whose knockdown collapses everything, outlasts the pore 
 That is the hierarchy expected if DPP6 anchors the assembly, Kv4 is the core, and KChIPs cycle on and
 off a complex that survives their departure.
 
-The RNAi result also supplies, from the lab's own hands, the premise the two-pool model needs: free
-subunits are degraded. What it cannot settle is which subunit exchanges, because removing DPP6 removes
+**Correction, and it matters: the RNAi was assayed one week after the virus went in.** An earlier
+version of this section credited that result with establishing, from the lab's own hands, that free
+subunits are degraded — the premise the two-pool model needs. At a single 7-day endpoint it does not
+establish that. Seven days is 1.5–3.5 half-lives for these subunits, so loss of protein then is fully
+consistent with DPP6 being required to **assemble** new complexes while standing complexes simply
+decay normally. Under that null (`scripts/er_triage_and_rnai_timing.py`):
+
+| subunit | remaining at 7 d, no knockdown delay | with a 2–3 d delay |
+|---|---|---|
+| Kv4.2 | 36% | 49–56% |
+| Kv4.3 | 29% | 41–49% |
+| DPP6 | 34% | 46–54% |
+| KChIP1 | 16% | 27–35% |
+| KChIP4 | 9% | 18–25% |
+
+So **the extent of the loss is the discriminator, not the fact of it.** Roughly 30–50% of Kv4
+remaining is what assembly failure alone predicts, and would say only that DPP6 is needed to build
+complexes. Near-total loss — under ~10% — is faster than any of these subunits can decay unaided and
+would require active co-degradation. The quantified blots settle which it was. A **2–3 day timepoint**
+would separate the two far better than the one-week endpoint: assembly failure alone predicts 70% of
+Kv4.3 remaining at day 2 and 58% at day 3, so an early steep loss is diagnostic.
+
+What the RNAi cannot settle either way is which subunit exchanges, because removing DPP6 removes
 everything regardless.
+
+### Could the degradation just be ER quality control of unassembled subunits?
+
+The location is almost certainly right — unassembled channel subunits are cleared by ER quality
+control — but that cannot produce the observed number, for two independent reasons, and the first one
+inverts the objection.
+
+**Flux is not pool.** A pool's steady-state size is flux × lifetime, so a fast-degrading pool is a
+*small* pool however much synthesis runs through it. For an ER pool to be the 0.82–0.96 steady-state
+fraction that a 2.02 d apparent half-life demands:
+
+| ER clearance half-life | synthesis destroyed before assembly | excess synthesis required |
+|---|---|---|
+| 2 h | 99.91% | **1,116×** |
+| 6 h | 99.52% | 207× |
+| 24 h | 94.6% | 19× |
+
+Because ER quality control is *fast*, and fast pools are small, it cannot set the decay rate of the
+bulk. **An apparent half-life of 2.02 d is too slow to be a biosynthetic-triage signature** — the
+faster the ER step, the more absurd the required synthesis excess becomes.
+
+**And the design doesn't admit the bias anyway.** Dörrbaum ran dynamic SILAC in the direction opposite
+to a pulse-chase of young protein: cultures grew 18–19 DIV in light medium, the medium was switched to
+heavy, and the decay of the **pre-existing light** protein was fitted over t = 0, 1, 3, 7 d. The
+quantity followed is the steady-state population as it stood at the switch, not a labelled cohort of
+newly synthesised protein. The bias ER triage would create — label concentrated in young, doomed
+protein — requires a short synthesis pulse, which this is not.
+
+So the exchange inference survives this objection, and it never rested on the RNAi: within one
+preparation KChIP4 (2.02 d) and KChIP1 (2.67 d) turn over faster than Kv4.3 (3.87 d), and a mixture
+whose protected component decays at the slower rate cannot present the faster apparent rate. The co-IP
+remains the decisive test — what fraction of KChIP4 is actually bound to Kv4.
 
 **How much room is left for the deflationary explanation.** Surplus quality control with a protected
 bound pool requires a free fraction of **0.82–0.96** to drag an apparent half-life down to 2.02 d

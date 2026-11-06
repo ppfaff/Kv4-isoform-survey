@@ -1,0 +1,7 @@
+subunit,half_life_d,remaining_delay0d,remaining_delay1d,remaining_delay2d,remaining_delay3d
+DPP6,4.52,0.3418,0.3985,0.4645,0.5415
+DPP10,4.36,0.3286,0.3852,0.4516,0.5295
+Kv4.3 (Kcnd3),3.87,0.2854,0.3414,0.4084,0.4885
+"Kv4.2 (Kcnd2, mixed)",4.81,0.3647,0.4212,0.4865,0.5619
+KChIP1,2.67,0.1625,0.2106,0.2731,0.354
+KChIP4,2.02,0.0905,0.1276,0.1798,0.2535
