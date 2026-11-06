@@ -228,6 +228,51 @@ channel protein. The defensible estimate is the fraction with exactly zero Kv4 r
 libraries — a cell sequenced to millions of reads with not one Kv4 read — computed by
 `scripts/recording_design.py`.
 
+### Effect dilution: why a null result in some interneurons would be uninterpretable — important for design
+
+Kv4.2 is far less dominant in interneurons, so a larger share of any interneuron sample is genotype-
+insensitive. That dilutes the apparent effect twice over: the mean shift falls to (1−p)·Δ while the SD rises
+to √(σ² + p(1−p)Δ²), since the mixture adds between-component variance. Taking a true per-cell effect of
+d = 2:
+
+| recorded type | % no Kv4.2 | apparent d | n per group, 80% power |
+| --- | --- | --- | --- |
+| **Pvalb Tacr3** | **1.6** | **1.91** | **5** |
+| Sst Chodl | 12.2 | 1.47 | 8 |
+| L5a Batf3 | 19.3 | 1.27 | 10 |
+| L6a Sla | 20.7 | 1.23 | 11 |
+| Sst Myh8 | 33.3 | 0.97 | 17 |
+| Vip Parm1 | 44.1 | 0.79 | 25 |
+| Vip Gpc3 | 72.7 | 0.41 | 95 |
+| Lamp5 Lhx6 (HPF) | 82.9 | 0.27 | 211 |
+| Vip HPF | 92.0 | 0.14 | 793 |
+
+Three consequences.
+
+**A null result in Vip, Sncg or hippocampal Lamp5 types carries almost no information** at ordinary sample
+sizes: a large per-cell effect and no effect at all look the same with 10–20 cells per group. Most
+hippocampal interneuron classes are in this regime.
+
+**Interneurons are not inherently poor targets — the problem is type-specific.** `Pvalb Tacr3` at 1.6%
+Kv4.2-negative would need five cells per group, fewer than any pyramidal type, and `Sst Chodl` eight. If the
+question is whether V404M affects inhibition, those are the recording targets.
+
+**The bias has a direction, so existing data is readable.** Dilution can only shrink an effect, never create
+one, so any significant interneuron effect already in hand is an **underestimate of the per-cell effect by
+1/(1−p)** — 3.7× for Vip Gpc3, 5.8× for hippocampal Lamp5 Lhx6.
+
+The remedy that removes dilution entirely is to genotype the recorded cell: single-cell RT-PCR for Kcnd2 on
+the harvested cytoplasm, analysing only the cells the mutation can act on. The 2012 nested primer design
+does exactly this, and needs only presence/absence of one transcript.
+
+**Cre lines.** There is no Tacr3-Cre, and cluster-level driver lines generally do not exist below the
+subclass. The practical options are the standard subclass lines — Pvalb-IRES-Cre, Sst-IRES-Cre,
+Vip-IRES-Cre, Ndnf-IRES2-dgCre — followed by post-hoc identification, or an intersectional Cre × Flp
+strategy. Note that PV-IRES-Cre has documented incomplete labelling of Pvalb cells in some cortical regions,
+so labelling efficiency should be checked for the region of interest rather than assumed. The empirical
+question of which Cre lines actually yielded which transcriptomic cluster is answerable from the Tasic 2016
+metadata, since every cell in that dataset was collected from a named driver line; that mapping is pending.
+
 ### Technical findings worth recording
 
 **Four methodological failures, each of which produced a confident wrong answer.**
@@ -336,6 +381,7 @@ The quantitative anchor: the measured all-or-none distributions give predicted 1
 | Priority | Analysis | Why |
 | --- | --- | --- |
 | 1 | Measure d (genotype shift ÷ within-type SD) from existing V404M and wild-type L6 recordings | One number, from data already in hand, that decides whether the mixture experiment is 80 cells, 200 cells, or not worth running |
+| 1a | Re-read any existing V404M interneuron recordings in light of the dilution table | A non-significant result in Vip or Lamp5 types means little; a significant one is an underestimate by 1/(1−p) |
 | 1b | Retrospective variance analysis of existing pyramidal A-current recordings | Tests the central prediction at no cost. V½ inactivation and recovery kinetics should vary beyond recording noise, and co-vary within cells |
 | 2 | Negative-control gene family through the noise-floor analysis | Closes the last technical explanation for the heterogeneity; existing data, a few hours |
 | 3 | Calibrate the Kv4 and KChIP panels (`simulate_variant_calibration.py --panels Kv4,KChIP`) | The DPP panel turned out to have a 5-fold bias; these are unchecked, and Kv4.3L is already known to be mis-estimated |
