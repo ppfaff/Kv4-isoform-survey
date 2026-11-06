@@ -52,13 +52,19 @@ stage_one() {
   if cat "${P1[@]}" > "$STAGE_DIR/$s/R1.fastq.gz" && cat "${P2[@]}" > "$STAGE_DIR/$s/R2.fastq.gz"; then touch "$STAGE_DIR/$s/.ready"
   else rm -rf "${STAGE_DIR:?}/$s"; echo "$s stage-failed" >> logs/v404m_star_failures.log; fi
 }
-(
-  tail -n +2 "$SAMPLES" | while IFS=$'\t' read -r s tissue genotype sex r1 r2 rest; do
-    [ -n "$s" ] || continue; stage_one "$s" "$r1" "$r2"
-  done
-  touch "$STAGE_DIR/.all_staged"
-) &
-log "stager started (pid $!)"
+if [ "${NO_STAGE:-0}" = 1 ]; then
+  log "NO_STAGE=1: STAR reads the FASTQs in place (no local copy). Use this when the source is a fast local"
+  log "  disk; it also avoids the drvfs 'Cannot allocate memory' failures that copying provokes when the"
+  log "  shared-memory genome has already taken most of RAM."
+else
+  (
+    tail -n +2 "$SAMPLES" | while IFS=$'\t' read -r s tissue genotype sex r1 r2 rest; do
+      [ -n "$s" ] || continue; stage_one "$s" "$r1" "$r2"
+    done
+    touch "$STAGE_DIR/.all_staged"
+  ) &
+  log "stager started (pid $!)"
+fi
 
 # ---------------------------------------------------------------- genome into shared memory
 STAR --genomeLoad LoadAndExit --genomeDir ref/star_idx --outFileNamePrefix logs/_gload. > logs/v404m_genome_load.log 2>&1 \
@@ -70,16 +76,17 @@ trap cleanup EXIT
 CHROM=$(awk -F'\t' '$1=="chrom"{print $2}' tables/v404m_codon.tsv 2>/dev/null)
 
 align_one() {
-  s=$1
+  s=$1; in1=${2:-$STAGE_DIR/$s/R1.fastq.gz}; in2=${3:-$STAGE_DIR/$s/R2.fastq.gz}
   d=star_v404m/$s; mkdir -p "$d"
   STAR --runThreadN "$T" --genomeDir ref/star_idx --genomeLoad LoadAndKeep \
-       --readFilesIn "$STAGE_DIR/$s/R1.fastq.gz" "$STAGE_DIR/$s/R2.fastq.gz" --readFilesCommand zcat \
+       --readFilesIn "$in1" "$in2" --readFilesCommand zcat \
        --outFileNamePrefix "$d/" --outSAMtype BAM Unsorted --outSAMstrandField intronMotif --quantMode GeneCounts \
        --outFilterMultimapNmax 20 --alignSJoverhangMin 8 --alignSJDBoverhangMin 1 \
        --outFilterMismatchNoverReadLmax 0.04 --alignIntronMin 20 --alignIntronMax 1000000 --alignMatesGapMax 1000000 \
        > "logs/$s.star.log" 2>&1
   bam=$d/Aligned.out.bam
-  if [ ! -s "$bam" ]; then echo "$s star-failed" >> logs/v404m_star_failures.log; rm -rf "${STAGE_DIR:?}/$s"; return; fi
+  if [ ! -s "$bam" ]; then echo "$s star-failed" >> logs/v404m_star_failures.log
+    [ "${NO_STAGE:-0}" = 1 ] || rm -rf "${STAGE_DIR:?}/$s"; return; fi
   # restrict to the loci of interest BEFORE sorting — the genome-wide sort is the expensive step and is not needed
   samtools view -@ 2 -b -L ref/v404m_regions.bed -o "$d/region.unsorted.bam" "$bam" \
     && samtools sort -@ 2 -m 2G -o "$d/region.bam" "$d/region.unsorted.bam" && samtools index "$d/region.bam"
@@ -94,12 +101,26 @@ align_one() {
     samtools mpileup -f ref/GRCm39.primary_assembly.genome.fa -l tables/v404m_codon.pos -d 100000 -Q 13 \
       "$d/region.bam" > "$d/v404m_pileup.txt" 2>/dev/null
   fi
-  rm -rf "$d/_STARtmp" "${STAGE_DIR:?}/$s"
+  rm -rf "$d/_STARtmp"; [ "${NO_STAGE:-0}" = 1 ] || rm -rf "${STAGE_DIR:?}/$s"
   echo "$s done $(grep 'Uniquely mapped reads %' "$d/Log.final.out" | tr -s ' ' | cut -d'|' -f2)" >> logs/v404m_star_progress.log
 }
 export -f align_one; export T STAGE_DIR CHROM
 
 last=0
+if [ "${NO_STAGE:-0}" = 1 ]; then
+  # STAR accepts comma-separated lists for a mate, so multi-lane samples need no concatenation
+  while IFS=$'\t' read -r s tissue genotype sex r1 r2 rest; do
+    [ -n "$s" ] || continue
+    [ -s "star_v404m/$s/ReadsPerGene.out.tab" ] && continue
+    while [ "$(jobs -rp | wc -l)" -ge "$N_A" ]; do sleep 20; done
+    align_one "$s" "${r1//;/,}" "${r2//;/,}" &
+    now=$(date +%s)
+    if [ $((now - last)) -ge 600 ]; then
+      log "aligned $(ls star_v404m 2>/dev/null | wc -l) / $TOTAL (running $(jobs -rp | wc -l))"; last=$now
+    fi
+  done < <(tail -n +2 "$SAMPLES")
+  wait
+else
 while true; do
   running=$(jobs -rp | wc -l)
   if [ "$running" -lt "$N_A" ]; then
@@ -115,6 +136,7 @@ while true; do
   sleep 20
 done
 wait
+fi
 
 # ---------------------------------------------------------------- collect the small per-sample outputs
 log "collecting"
