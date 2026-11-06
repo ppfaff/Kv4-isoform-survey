@@ -53,6 +53,15 @@ qc.to_csv(f'{OUT}/tables/v404m_qc.csv')
 if qc.sex_mismatch.any():
     print('\nWARNING: sex mismatch between the sample sheet and Xist/Ddx3y expression:')
     print(qc[qc.sex_mismatch][['tissue', 'genotype', 'sex', 'sex_called'] + [g for g in SEX_GENES if g in qc]].to_string())
+    # Xist and the Y genes are unambiguous, so the recorded sex is corrected for the model. Sex is only a
+    # covariate here, but a wrong label adds noise to every gene; USE_SHEET_SEX=1 keeps the sheet's values.
+    if os.environ.get('USE_SHEET_SEX') != '1':
+        meta = meta.copy()
+        meta.loc[qc.index[qc.sex_mismatch], 'sex'] = qc.loc[qc.sex_mismatch, 'sex_called']
+        print(f'  -> using the RNA-derived sex for these {int(qc.sex_mismatch.sum())} samples '
+              f'(set USE_SHEET_SEX=1 to keep the sheet values)')
+        print('  group composition after correction:')
+        print(meta.groupby(['tissue', 'genotype', 'sex']).size().unstack(fill_value=0).to_string())
 else:
     print('\nsex check: all samples match the sample sheet')
 print('library sizes: median %.1fM, range %.1f-%.1f' % (qc.lib_size_M.median(), qc.lib_size_M.min(), qc.lib_size_M.max()))
