@@ -717,44 +717,67 @@ and they agree on DPP6 as the anchor. Neither requires co-degradation of mature 
 while Dörrbaum's cultures were labelled at DIV 18–19. Those are different developmental stages, and
 channel-complex expression is still climbing at DIV 10.
 
-### Could the degradation just be ER quality control of unassembled subunits?
+### Where is the orphan KChIP degraded, and does that rescue the surplus model? Partly — yes
 
-The location is almost certainly right — unassembled channel subunits are cleared by ER quality
-control — but that cannot produce the observed number, for two independent reasons, and the first one
-inverts the objection.
+**KChIPs are cytosolic.** They bind the Kv4 T1 domain on the cytoplasmic face of the membrane; they
+are not ER-lumenal and not membrane-inserted, and they have no reason to enter the ER unless bound to
+the channel. So an unassembled KChIP is a **cytosolic** proteasome substrate — which is exactly where
+orphan quality control of unassembled *soluble* proteins operates — not an ERAD substrate.
 
-**Flux is not pool.** A pool's steady-state size is flux × lifetime, so a fast-degrading pool is a
-*small* pool however much synthesis runs through it. For an ER pool to be the 0.82–0.96 steady-state
-fraction that a 2.02 d apparent half-life demands:
+That matters, and it withdraws a claim made earlier in this document. The previous argument against
+surplus quality control leaned on ERAD being fast: fast pools are small at steady state, so they
+cannot set the bulk decay rate. **Cytosolic orphan clearance need not be fast**, and once it is
+allowed to take a day the arithmetic changes. Recomputed on Dörrbaum's actual harvest points
+(t = 0, 1, 3, 7 d — the earlier calculation assumed a denser grid, which inflated the apparent
+discrimination):
 
-| ER clearance half-life | synthesis destroyed before assembly | excess synthesis required |
-|---|---|---|
-| 2 h | 99.91% | **1,116×** |
-| 6 h | 99.52% | 207× |
-| 24 h | 94.6% | 19× |
+| free-pool half-life | f_free required | excess synthesis | single-exponential R² |
+|---|---|---|---|
+| 2 h | 0.82 | 212× | 0.38 |
+| 6 h | 0.79 | 59× | 0.49 |
+| 12 h | 0.74 | 23× | 0.75 |
+| **24 h** | **0.72** | **11×** | **0.95** |
 
-Because ER quality control is *fast*, and fast pools are small, it cannot set the decay rate of the
-bulk. **An apparent half-life of 2.02 d is too slow to be a biosynthetic-triage signature** — the
-faster the ER step, the more absurd the required synthesis excess becomes.
+Against a published R² of 0.989 for Kcnip4, an R² of 0.95 is **not** a discrimination — not with four
+timepoints and two fitted parameters. So the honest position is:
 
-**And the design doesn't admit the bias anyway.** Dörrbaum ran dynamic SILAC in the direction opposite
-to a pulse-chase of young protein: cultures grew 18–19 DIV in light medium, the medium was switched to
-heavy, and the decay of the **pre-existing light** protein was fitted over t = 0, 1, 3, 7 d. The
-quantity followed is the steady-state population as it stood at the switch, not a labelled cohort of
-newly synthesised protein. The bias ER triage would create — label concentrated in young, doomed
-protein — requires a short synthesis pulse, which this is not.
+**Surplus quality control is viable** if roughly 70–75% of cellular KChIP4 is unassembled, cleared
+with a ~12–24 h cytosolic half-life, at a 11–23× synthesis excess. Those are demanding requirements
+but not absurd ones, and the earlier flat exclusion of this model was overstated. The curve-shape
+argument cannot carry the weight I put on it, because the experiment has too few timepoints to show
+shape.
 
-So the exchange inference survives this objection, and it never rested on the RNAi: within one
-preparation KChIP4 (2.02 d) and KChIP1 (2.67 d) turn over faster than Kv4.3 (3.87 d), and a mixture
-whose protected component decays at the slower rate cannot present the faster apparent rate. The co-IP
-remains the decisive test — what fraction of KChIP4 is actually bound to Kv4.
+**So one measurement now decides it: what fraction of cellular KChIP4 is Kv4-bound?** Above ~70% bound
+and surplus fails, leaving exchange. Near 30% bound and surplus suffices with no exchange at all.
 
-**How much room is left for the deflationary explanation.** Surplus quality control with a protected
-bound pool requires a free fraction of **0.82–0.96** to drag an apparent half-life down to 2.02 d
-(0.82 if free KChIP4 clears in 24 h, 0.96 if in 2 h), and even then the decay should look visibly
-biphasic — single-exponential R² of 0.89 down to 0.004 against the published 0.989. So it is not
-excluded outright, but it needs most cellular KChIP4 to be unassembled. **A co-IP settles it: what
-fraction of KChIP4 co-precipitates with Kv4?** If most of it does, exchange is required.
+### The CHO result makes the DPP requirement neuron-specific, and offers the decisive experiment
+
+In CHO cells, Kv4 + KChIP alone give well-expressed channels — no DPP needed. In neurons, knocking
+down DPP6 prevents the complex from accumulating at all. **The DPP requirement is therefore imposed by
+something neuronal**, not by the biochemistry of channel assembly. Two consequences.
+
+First, a caution that applies throughout this document: stoichiometry and stability results from
+heterologous expression do not transfer to neurons, because the neuronal system has a requirement the
+heterologous one lacks.
+
+Second, and more useful, **CHO cells are the clean test bed for the surplus-versus-exchange question**,
+precisely because they lack the neuronal requirement. Express Kv4 + KChIP and vary the KChIP:Kv4 ratio:
+
+- Under **surplus/orphan QC**, the apparent KChIP half-life should *shorten* as KChIP is raised
+  relative to Kv4, because the unassembled fraction grows.
+- Under **intrinsic exchange**, the KChIP half-life should be largely ratio-independent.
+
+A cycloheximide chase or a light-to-heavy switch in CHO at two or three expression ratios separates
+the two hypotheses directly, in a system the lab already uses, without needing the co-IP to be
+quantitative. It also answers whether the fast KChIP turnover is intrinsic to the Kv4–KChIP pair at
+all: if KChIP and Kv4 decay at the same rate in CHO, then the 2× difference seen in neurons is
+neuron-imposed and belongs with whatever makes DPP obligatory there.
+
+**A speculation worth one cheap test.** Activity-dependent degradation of Kv4.2 is established in
+neurons and absent in CHO cells, which have no synaptic activity. If DPPs shield the complex from that
+pathway, silencing the cultures should rescue the DPP6-RNAi phenotype — so adding TTX to the DIV 2–10
+knockdown cultures and blotting for Kv4.2 is a one-plate experiment with the virus already in hand. A
+rescue would identify what the DPPs are protecting against; no rescue would rule the idea out cheaply.
 
 ### What this predicts for recorded A-currents, and it is a prediction about shape rather than spread
 
