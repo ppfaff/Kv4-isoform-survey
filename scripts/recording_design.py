@@ -56,7 +56,8 @@ def true_absence(d, types=None):
             depth = d.groupby('sample_name')[c].first(); break
     if depth is None:
         depth = d.groupby('sample_name')['reads'].sum()
-    X = pd.DataFrame({'kv4': kv4, 'depth': depth.reindex(kv4.index)}).join(meta)
+    kcnd2 = g.reindex(columns=['Kcnd2']).fillna(0).sum(axis=1)
+    X = pd.DataFrame({'kv4': kv4, 'kcnd2': kcnd2, 'depth': depth.reindex(kv4.index)}).join(meta)
     lab = 'cluster' if X['cluster'].nunique() > X['subclass'].nunique() else 'subclass'
     rows = []
     for ct, sub in X.groupby(lab):
@@ -66,10 +67,19 @@ def true_absence(d, types=None):
         for thr in (10, 5, 3, 2, 1):
             r[f'pct_no_Kv4_at_{thr}'] = float((sub.kv4 < thr).mean() * 100)
         r['pct_exactly_zero'] = float((sub.kv4 == 0).mean() * 100)
-        deep = sub[sub.depth >= sub.depth.quantile(0.75)]
-        r['n_deep'] = len(deep)
-        r['pct_zero_in_deepest_quartile'] = float((deep.kv4 == 0).mean() * 100) if len(deep) else np.nan
-        r['median_depth_deep'] = float(deep.depth.median()) if len(deep) else np.nan
+        # Two depth strata. The top quartile is the cleanest but leaves few cells, so a 0% there is
+        # consistent with a true rate of several percent; the top half trades purity for resolution.
+        # The exact binomial upper bound is reported so a zero count is not over-read.
+        for tag, q in (('q75', 0.75), ('q50', 0.50)):
+            deep = sub[sub.depth >= sub.depth.quantile(q)]
+            r[f'n_deep_{tag}'] = len(deep)
+            for gene, col in (('Kv4', 'kv4'), ('Kv4.2', 'kcnd2')):
+                z = int((deep[col] == 0).sum())
+                r[f'pct_zero_{gene}_{tag}'] = float(z / len(deep) * 100) if len(deep) else np.nan
+                # one-sided 95% upper bound on the true zero rate
+                r[f'ub95_{gene}_{tag}'] = (float(stats.beta.ppf(0.95, z + 1, max(len(deep) - z, 1e-9)) * 100)
+                                           if len(deep) else np.nan)
+        r['median_depth_deep'] = float(sub[sub.depth >= sub.depth.quantile(0.75)].depth.median())
         rows.append(r)
     return pd.DataFrame(rows)
 
@@ -159,9 +169,14 @@ def main():
             print('  The >=5 read figure is an upper bound. "zero in deepest quartile" is the defensible')
             print('  estimate: a cell sequenced to millions of reads with not one Kv4 read.')
             print('=' * 112)
-            cols = ['cell_type', 'n_cells', 'pct_no_Kv4_at_5', 'pct_no_Kv4_at_1', 'pct_exactly_zero',
-                    'n_deep', 'pct_zero_in_deepest_quartile']
-            print(A[cols].sort_values('pct_zero_in_deepest_quartile').to_string(index=False))
+            cols = ['cell_type', 'n_cells', 'pct_no_Kv4_at_5', 'pct_exactly_zero',
+                    'n_deep_q50', 'pct_zero_Kv4_q50', 'ub95_Kv4_q50',
+                    'pct_zero_Kv4.2_q50', 'ub95_Kv4.2_q50']
+            print(A[cols].sort_values('pct_zero_Kv4.2_q50').round(1).to_string(index=False))
+            print('\n  pct_zero_X_q50 = % with ZERO reads for X among the deeper half of libraries;')
+            print('  ub95 = one-sided 95% upper bound on the true rate, so 0 of 30 cells is not "0%".')
+            print('  The Kv4.2 column is the one the V404M mixture prediction depends on: if it')
+            print('  collapses with depth the way the Kv4 column does, there is no insensitive population.')
 
     print('\n' + '=' * 112)
     print(f'PART 2: RECORDINGS NEEDED TO DETECT THE MIXTURE  (expected unshifted fraction p = {P_TRUE:.3f})')
