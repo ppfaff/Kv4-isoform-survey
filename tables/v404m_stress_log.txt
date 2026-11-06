@@ -1,0 +1,136 @@
+dropping 2 sample(s) on request: PPF_75703_S68_L006, PPF_75704_S69_L006
+counts from salmon (gene-summed NumReads): 76851 genes x 46 samples
+genotype     mutant  wildtype
+tissue                       
+cerebellum        6         3
+cortex            6         7
+hippocampus       6         5
+thalamus          6         7
+
+WARNING: sex mismatch between the sample sheet and Xist/Ddx3y expression:
+                         tissue genotype   sex sex_called  Xist  Ddx3y   Uty  Eif2s3y  Kdm5d
+PPF_75696_S61_L006  hippocampus   mutant  male     female  6.12   0.00  0.11     0.00   0.07
+PPF_75683_S48_L006       cortex   mutant  male     female  7.66   0.00  0.19     0.00   0.03
+PPF_75709_S74_L006     thalamus   mutant  male     female  7.58   0.00  0.31     0.00   0.16
+PPF_75722_S87_L006   cerebellum   mutant  male     female  8.58   0.06  0.11     0.03   0.16
+  -> using the RNA-derived sex for these 4 samples (set USE_SHEET_SEX=1 to keep the sheet values)
+  group composition after correction:
+sex                   female  male
+tissue      genotype              
+cerebellum  mutant         4     2
+            wildtype       2     1
+cortex      mutant         4     2
+            wildtype       3     4
+hippocampus mutant         4     2
+            wildtype       2     3
+thalamus    mutant         4     2
+            wildtype       3     4
+library sizes: median 50.4M, range 32.2-65.0
+
+hippocampus: 19631 genes tested (pydeseq2 ~sex + genotype), 401 with FDR < 0.05
+          log2FoldChange  pvalue  padj
+gene                                  
+Sox11             0.9813     0.0   0.0
+Efcab6            0.8288     0.0   0.0
+Rtl3             -1.7834     0.0   0.0
+Rasd1            -0.6889     0.0   0.0
+Kcnq3            -0.4172     0.0   0.0
+Atp6v1b1          2.8436     0.0   0.0
+Tmc6              1.1023     0.0   0.0
+Igfbp6            0.9650     0.0   0.0
+Adamts18          1.5511     0.0   0.0
+Mylk              0.4903     0.0   0.0
+Igfbpl1           1.4731     0.0   0.0
+Elk1              0.5755     0.0   0.0
+
+cortex: 20474 genes tested (pydeseq2 ~sex + genotype), 87 with FDR < 0.05
+                    log2FoldChange  pvalue    padj
+gene                                              
+Gm35748                     2.4648     0.0  0.0000
+Mylk                        0.5793     0.0  0.0000
+Slc6a5                      3.7975     0.0  0.0000
+Ptpn7                      -1.0842     0.0  0.0000
+Adgrf4                      1.3908     0.0  0.0001
+Agmat                       1.4305     0.0  0.0001
+Cxcr4                       1.3675     0.0  0.0001
+Rgs13                       1.9363     0.0  0.0001
+Atp2c2                      1.3882     0.0  0.0002
+Smoc2                       0.6195     0.0  0.0002
+ENSMUSG00000125188          1.2868     0.0  0.0002
+Npy                         0.6144     0.0  0.0005
+
+thalamus: 21139 genes tested (pydeseq2 ~sex + genotype), 2 with FDR < 0.05
+                    log2FoldChange  pvalue    padj
+gene                                              
+Elk1                        0.3185  0.0000  0.0011
+Xdh                        -0.4975  0.0000  0.0042
+Ier2                       -0.3969  0.0000  0.1172
+Ifi202b                     6.5228  0.0000  0.1172
+Il13ra2                    -1.6353  0.0000  0.1172
+Gm12286                     1.0694  0.0000  0.1408
+ENSMUSG00000131292         -1.1010  0.0001  0.1478
+Wfs1                        0.3912  0.0001  0.1478
+Zfp967                      1.1199  0.0001  0.1478
+Apold1                     -0.3966  0.0001  0.1594
+Nphs2                      -1.3732  0.0001  0.1594
+H2-Aa                      -0.8255  0.0001  0.1635
+
+cerebellum: 20237 genes tested (pydeseq2 ~sex + genotype), 3 with FDR < 0.05
+                    log2FoldChange  pvalue    padj
+gene                                              
+Aqp6                       -0.6804  0.0000  0.0000
+Mmp17                      -0.4038  0.0000  0.0001
+Atp2b4                      0.4913  0.0000  0.0011
+Zkscan16                    0.6576  0.0000  0.0911
+Necab1                      0.4549  0.0001  0.2624
+Fxyd6                       0.4117  0.0001  0.2808
+5430421F17Rik              -1.1922  0.0001  0.3069
+Ano3                       -0.3917  0.0001  0.3069
+ENSMUSG00000123383          2.4421  0.0002  0.4261
+Gcnt1                      -0.6632  0.0002  0.4261
+Pou4f1                      2.0360  0.0002  0.4261
+ENSMUSG00000134617         -0.5941  0.0003  0.4550
+
+==============================================================================================================
+PANEL SUMMARY — V404M vs wild type (positive = higher in mutant)
+==============================================================================================================
+tissue                         hippocampus  cortex  thalamus  cerebellum
+panel                                                                   
+ISR (ATF4 output)                   -0.026   0.006    -0.037      -0.043
+ISR kinases                          0.038  -0.058     0.025      -0.095
+UPR chaperones (ATF6)                0.024   0.141     0.019       0.031
+UPR IRE1/XBP1                        0.071  -0.106     0.009      -0.025
+Apoptosis (intrinsic)                0.042   0.078    -0.024      -0.019
+p53 / DNA damage                     0.013  -0.080    -0.041      -0.106
+Necroptosis / inflammasome           0.047   0.172    -0.124      -0.061
+Autophagy / lysosome                -0.018   0.127    -0.017       0.035
+Astrogliosis                         0.506   0.249    -0.075      -0.061
+Microglia / neuroinflammation        0.044   0.213    -0.078      -0.003
+Disease-associated microglia         0.029   0.338    -0.061      -0.001
+Neuronal integrity                  -0.023  -0.172    -0.011      -0.036
+Immediate-early / activity          -0.316  -0.780    -0.380      -0.274
+Kv4 complex                         -0.046  -0.211     0.047      -0.075
+
+competitive FDR (panel vs rest of transcriptome):
+tissue                         hippocampus  cortex  thalamus  cerebellum
+panel                                                                   
+ISR (ATF4 output)                   0.0710  0.7048    0.0010      0.0074
+ISR kinases                         0.2428  0.7644    0.8145      0.2111
+UPR chaperones (ATF6)               0.3138  0.0921    0.7657      0.1972
+UPR IRE1/XBP1                       0.3217  0.2796    0.9948      0.6763
+Apoptosis (intrinsic)               0.3138  0.3910    0.4998      0.8829
+p53 / DNA damage                    0.8181  0.4156    0.1116      0.2111
+Necroptosis / inflammasome          0.4158  0.0378    0.1118      0.9435
+Autophagy / lysosome                0.5468  0.0236    0.2602      0.5391
+Astrogliosis                        0.0012  0.0076    0.1484      0.2111
+Microglia / neuroinflammation       0.1323  0.0199    0.0029      0.5253
+Disease-associated microglia        0.8352  0.0575    0.1082      0.9252
+Neuronal integrity                  0.5468  0.0575    0.9174      0.7159
+Immediate-early / activity          0.0000  0.0000    0.0002      0.0015
+Kv4 complex                         0.5654  0.1190    0.3703      0.1896
+
+panels significant by BOTH tests:
+tissue                      panel  n_genes  median_log2FC  fdr_competitive  z_diff_mut_minus_wt  fdr_self_contained  n_genes_FDR05
+cortex Immediate-early / activity       17        -0.7802              0.0              -1.1609              0.0198              5
+
+done

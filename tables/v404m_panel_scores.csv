@@ -1,0 +1,783 @@
+tissue,panel,sample,genotype,sex,z
+hippocampus,ISR (ATF4 output),PPF_75692_S57_L006,mutant,female,-0.2055606464878691
+hippocampus,ISR (ATF4 output),PPF_75694_S59_L006,mutant,female,0.49913596287267104
+hippocampus,ISR (ATF4 output),PPF_75695_S60_L006,mutant,male,-0.2316426140099644
+hippocampus,ISR (ATF4 output),PPF_75696_S61_L006,mutant,female,-0.8284676202438319
+hippocampus,ISR (ATF4 output),PPF_75699_S64_L006,mutant,male,0.2839345954291812
+hippocampus,ISR (ATF4 output),PPF_75701_S66_L006,mutant,female,-0.020839509460496522
+hippocampus,ISR (ATF4 output),PPF_75693_S58_L006,wildtype,female,0.03408101006082004
+hippocampus,ISR (ATF4 output),PPF_75697_S62_L006,wildtype,male,0.6793331512266824
+hippocampus,ISR (ATF4 output),PPF_75698_S63_L006,wildtype,male,-0.3161475869373721
+hippocampus,ISR (ATF4 output),PPF_75700_S65_L006,wildtype,female,0.48187248211017575
+hippocampus,ISR (ATF4 output),PPF_75702_S67_L006,wildtype,male,-0.3756992245599789
+hippocampus,ISR kinases,PPF_75692_S57_L006,mutant,female,0.3167602999165792
+hippocampus,ISR kinases,PPF_75694_S59_L006,mutant,female,0.2886841106753466
+hippocampus,ISR kinases,PPF_75695_S60_L006,mutant,male,0.5011545179244882
+hippocampus,ISR kinases,PPF_75696_S61_L006,mutant,female,-0.13762122649274824
+hippocampus,ISR kinases,PPF_75699_S64_L006,mutant,male,0.4394164380823296
+hippocampus,ISR kinases,PPF_75701_S66_L006,mutant,female,0.34335754248923145
+hippocampus,ISR kinases,PPF_75693_S58_L006,wildtype,female,-0.3828254721053364
+hippocampus,ISR kinases,PPF_75697_S62_L006,wildtype,male,0.2658929810612847
+hippocampus,ISR kinases,PPF_75698_S63_L006,wildtype,male,-0.33548407231942495
+hippocampus,ISR kinases,PPF_75700_S65_L006,wildtype,female,-0.34145678409317365
+hippocampus,ISR kinases,PPF_75702_S67_L006,wildtype,male,-0.9578783351385717
+hippocampus,UPR chaperones (ATF6),PPF_75692_S57_L006,mutant,female,0.5311189845489024
+hippocampus,UPR chaperones (ATF6),PPF_75694_S59_L006,mutant,female,1.4033083293131345
+hippocampus,UPR chaperones (ATF6),PPF_75695_S60_L006,mutant,male,-0.06441526226297468
+hippocampus,UPR chaperones (ATF6),PPF_75696_S61_L006,mutant,female,-0.854589730107429
+hippocampus,UPR chaperones (ATF6),PPF_75699_S64_L006,mutant,male,0.21510500420821824
+hippocampus,UPR chaperones (ATF6),PPF_75701_S66_L006,mutant,female,-0.22626896448014241
+hippocampus,UPR chaperones (ATF6),PPF_75693_S58_L006,wildtype,female,-0.7244751282655543
+hippocampus,UPR chaperones (ATF6),PPF_75697_S62_L006,wildtype,male,0.14030648823603703
+hippocampus,UPR chaperones (ATF6),PPF_75698_S63_L006,wildtype,male,0.4067360497242425
+hippocampus,UPR chaperones (ATF6),PPF_75700_S65_L006,wildtype,female,0.1953048874498012
+hippocampus,UPR chaperones (ATF6),PPF_75702_S67_L006,wildtype,male,-1.0221306583641954
+hippocampus,UPR IRE1/XBP1,PPF_75692_S57_L006,mutant,female,1.049761669719699
+hippocampus,UPR IRE1/XBP1,PPF_75694_S59_L006,mutant,female,1.0154497116447376
+hippocampus,UPR IRE1/XBP1,PPF_75695_S60_L006,mutant,male,-0.43139513088033954
+hippocampus,UPR IRE1/XBP1,PPF_75696_S61_L006,mutant,female,-0.09420938508486647
+hippocampus,UPR IRE1/XBP1,PPF_75699_S64_L006,mutant,male,0.5410245191308105
+hippocampus,UPR IRE1/XBP1,PPF_75701_S66_L006,mutant,female,-0.17867164620597142
+hippocampus,UPR IRE1/XBP1,PPF_75693_S58_L006,wildtype,female,0.02643328242607798
+hippocampus,UPR IRE1/XBP1,PPF_75697_S62_L006,wildtype,male,-0.14824282591880433
+hippocampus,UPR IRE1/XBP1,PPF_75698_S63_L006,wildtype,male,-0.40383120850755877
+hippocampus,UPR IRE1/XBP1,PPF_75700_S65_L006,wildtype,female,0.15904671526134764
+hippocampus,UPR IRE1/XBP1,PPF_75702_S67_L006,wildtype,male,-1.535365701585142
+hippocampus,Apoptosis (intrinsic),PPF_75692_S57_L006,mutant,female,0.3886732253423301
+hippocampus,Apoptosis (intrinsic),PPF_75694_S59_L006,mutant,female,-0.05498603722481113
+hippocampus,Apoptosis (intrinsic),PPF_75695_S60_L006,mutant,male,0.17959836748152283
+hippocampus,Apoptosis (intrinsic),PPF_75696_S61_L006,mutant,female,0.12809813277107046
+hippocampus,Apoptosis (intrinsic),PPF_75699_S64_L006,mutant,male,0.13452864799048314
+hippocampus,Apoptosis (intrinsic),PPF_75701_S66_L006,mutant,female,0.1836303767527675
+hippocampus,Apoptosis (intrinsic),PPF_75693_S58_L006,wildtype,female,0.030338301552126273
+hippocampus,Apoptosis (intrinsic),PPF_75697_S62_L006,wildtype,male,-0.008929957283104743
+hippocampus,Apoptosis (intrinsic),PPF_75698_S63_L006,wildtype,male,-0.08150910821938057
+hippocampus,Apoptosis (intrinsic),PPF_75700_S65_L006,wildtype,female,-0.4670480438460157
+hippocampus,Apoptosis (intrinsic),PPF_75702_S67_L006,wildtype,male,-0.4323939053169881
+hippocampus,p53 / DNA damage,PPF_75692_S57_L006,mutant,female,0.4289823757633924
+hippocampus,p53 / DNA damage,PPF_75694_S59_L006,mutant,female,-0.16417609138485764
+hippocampus,p53 / DNA damage,PPF_75695_S60_L006,mutant,male,0.1680827838892525
+hippocampus,p53 / DNA damage,PPF_75696_S61_L006,mutant,female,-0.33239680543150185
+hippocampus,p53 / DNA damage,PPF_75699_S64_L006,mutant,male,0.02295860386337667
+hippocampus,p53 / DNA damage,PPF_75701_S66_L006,mutant,female,0.003979736669643858
+hippocampus,p53 / DNA damage,PPF_75693_S58_L006,wildtype,female,0.14878712899655133
+hippocampus,p53 / DNA damage,PPF_75697_S62_L006,wildtype,male,0.26488406404135717
+hippocampus,p53 / DNA damage,PPF_75698_S63_L006,wildtype,male,-0.2782128501241279
+hippocampus,p53 / DNA damage,PPF_75700_S65_L006,wildtype,female,-0.27784887204087727
+hippocampus,p53 / DNA damage,PPF_75702_S67_L006,wildtype,male,0.014959925757755411
+hippocampus,Necroptosis / inflammasome,PPF_75692_S57_L006,mutant,female,0.8360424418409184
+hippocampus,Necroptosis / inflammasome,PPF_75694_S59_L006,mutant,female,0.30250885995247556
+hippocampus,Necroptosis / inflammasome,PPF_75695_S60_L006,mutant,male,0.06444332116266382
+hippocampus,Necroptosis / inflammasome,PPF_75696_S61_L006,mutant,female,0.16826377883491175
+hippocampus,Necroptosis / inflammasome,PPF_75699_S64_L006,mutant,male,-0.5945150922447205
+hippocampus,Necroptosis / inflammasome,PPF_75701_S66_L006,mutant,female,0.5014894794237809
+hippocampus,Necroptosis / inflammasome,PPF_75693_S58_L006,wildtype,female,-0.39279797789717347
+hippocampus,Necroptosis / inflammasome,PPF_75697_S62_L006,wildtype,male,-0.12097227143597007
+hippocampus,Necroptosis / inflammasome,PPF_75698_S63_L006,wildtype,male,-0.8753118035370056
+hippocampus,Necroptosis / inflammasome,PPF_75700_S65_L006,wildtype,female,0.28350483826237516
+hippocampus,Necroptosis / inflammasome,PPF_75702_S67_L006,wildtype,male,-0.1726555743622563
+hippocampus,Autophagy / lysosome,PPF_75692_S57_L006,mutant,female,0.22210074953796474
+hippocampus,Autophagy / lysosome,PPF_75694_S59_L006,mutant,female,-0.08239091470870645
+hippocampus,Autophagy / lysosome,PPF_75695_S60_L006,mutant,male,0.147654042448598
+hippocampus,Autophagy / lysosome,PPF_75696_S61_L006,mutant,female,0.013131939051858962
+hippocampus,Autophagy / lysosome,PPF_75699_S64_L006,mutant,male,-0.41937926836923234
+hippocampus,Autophagy / lysosome,PPF_75701_S66_L006,mutant,female,0.13289959980554575
+hippocampus,Autophagy / lysosome,PPF_75693_S58_L006,wildtype,female,-0.20137013260516354
+hippocampus,Autophagy / lysosome,PPF_75697_S62_L006,wildtype,male,0.4085956814410314
+hippocampus,Autophagy / lysosome,PPF_75698_S63_L006,wildtype,male,-0.1722199135820713
+hippocampus,Autophagy / lysosome,PPF_75700_S65_L006,wildtype,female,0.44964937067767213
+hippocampus,Autophagy / lysosome,PPF_75702_S67_L006,wildtype,male,-0.49867115369750586
+hippocampus,Astrogliosis,PPF_75692_S57_L006,mutant,female,0.2592634061674294
+hippocampus,Astrogliosis,PPF_75694_S59_L006,mutant,female,1.6082471686031805
+hippocampus,Astrogliosis,PPF_75695_S60_L006,mutant,male,-0.14984846552930287
+hippocampus,Astrogliosis,PPF_75696_S61_L006,mutant,female,0.7256601540116663
+hippocampus,Astrogliosis,PPF_75699_S64_L006,mutant,male,-0.11746057768278959
+hippocampus,Astrogliosis,PPF_75701_S66_L006,mutant,female,0.2141071013750432
+hippocampus,Astrogliosis,PPF_75693_S58_L006,wildtype,female,-0.6362759208487059
+hippocampus,Astrogliosis,PPF_75697_S62_L006,wildtype,male,-0.4605443161388524
+hippocampus,Astrogliosis,PPF_75698_S63_L006,wildtype,male,-0.4787133745663771
+hippocampus,Astrogliosis,PPF_75700_S65_L006,wildtype,female,-0.22003567844940092
+hippocampus,Astrogliosis,PPF_75702_S67_L006,wildtype,male,-0.7443994969418994
+hippocampus,Microglia / neuroinflammation,PPF_75692_S57_L006,mutant,female,0.392702058797865
+hippocampus,Microglia / neuroinflammation,PPF_75694_S59_L006,mutant,female,0.2625009842454236
+hippocampus,Microglia / neuroinflammation,PPF_75695_S60_L006,mutant,male,-0.043118461494820876
+hippocampus,Microglia / neuroinflammation,PPF_75696_S61_L006,mutant,female,1.3557660782288725
+hippocampus,Microglia / neuroinflammation,PPF_75699_S64_L006,mutant,male,-0.7141313776044655
+hippocampus,Microglia / neuroinflammation,PPF_75701_S66_L006,mutant,female,0.08912442364677955
+hippocampus,Microglia / neuroinflammation,PPF_75693_S58_L006,wildtype,female,-0.6630789020855682
+hippocampus,Microglia / neuroinflammation,PPF_75697_S62_L006,wildtype,male,-0.2658523852306733
+hippocampus,Microglia / neuroinflammation,PPF_75698_S63_L006,wildtype,male,0.049054437413485696
+hippocampus,Microglia / neuroinflammation,PPF_75700_S65_L006,wildtype,female,0.007635137955396942
+hippocampus,Microglia / neuroinflammation,PPF_75702_S67_L006,wildtype,male,-0.4706019938723026
+hippocampus,Disease-associated microglia,PPF_75692_S57_L006,mutant,female,0.6312795708711942
+hippocampus,Disease-associated microglia,PPF_75694_S59_L006,mutant,female,-0.30132161602563695
+hippocampus,Disease-associated microglia,PPF_75695_S60_L006,mutant,male,-0.23005919388535295
+hippocampus,Disease-associated microglia,PPF_75696_S61_L006,mutant,female,0.3995303301831105
+hippocampus,Disease-associated microglia,PPF_75699_S64_L006,mutant,male,-0.4769952117846214
+hippocampus,Disease-associated microglia,PPF_75701_S66_L006,mutant,female,0.39834114405342913
+hippocampus,Disease-associated microglia,PPF_75693_S58_L006,wildtype,female,-0.32805885605570495
+hippocampus,Disease-associated microglia,PPF_75697_S62_L006,wildtype,male,0.05058631255754745
+hippocampus,Disease-associated microglia,PPF_75698_S63_L006,wildtype,male,0.03702764248824322
+hippocampus,Disease-associated microglia,PPF_75700_S65_L006,wildtype,female,0.12210055320815284
+hippocampus,Disease-associated microglia,PPF_75702_S67_L006,wildtype,male,-0.3024306756103403
+hippocampus,Neuronal integrity,PPF_75692_S57_L006,mutant,female,-0.679959080776245
+hippocampus,Neuronal integrity,PPF_75694_S59_L006,mutant,female,-0.47459582722323357
+hippocampus,Neuronal integrity,PPF_75695_S60_L006,mutant,male,0.5058314429629154
+hippocampus,Neuronal integrity,PPF_75696_S61_L006,mutant,female,0.13340449456464307
+hippocampus,Neuronal integrity,PPF_75699_S64_L006,mutant,male,0.5283773742759412
+hippocampus,Neuronal integrity,PPF_75701_S66_L006,mutant,female,-0.2772146894407186
+hippocampus,Neuronal integrity,PPF_75693_S58_L006,wildtype,female,-0.007585808194549038
+hippocampus,Neuronal integrity,PPF_75697_S62_L006,wildtype,male,0.5104779571047152
+hippocampus,Neuronal integrity,PPF_75698_S63_L006,wildtype,male,0.09975866288160068
+hippocampus,Neuronal integrity,PPF_75700_S65_L006,wildtype,female,-0.1179327978312712
+hippocampus,Neuronal integrity,PPF_75702_S67_L006,wildtype,male,-0.22056172832372295
+hippocampus,Heat shock (cytosolic),PPF_75692_S57_L006,mutant,female,0.44465456616284027
+hippocampus,Heat shock (cytosolic),PPF_75694_S59_L006,mutant,female,0.7631119055254535
+hippocampus,Heat shock (cytosolic),PPF_75695_S60_L006,mutant,male,0.15941048097561858
+hippocampus,Heat shock (cytosolic),PPF_75696_S61_L006,mutant,female,-0.024975638282879742
+hippocampus,Heat shock (cytosolic),PPF_75699_S64_L006,mutant,male,0.06630370836596781
+hippocampus,Heat shock (cytosolic),PPF_75701_S66_L006,mutant,female,-0.4419661662176212
+hippocampus,Heat shock (cytosolic),PPF_75693_S58_L006,wildtype,female,-0.11226430073354088
+hippocampus,Heat shock (cytosolic),PPF_75697_S62_L006,wildtype,male,-0.43360055771504125
+hippocampus,Heat shock (cytosolic),PPF_75698_S63_L006,wildtype,male,0.04911192245010866
+hippocampus,Heat shock (cytosolic),PPF_75700_S65_L006,wildtype,female,-0.02935714280001568
+hippocampus,Heat shock (cytosolic),PPF_75702_S67_L006,wildtype,male,-0.4404287777309379
+hippocampus,Oxidative stress (NRF2),PPF_75692_S57_L006,mutant,female,0.6592301314824496
+hippocampus,Oxidative stress (NRF2),PPF_75694_S59_L006,mutant,female,0.2051043186289934
+hippocampus,Oxidative stress (NRF2),PPF_75695_S60_L006,mutant,male,0.5118107514801657
+hippocampus,Oxidative stress (NRF2),PPF_75696_S61_L006,mutant,female,0.34903127084702207
+hippocampus,Oxidative stress (NRF2),PPF_75699_S64_L006,mutant,male,-0.3333475330703372
+hippocampus,Oxidative stress (NRF2),PPF_75701_S66_L006,mutant,female,0.23470211939947536
+hippocampus,Oxidative stress (NRF2),PPF_75693_S58_L006,wildtype,female,-0.5004212782021688
+hippocampus,Oxidative stress (NRF2),PPF_75697_S62_L006,wildtype,male,0.32478009195244834
+hippocampus,Oxidative stress (NRF2),PPF_75698_S63_L006,wildtype,male,-0.4022763799004776
+hippocampus,Oxidative stress (NRF2),PPF_75700_S65_L006,wildtype,female,-0.36008165467907277
+hippocampus,Oxidative stress (NRF2),PPF_75702_S67_L006,wildtype,male,-0.6885318379385059
+hippocampus,Immediate-early / activity,PPF_75692_S57_L006,mutant,female,0.5877684200683435
+hippocampus,Immediate-early / activity,PPF_75694_S59_L006,mutant,female,-0.13738520092696685
+hippocampus,Immediate-early / activity,PPF_75695_S60_L006,mutant,male,-0.4803158428882908
+hippocampus,Immediate-early / activity,PPF_75696_S61_L006,mutant,female,-1.0749362634675323
+hippocampus,Immediate-early / activity,PPF_75699_S64_L006,mutant,male,-0.5354168624236801
+hippocampus,Immediate-early / activity,PPF_75701_S66_L006,mutant,female,-0.7618526454733006
+hippocampus,Immediate-early / activity,PPF_75693_S58_L006,wildtype,female,0.8900177436789407
+hippocampus,Immediate-early / activity,PPF_75697_S62_L006,wildtype,male,0.36717865040323044
+hippocampus,Immediate-early / activity,PPF_75698_S63_L006,wildtype,male,-0.14930348926400458
+hippocampus,Immediate-early / activity,PPF_75700_S65_L006,wildtype,female,0.5503022924995816
+hippocampus,Immediate-early / activity,PPF_75702_S67_L006,wildtype,male,0.7439431977936714
+hippocampus,Kv4 complex,PPF_75692_S57_L006,mutant,female,-0.36631736382839425
+hippocampus,Kv4 complex,PPF_75694_S59_L006,mutant,female,-0.25795382260454425
+hippocampus,Kv4 complex,PPF_75695_S60_L006,mutant,male,0.16893427290793608
+hippocampus,Kv4 complex,PPF_75696_S61_L006,mutant,female,0.5268124457594616
+hippocampus,Kv4 complex,PPF_75699_S64_L006,mutant,male,0.16762798166929344
+hippocampus,Kv4 complex,PPF_75701_S66_L006,mutant,female,-0.32802484669781884
+hippocampus,Kv4 complex,PPF_75693_S58_L006,wildtype,female,0.5766752591175812
+hippocampus,Kv4 complex,PPF_75697_S62_L006,wildtype,male,0.32754404989420116
+hippocampus,Kv4 complex,PPF_75698_S63_L006,wildtype,male,-0.10525268643433411
+hippocampus,Kv4 complex,PPF_75700_S65_L006,wildtype,female,-0.15217056342569946
+hippocampus,Kv4 complex,PPF_75702_S67_L006,wildtype,male,-0.5578747263577032
+hippocampus,Other K channels (compensation),PPF_75692_S57_L006,mutant,female,0.1107720571548669
+hippocampus,Other K channels (compensation),PPF_75694_S59_L006,mutant,female,-0.18198116892175722
+hippocampus,Other K channels (compensation),PPF_75695_S60_L006,mutant,male,-0.24774015845953923
+hippocampus,Other K channels (compensation),PPF_75696_S61_L006,mutant,female,-0.05292728216056598
+hippocampus,Other K channels (compensation),PPF_75699_S64_L006,mutant,male,0.18155961682375935
+hippocampus,Other K channels (compensation),PPF_75701_S66_L006,mutant,female,-0.6448710271869761
+hippocampus,Other K channels (compensation),PPF_75693_S58_L006,wildtype,female,0.7603799997555386
+hippocampus,Other K channels (compensation),PPF_75697_S62_L006,wildtype,male,0.1958293421081829
+hippocampus,Other K channels (compensation),PPF_75698_S63_L006,wildtype,male,0.16032920842683243
+hippocampus,Other K channels (compensation),PPF_75700_S65_L006,wildtype,female,-0.005217890019952609
+hippocampus,Other K channels (compensation),PPF_75702_S67_L006,wildtype,male,-0.2761326975204
+cortex,ISR (ATF4 output),PPF_75679_S44_L006,mutant,female,-0.4063994108551832
+cortex,ISR (ATF4 output),PPF_75681_S46_L006,mutant,female,0.11163480635112065
+cortex,ISR (ATF4 output),PPF_75682_S47_L006,mutant,male,0.007808768353908168
+cortex,ISR (ATF4 output),PPF_75683_S48_L006,mutant,female,0.007911368250833975
+cortex,ISR (ATF4 output),PPF_75686_S51_L006,mutant,male,0.23124369411000537
+cortex,ISR (ATF4 output),PPF_75688_S53_L006,mutant,female,-0.6239775278792088
+cortex,ISR (ATF4 output),PPF_75680_S45_L006,wildtype,female,0.4877850163168539
+cortex,ISR (ATF4 output),PPF_75684_S49_L006,wildtype,male,0.05747033751708746
+cortex,ISR (ATF4 output),PPF_75685_S50_L006,wildtype,male,0.13762917645659134
+cortex,ISR (ATF4 output),PPF_75687_S52_L006,wildtype,female,0.5294005371859893
+cortex,ISR (ATF4 output),PPF_75689_S54_L006,wildtype,male,-0.283168996773476
+cortex,ISR (ATF4 output),PPF_75690_S55_L006,wildtype,male,-0.6224876901841769
+cortex,ISR (ATF4 output),PPF_75691_S56_L006,wildtype,female,0.36514992114966033
+cortex,ISR kinases,PPF_75679_S44_L006,mutant,female,-0.4346131122411672
+cortex,ISR kinases,PPF_75681_S46_L006,mutant,female,-0.4381340828473778
+cortex,ISR kinases,PPF_75682_S47_L006,mutant,male,0.09545785880994988
+cortex,ISR kinases,PPF_75683_S48_L006,mutant,female,0.15852796647144252
+cortex,ISR kinases,PPF_75686_S51_L006,mutant,male,-0.2684512624097977
+cortex,ISR kinases,PPF_75688_S53_L006,mutant,female,0.22234700569825916
+cortex,ISR kinases,PPF_75680_S45_L006,wildtype,female,-0.17980371824566488
+cortex,ISR kinases,PPF_75684_S49_L006,wildtype,male,0.34872889160025294
+cortex,ISR kinases,PPF_75685_S50_L006,wildtype,male,0.4297533460948085
+cortex,ISR kinases,PPF_75687_S52_L006,wildtype,female,0.6215810765620198
+cortex,ISR kinases,PPF_75689_S54_L006,wildtype,male,-0.6263014963931636
+cortex,ISR kinases,PPF_75690_S55_L006,wildtype,male,0.052117234017425185
+cortex,ISR kinases,PPF_75691_S56_L006,wildtype,female,0.018790292883017774
+cortex,UPR chaperones (ATF6),PPF_75679_S44_L006,mutant,female,0.06402765467767244
+cortex,UPR chaperones (ATF6),PPF_75681_S46_L006,mutant,female,0.33922882008078115
+cortex,UPR chaperones (ATF6),PPF_75682_S47_L006,mutant,male,0.42489331780750067
+cortex,UPR chaperones (ATF6),PPF_75683_S48_L006,mutant,female,-0.029404942888321975
+cortex,UPR chaperones (ATF6),PPF_75686_S51_L006,mutant,male,0.7199912401058295
+cortex,UPR chaperones (ATF6),PPF_75688_S53_L006,mutant,female,-0.82897128185439
+cortex,UPR chaperones (ATF6),PPF_75680_S45_L006,wildtype,female,0.46079638650789706
+cortex,UPR chaperones (ATF6),PPF_75684_S49_L006,wildtype,male,-0.1442977852547519
+cortex,UPR chaperones (ATF6),PPF_75685_S50_L006,wildtype,male,0.04370786116618501
+cortex,UPR chaperones (ATF6),PPF_75687_S52_L006,wildtype,female,0.8294121328924271
+cortex,UPR chaperones (ATF6),PPF_75689_S54_L006,wildtype,male,-0.8475840461645934
+cortex,UPR chaperones (ATF6),PPF_75690_S55_L006,wildtype,male,-1.1158267147000263
+cortex,UPR chaperones (ATF6),PPF_75691_S56_L006,wildtype,female,0.0840273576237882
+cortex,UPR IRE1/XBP1,PPF_75679_S44_L006,mutant,female,-0.9110599259095016
+cortex,UPR IRE1/XBP1,PPF_75681_S46_L006,mutant,female,-0.49255521147036674
+cortex,UPR IRE1/XBP1,PPF_75682_S47_L006,mutant,male,0.21426606918821633
+cortex,UPR IRE1/XBP1,PPF_75683_S48_L006,mutant,female,-0.2219685956201385
+cortex,UPR IRE1/XBP1,PPF_75686_S51_L006,mutant,male,-0.25048145573376923
+cortex,UPR IRE1/XBP1,PPF_75688_S53_L006,mutant,female,-0.28615521862465665
+cortex,UPR IRE1/XBP1,PPF_75680_S45_L006,wildtype,female,-0.3385038601291092
+cortex,UPR IRE1/XBP1,PPF_75684_S49_L006,wildtype,male,0.37391176015594824
+cortex,UPR IRE1/XBP1,PPF_75685_S50_L006,wildtype,male,0.3691669002431063
+cortex,UPR IRE1/XBP1,PPF_75687_S52_L006,wildtype,female,1.1974713415346347
+cortex,UPR IRE1/XBP1,PPF_75689_S54_L006,wildtype,male,-0.4914344405491547
+cortex,UPR IRE1/XBP1,PPF_75690_S55_L006,wildtype,male,-0.014100083979973088
+cortex,UPR IRE1/XBP1,PPF_75691_S56_L006,wildtype,female,0.851442720894766
+cortex,Apoptosis (intrinsic),PPF_75679_S44_L006,mutant,female,-0.41613029065368856
+cortex,Apoptosis (intrinsic),PPF_75681_S46_L006,mutant,female,0.11057224627827239
+cortex,Apoptosis (intrinsic),PPF_75682_S47_L006,mutant,male,0.2542567765438676
+cortex,Apoptosis (intrinsic),PPF_75683_S48_L006,mutant,female,0.42330880800945037
+cortex,Apoptosis (intrinsic),PPF_75686_S51_L006,mutant,male,-0.048092369458552595
+cortex,Apoptosis (intrinsic),PPF_75688_S53_L006,mutant,female,-0.30641333506288604
+cortex,Apoptosis (intrinsic),PPF_75680_S45_L006,wildtype,female,0.45039474555729436
+cortex,Apoptosis (intrinsic),PPF_75684_S49_L006,wildtype,male,-0.1739431216162935
+cortex,Apoptosis (intrinsic),PPF_75685_S50_L006,wildtype,male,0.17865390831264466
+cortex,Apoptosis (intrinsic),PPF_75687_S52_L006,wildtype,female,0.09304082714586372
+cortex,Apoptosis (intrinsic),PPF_75689_S54_L006,wildtype,male,0.04793137008084039
+cortex,Apoptosis (intrinsic),PPF_75690_S55_L006,wildtype,male,-0.553938946339285
+cortex,Apoptosis (intrinsic),PPF_75691_S56_L006,wildtype,female,-0.05964061879753141
+cortex,p53 / DNA damage,PPF_75679_S44_L006,mutant,female,-0.20166368983807517
+cortex,p53 / DNA damage,PPF_75681_S46_L006,mutant,female,-0.11779772180989798
+cortex,p53 / DNA damage,PPF_75682_S47_L006,mutant,male,-0.042719170128027145
+cortex,p53 / DNA damage,PPF_75683_S48_L006,mutant,female,-0.2384625873903465
+cortex,p53 / DNA damage,PPF_75686_S51_L006,mutant,male,0.17819041533733443
+cortex,p53 / DNA damage,PPF_75688_S53_L006,mutant,female,-1.0783745929815904
+cortex,p53 / DNA damage,PPF_75680_S45_L006,wildtype,female,0.8848388342781441
+cortex,p53 / DNA damage,PPF_75684_S49_L006,wildtype,male,-0.13261751826246174
+cortex,p53 / DNA damage,PPF_75685_S50_L006,wildtype,male,-0.14242809876047102
+cortex,p53 / DNA damage,PPF_75687_S52_L006,wildtype,female,0.09216101401494209
+cortex,p53 / DNA damage,PPF_75689_S54_L006,wildtype,male,0.6872565534725937
+cortex,p53 / DNA damage,PPF_75690_S55_L006,wildtype,male,-0.2413579854281021
+cortex,p53 / DNA damage,PPF_75691_S56_L006,wildtype,female,0.3529745474959708
+cortex,Necroptosis / inflammasome,PPF_75679_S44_L006,mutant,female,0.47688819158405127
+cortex,Necroptosis / inflammasome,PPF_75681_S46_L006,mutant,female,0.7085360519835914
+cortex,Necroptosis / inflammasome,PPF_75682_S47_L006,mutant,male,0.087635719524512
+cortex,Necroptosis / inflammasome,PPF_75683_S48_L006,mutant,female,0.27037222825934787
+cortex,Necroptosis / inflammasome,PPF_75686_S51_L006,mutant,male,0.850501794296298
+cortex,Necroptosis / inflammasome,PPF_75688_S53_L006,mutant,female,-0.43223298914218633
+cortex,Necroptosis / inflammasome,PPF_75680_S45_L006,wildtype,female,0.24697893078377117
+cortex,Necroptosis / inflammasome,PPF_75684_S49_L006,wildtype,male,-0.6811114973440513
+cortex,Necroptosis / inflammasome,PPF_75685_S50_L006,wildtype,male,-0.33605214915580767
+cortex,Necroptosis / inflammasome,PPF_75687_S52_L006,wildtype,female,0.19191883981064736
+cortex,Necroptosis / inflammasome,PPF_75689_S54_L006,wildtype,male,-0.11139014685365457
+cortex,Necroptosis / inflammasome,PPF_75690_S55_L006,wildtype,male,-0.9336725038883711
+cortex,Necroptosis / inflammasome,PPF_75691_S56_L006,wildtype,female,-0.3383724698581529
+cortex,Autophagy / lysosome,PPF_75679_S44_L006,mutant,female,0.3461505349767507
+cortex,Autophagy / lysosome,PPF_75681_S46_L006,mutant,female,0.1814447246629627
+cortex,Autophagy / lysosome,PPF_75682_S47_L006,mutant,male,0.5050481069557126
+cortex,Autophagy / lysosome,PPF_75683_S48_L006,mutant,female,0.5280877923265622
+cortex,Autophagy / lysosome,PPF_75686_S51_L006,mutant,male,0.7651787058730567
+cortex,Autophagy / lysosome,PPF_75688_S53_L006,mutant,female,-1.0670991262531326
+cortex,Autophagy / lysosome,PPF_75680_S45_L006,wildtype,female,0.8387118054206778
+cortex,Autophagy / lysosome,PPF_75684_S49_L006,wildtype,male,-0.6234635614870329
+cortex,Autophagy / lysosome,PPF_75685_S50_L006,wildtype,male,-0.4982445709256222
+cortex,Autophagy / lysosome,PPF_75687_S52_L006,wildtype,female,0.39985482745902007
+cortex,Autophagy / lysosome,PPF_75689_S54_L006,wildtype,male,0.15467209800194534
+cortex,Autophagy / lysosome,PPF_75690_S55_L006,wildtype,male,-1.0923619433999696
+cortex,Autophagy / lysosome,PPF_75691_S56_L006,wildtype,female,-0.43797939361092153
+cortex,Astrogliosis,PPF_75679_S44_L006,mutant,female,0.15951464417792946
+cortex,Astrogliosis,PPF_75681_S46_L006,mutant,female,0.4957560012327547
+cortex,Astrogliosis,PPF_75682_S47_L006,mutant,male,0.35893114877793614
+cortex,Astrogliosis,PPF_75683_S48_L006,mutant,female,1.2504846142928112
+cortex,Astrogliosis,PPF_75686_S51_L006,mutant,male,0.47205831636177703
+cortex,Astrogliosis,PPF_75688_S53_L006,mutant,female,-0.276980028640973
+cortex,Astrogliosis,PPF_75680_S45_L006,wildtype,female,-0.04840324546930873
+cortex,Astrogliosis,PPF_75684_S49_L006,wildtype,male,-0.8001468252864392
+cortex,Astrogliosis,PPF_75685_S50_L006,wildtype,male,-0.7323310792659964
+cortex,Astrogliosis,PPF_75687_S52_L006,wildtype,female,0.5432423563388384
+cortex,Astrogliosis,PPF_75689_S54_L006,wildtype,male,-0.31466170708515795
+cortex,Astrogliosis,PPF_75690_S55_L006,wildtype,male,-0.6177448290718826
+cortex,Astrogliosis,PPF_75691_S56_L006,wildtype,female,-0.4897193663622922
+cortex,Microglia / neuroinflammation,PPF_75679_S44_L006,mutant,female,0.18069698573079568
+cortex,Microglia / neuroinflammation,PPF_75681_S46_L006,mutant,female,0.5128263796598318
+cortex,Microglia / neuroinflammation,PPF_75682_S47_L006,mutant,male,0.08683529851395913
+cortex,Microglia / neuroinflammation,PPF_75683_S48_L006,mutant,female,0.84022747151725
+cortex,Microglia / neuroinflammation,PPF_75686_S51_L006,mutant,male,0.6000130654683593
+cortex,Microglia / neuroinflammation,PPF_75688_S53_L006,mutant,female,-0.7162974888506541
+cortex,Microglia / neuroinflammation,PPF_75680_S45_L006,wildtype,female,0.23437303972824688
+cortex,Microglia / neuroinflammation,PPF_75684_S49_L006,wildtype,male,-0.7713265861054237
+cortex,Microglia / neuroinflammation,PPF_75685_S50_L006,wildtype,male,-0.8636364544091071
+cortex,Microglia / neuroinflammation,PPF_75687_S52_L006,wildtype,female,-0.1486228699191166
+cortex,Microglia / neuroinflammation,PPF_75689_S54_L006,wildtype,male,0.5639515439469569
+cortex,Microglia / neuroinflammation,PPF_75690_S55_L006,wildtype,male,-0.7238561308235589
+cortex,Microglia / neuroinflammation,PPF_75691_S56_L006,wildtype,female,0.20481574554247306
+cortex,Disease-associated microglia,PPF_75679_S44_L006,mutant,female,-0.05083324222834256
+cortex,Disease-associated microglia,PPF_75681_S46_L006,mutant,female,0.1858843290946553
+cortex,Disease-associated microglia,PPF_75682_S47_L006,mutant,male,0.2761675509213559
+cortex,Disease-associated microglia,PPF_75683_S48_L006,mutant,female,0.9228869157764805
+cortex,Disease-associated microglia,PPF_75686_S51_L006,mutant,male,0.19100559468835795
+cortex,Disease-associated microglia,PPF_75688_S53_L006,mutant,female,0.016957172114119266
+cortex,Disease-associated microglia,PPF_75680_S45_L006,wildtype,female,0.02651024169128724
+cortex,Disease-associated microglia,PPF_75684_S49_L006,wildtype,male,-0.8406722624130937
+cortex,Disease-associated microglia,PPF_75685_S50_L006,wildtype,male,-0.276522961173015
+cortex,Disease-associated microglia,PPF_75687_S52_L006,wildtype,female,-0.019373554979387936
+cortex,Disease-associated microglia,PPF_75689_S54_L006,wildtype,male,0.02586237375844516
+cortex,Disease-associated microglia,PPF_75690_S55_L006,wildtype,male,-0.2556453719733384
+cortex,Disease-associated microglia,PPF_75691_S56_L006,wildtype,female,-0.20222678527752402
+cortex,Neuronal integrity,PPF_75679_S44_L006,mutant,female,-0.8527231579648749
+cortex,Neuronal integrity,PPF_75681_S46_L006,mutant,female,-1.1970219188674724
+cortex,Neuronal integrity,PPF_75682_S47_L006,mutant,male,0.31811345858921264
+cortex,Neuronal integrity,PPF_75683_S48_L006,mutant,female,-0.07999224899912605
+cortex,Neuronal integrity,PPF_75686_S51_L006,mutant,male,-0.5389868304424396
+cortex,Neuronal integrity,PPF_75688_S53_L006,mutant,female,0.19924144491775753
+cortex,Neuronal integrity,PPF_75680_S45_L006,wildtype,female,-0.263588182130737
+cortex,Neuronal integrity,PPF_75684_S49_L006,wildtype,male,0.6203628130666068
+cortex,Neuronal integrity,PPF_75685_S50_L006,wildtype,male,0.9008079611304215
+cortex,Neuronal integrity,PPF_75687_S52_L006,wildtype,female,0.9398656265997747
+cortex,Neuronal integrity,PPF_75689_S54_L006,wildtype,male,-0.7700775240165232
+cortex,Neuronal integrity,PPF_75690_S55_L006,wildtype,male,0.21698843562684333
+cortex,Neuronal integrity,PPF_75691_S56_L006,wildtype,female,0.5070101224905758
+cortex,Heat shock (cytosolic),PPF_75679_S44_L006,mutant,female,-0.29923288098304335
+cortex,Heat shock (cytosolic),PPF_75681_S46_L006,mutant,female,-0.20786503654736893
+cortex,Heat shock (cytosolic),PPF_75682_S47_L006,mutant,male,0.09640378814843029
+cortex,Heat shock (cytosolic),PPF_75683_S48_L006,mutant,female,0.014118163287053558
+cortex,Heat shock (cytosolic),PPF_75686_S51_L006,mutant,male,-0.38498846433515227
+cortex,Heat shock (cytosolic),PPF_75688_S53_L006,mutant,female,-0.5132511321702344
+cortex,Heat shock (cytosolic),PPF_75680_S45_L006,wildtype,female,-0.1384997445923662
+cortex,Heat shock (cytosolic),PPF_75684_S49_L006,wildtype,male,0.2642329648807421
+cortex,Heat shock (cytosolic),PPF_75685_S50_L006,wildtype,male,0.4140682786951251
+cortex,Heat shock (cytosolic),PPF_75687_S52_L006,wildtype,female,0.7325937048730746
+cortex,Heat shock (cytosolic),PPF_75689_S54_L006,wildtype,male,-0.8202334413856607
+cortex,Heat shock (cytosolic),PPF_75690_S55_L006,wildtype,male,0.10834690246606885
+cortex,Heat shock (cytosolic),PPF_75691_S56_L006,wildtype,female,0.7343068976633351
+cortex,Oxidative stress (NRF2),PPF_75679_S44_L006,mutant,female,-0.41532611355014293
+cortex,Oxidative stress (NRF2),PPF_75681_S46_L006,mutant,female,0.14316709542070363
+cortex,Oxidative stress (NRF2),PPF_75682_S47_L006,mutant,male,0.6769328920503799
+cortex,Oxidative stress (NRF2),PPF_75683_S48_L006,mutant,female,0.712520766218543
+cortex,Oxidative stress (NRF2),PPF_75686_S51_L006,mutant,male,0.031531274694343296
+cortex,Oxidative stress (NRF2),PPF_75688_S53_L006,mutant,female,-0.26503000432854784
+cortex,Oxidative stress (NRF2),PPF_75680_S45_L006,wildtype,female,0.11442541311441906
+cortex,Oxidative stress (NRF2),PPF_75684_S49_L006,wildtype,male,-0.19052292570747886
+cortex,Oxidative stress (NRF2),PPF_75685_S50_L006,wildtype,male,-0.35820485985972256
+cortex,Oxidative stress (NRF2),PPF_75687_S52_L006,wildtype,female,0.35436071897719096
+cortex,Oxidative stress (NRF2),PPF_75689_S54_L006,wildtype,male,-0.1438842036158599
+cortex,Oxidative stress (NRF2),PPF_75690_S55_L006,wildtype,male,-0.4041677818413651
+cortex,Oxidative stress (NRF2),PPF_75691_S56_L006,wildtype,female,-0.2558022715724577
+cortex,Immediate-early / activity,PPF_75679_S44_L006,mutant,female,0.0051892351445677965
+cortex,Immediate-early / activity,PPF_75681_S46_L006,mutant,female,-0.5130952834652238
+cortex,Immediate-early / activity,PPF_75682_S47_L006,mutant,male,-0.610533584040756
+cortex,Immediate-early / activity,PPF_75683_S48_L006,mutant,female,-1.0195332725522355
+cortex,Immediate-early / activity,PPF_75686_S51_L006,mutant,male,-0.9534816563257962
+cortex,Immediate-early / activity,PPF_75688_S53_L006,mutant,female,-0.6592244922476139
+cortex,Immediate-early / activity,PPF_75680_S45_L006,wildtype,female,0.1584916325836526
+cortex,Immediate-early / activity,PPF_75684_S49_L006,wildtype,male,0.5054498573551501
+cortex,Immediate-early / activity,PPF_75685_S50_L006,wildtype,male,0.26717257368449543
+cortex,Immediate-early / activity,PPF_75687_S52_L006,wildtype,female,0.07524547991275188
+cortex,Immediate-early / activity,PPF_75689_S54_L006,wildtype,male,0.24089353782623782
+cortex,Immediate-early / activity,PPF_75690_S55_L006,wildtype,male,1.2579026136388967
+cortex,Immediate-early / activity,PPF_75691_S56_L006,wildtype,female,1.2455233584858718
+cortex,Kv4 complex,PPF_75679_S44_L006,mutant,female,-1.0259549066512772
+cortex,Kv4 complex,PPF_75681_S46_L006,mutant,female,-0.42653618746250704
+cortex,Kv4 complex,PPF_75682_S47_L006,mutant,male,0.3301043835790012
+cortex,Kv4 complex,PPF_75683_S48_L006,mutant,female,-0.3127832858320184
+cortex,Kv4 complex,PPF_75686_S51_L006,mutant,male,-0.6247933266011577
+cortex,Kv4 complex,PPF_75688_S53_L006,mutant,female,0.21747868965973932
+cortex,Kv4 complex,PPF_75680_S45_L006,wildtype,female,-0.4872530314932742
+cortex,Kv4 complex,PPF_75684_S49_L006,wildtype,male,0.7653353110744149
+cortex,Kv4 complex,PPF_75685_S50_L006,wildtype,male,1.0026833387546406
+cortex,Kv4 complex,PPF_75687_S52_L006,wildtype,female,0.24944314988968358
+cortex,Kv4 complex,PPF_75689_S54_L006,wildtype,male,-0.84535486317229
+cortex,Kv4 complex,PPF_75690_S55_L006,wildtype,male,0.3848046173881673
+cortex,Kv4 complex,PPF_75691_S56_L006,wildtype,female,0.772826110866854
+cortex,Other K channels (compensation),PPF_75679_S44_L006,mutant,female,-1.0890452269270587
+cortex,Other K channels (compensation),PPF_75681_S46_L006,mutant,female,-1.2304294366290343
+cortex,Other K channels (compensation),PPF_75682_S47_L006,mutant,male,0.05144164269496962
+cortex,Other K channels (compensation),PPF_75683_S48_L006,mutant,female,-0.6258332532476405
+cortex,Other K channels (compensation),PPF_75686_S51_L006,mutant,male,-0.8658214373786339
+cortex,Other K channels (compensation),PPF_75688_S53_L006,mutant,female,0.8081464602611289
+cortex,Other K channels (compensation),PPF_75680_S45_L006,wildtype,female,-0.8140188447784797
+cortex,Other K channels (compensation),PPF_75684_S49_L006,wildtype,male,0.7439316881622309
+cortex,Other K channels (compensation),PPF_75685_S50_L006,wildtype,male,1.0213351185516035
+cortex,Other K channels (compensation),PPF_75687_S52_L006,wildtype,female,0.8848291728863217
+cortex,Other K channels (compensation),PPF_75689_S54_L006,wildtype,male,-0.5948718901403766
+cortex,Other K channels (compensation),PPF_75690_S55_L006,wildtype,male,0.8738030086895933
+cortex,Other K channels (compensation),PPF_75691_S56_L006,wildtype,female,0.836532997855383
+thalamus,ISR (ATF4 output),PPF_75705_S70_L006,mutant,female,-0.31960006022432
+thalamus,ISR (ATF4 output),PPF_75707_S72_L006,mutant,female,-0.14593763618377997
+thalamus,ISR (ATF4 output),PPF_75708_S73_L006,mutant,male,-0.2998216545046507
+thalamus,ISR (ATF4 output),PPF_75709_S74_L006,mutant,female,-0.42090616351543714
+thalamus,ISR (ATF4 output),PPF_75712_S77_L006,mutant,male,-0.2876227839950947
+thalamus,ISR (ATF4 output),PPF_75714_S79_L006,mutant,female,0.09352161613195333
+thalamus,ISR (ATF4 output),PPF_75706_S71_L006,wildtype,female,0.12336379821116364
+thalamus,ISR (ATF4 output),PPF_75710_S75_L006,wildtype,male,-0.11414895345879862
+thalamus,ISR (ATF4 output),PPF_75711_S76_L006,wildtype,male,0.5809796796486039
+thalamus,ISR (ATF4 output),PPF_75713_S78_L006,wildtype,female,0.4892254998769893
+thalamus,ISR (ATF4 output),PPF_75715_S80_L006,wildtype,male,0.1492154710872902
+thalamus,ISR (ATF4 output),PPF_75716_S81_L006,wildtype,male,-0.15643797565343542
+thalamus,ISR (ATF4 output),PPF_75717_S82_L006,wildtype,female,0.3081691625795307
+thalamus,ISR kinases,PPF_75705_S70_L006,mutant,female,0.40799780038497224
+thalamus,ISR kinases,PPF_75707_S72_L006,mutant,female,0.132852544806629
+thalamus,ISR kinases,PPF_75708_S73_L006,mutant,male,0.004957669282602217
+thalamus,ISR kinases,PPF_75709_S74_L006,mutant,female,0.14090497972979246
+thalamus,ISR kinases,PPF_75712_S77_L006,mutant,male,0.1777979204585636
+thalamus,ISR kinases,PPF_75714_S79_L006,mutant,female,-0.8788771001479558
+thalamus,ISR kinases,PPF_75706_S71_L006,wildtype,female,0.42410836250043377
+thalamus,ISR kinases,PPF_75710_S75_L006,wildtype,male,0.2017152077192695
+thalamus,ISR kinases,PPF_75711_S76_L006,wildtype,male,0.5447221902637219
+thalamus,ISR kinases,PPF_75713_S78_L006,wildtype,female,-0.25270991619283834
+thalamus,ISR kinases,PPF_75715_S80_L006,wildtype,male,-0.5531487167287314
+thalamus,ISR kinases,PPF_75716_S81_L006,wildtype,male,-0.33865043279483836
+thalamus,ISR kinases,PPF_75717_S82_L006,wildtype,female,-0.01167050928158118
+thalamus,UPR chaperones (ATF6),PPF_75705_S70_L006,mutant,female,-0.16400150462700877
+thalamus,UPR chaperones (ATF6),PPF_75707_S72_L006,mutant,female,0.45861501699369045
+thalamus,UPR chaperones (ATF6),PPF_75708_S73_L006,mutant,male,-0.5994621121950258
+thalamus,UPR chaperones (ATF6),PPF_75709_S74_L006,mutant,female,-0.10766938205561177
+thalamus,UPR chaperones (ATF6),PPF_75712_S77_L006,mutant,male,0.6662238558238149
+thalamus,UPR chaperones (ATF6),PPF_75714_S79_L006,mutant,female,-0.08396574778180427
+thalamus,UPR chaperones (ATF6),PPF_75706_S71_L006,wildtype,female,-0.579503625903214
+thalamus,UPR chaperones (ATF6),PPF_75710_S75_L006,wildtype,male,0.4484500691171308
+thalamus,UPR chaperones (ATF6),PPF_75711_S76_L006,wildtype,male,-0.43973109299598434
+thalamus,UPR chaperones (ATF6),PPF_75713_S78_L006,wildtype,female,1.216523506477666
+thalamus,UPR chaperones (ATF6),PPF_75715_S80_L006,wildtype,male,-0.3687136259086417
+thalamus,UPR chaperones (ATF6),PPF_75716_S81_L006,wildtype,male,-0.6421458990180497
+thalamus,UPR chaperones (ATF6),PPF_75717_S82_L006,wildtype,female,0.19538054207305877
+thalamus,UPR IRE1/XBP1,PPF_75705_S70_L006,mutant,female,0.6668773117085631
+thalamus,UPR IRE1/XBP1,PPF_75707_S72_L006,mutant,female,0.1830170383004117
+thalamus,UPR IRE1/XBP1,PPF_75708_S73_L006,mutant,male,-0.2561441470921929
+thalamus,UPR IRE1/XBP1,PPF_75709_S74_L006,mutant,female,0.0754073108121848
+thalamus,UPR IRE1/XBP1,PPF_75712_S77_L006,mutant,male,0.6336754764189756
+thalamus,UPR IRE1/XBP1,PPF_75714_S79_L006,mutant,female,-1.4965095630287348
+thalamus,UPR IRE1/XBP1,PPF_75706_S71_L006,wildtype,female,0.17627272095122073
+thalamus,UPR IRE1/XBP1,PPF_75710_S75_L006,wildtype,male,0.514163992191981
+thalamus,UPR IRE1/XBP1,PPF_75711_S76_L006,wildtype,male,-0.636543577551985
+thalamus,UPR IRE1/XBP1,PPF_75713_S78_L006,wildtype,female,0.856532270280548
+thalamus,UPR IRE1/XBP1,PPF_75715_S80_L006,wildtype,male,0.007961975744804572
+thalamus,UPR IRE1/XBP1,PPF_75716_S81_L006,wildtype,male,-0.6600935285632435
+thalamus,UPR IRE1/XBP1,PPF_75717_S82_L006,wildtype,female,-0.06461728017245652
+thalamus,Apoptosis (intrinsic),PPF_75705_S70_L006,mutant,female,-0.0327789333389583
+thalamus,Apoptosis (intrinsic),PPF_75707_S72_L006,mutant,female,-0.22093592853684516
+thalamus,Apoptosis (intrinsic),PPF_75708_S73_L006,mutant,male,-0.2858478957465376
+thalamus,Apoptosis (intrinsic),PPF_75709_S74_L006,mutant,female,-0.031654262641887324
+thalamus,Apoptosis (intrinsic),PPF_75712_S77_L006,mutant,male,0.08152727453295441
+thalamus,Apoptosis (intrinsic),PPF_75714_S79_L006,mutant,female,-0.015895685472037846
+thalamus,Apoptosis (intrinsic),PPF_75706_S71_L006,wildtype,female,0.2217601742744822
+thalamus,Apoptosis (intrinsic),PPF_75710_S75_L006,wildtype,male,0.10494530471845145
+thalamus,Apoptosis (intrinsic),PPF_75711_S76_L006,wildtype,male,-0.30505368037962244
+thalamus,Apoptosis (intrinsic),PPF_75713_S78_L006,wildtype,female,0.02988971341038138
+thalamus,Apoptosis (intrinsic),PPF_75715_S80_L006,wildtype,male,0.47230404386941005
+thalamus,Apoptosis (intrinsic),PPF_75716_S81_L006,wildtype,male,-0.068224460529934
+thalamus,Apoptosis (intrinsic),PPF_75717_S82_L006,wildtype,female,0.04996433584013672
+thalamus,p53 / DNA damage,PPF_75705_S70_L006,mutant,female,-0.4521416658176716
+thalamus,p53 / DNA damage,PPF_75707_S72_L006,mutant,female,-0.39512105967451544
+thalamus,p53 / DNA damage,PPF_75708_S73_L006,mutant,male,-0.5697325601042781
+thalamus,p53 / DNA damage,PPF_75709_S74_L006,mutant,female,-0.6292189418183807
+thalamus,p53 / DNA damage,PPF_75712_S77_L006,mutant,male,0.17873701542198756
+thalamus,p53 / DNA damage,PPF_75714_S79_L006,mutant,female,0.45156886948317976
+thalamus,p53 / DNA damage,PPF_75706_S71_L006,wildtype,female,0.14483309750397128
+thalamus,p53 / DNA damage,PPF_75710_S75_L006,wildtype,male,0.20474536039283103
+thalamus,p53 / DNA damage,PPF_75711_S76_L006,wildtype,male,-0.10147292087906079
+thalamus,p53 / DNA damage,PPF_75713_S78_L006,wildtype,female,-0.08933202606290741
+thalamus,p53 / DNA damage,PPF_75715_S80_L006,wildtype,male,0.8542334648845062
+thalamus,p53 / DNA damage,PPF_75716_S81_L006,wildtype,male,0.03468132843749094
+thalamus,p53 / DNA damage,PPF_75717_S82_L006,wildtype,female,0.36822003823284205
+thalamus,Necroptosis / inflammasome,PPF_75705_S70_L006,mutant,female,-0.4147303561529913
+thalamus,Necroptosis / inflammasome,PPF_75707_S72_L006,mutant,female,-0.5738450491910395
+thalamus,Necroptosis / inflammasome,PPF_75708_S73_L006,mutant,male,-0.513570459057745
+thalamus,Necroptosis / inflammasome,PPF_75709_S74_L006,mutant,female,-0.2669408118681004
+thalamus,Necroptosis / inflammasome,PPF_75712_S77_L006,mutant,male,0.0643288680567592
+thalamus,Necroptosis / inflammasome,PPF_75714_S79_L006,mutant,female,0.7299856026975097
+thalamus,Necroptosis / inflammasome,PPF_75706_S71_L006,wildtype,female,-0.014991498926626878
+thalamus,Necroptosis / inflammasome,PPF_75710_S75_L006,wildtype,male,-0.2724106445865793
+thalamus,Necroptosis / inflammasome,PPF_75711_S76_L006,wildtype,male,-0.5126274086759545
+thalamus,Necroptosis / inflammasome,PPF_75713_S78_L006,wildtype,female,0.8486145934865659
+thalamus,Necroptosis / inflammasome,PPF_75715_S80_L006,wildtype,male,-0.1688969618154637
+thalamus,Necroptosis / inflammasome,PPF_75716_S81_L006,wildtype,male,0.18495507996502242
+thalamus,Necroptosis / inflammasome,PPF_75717_S82_L006,wildtype,female,0.9101290460686464
+thalamus,Autophagy / lysosome,PPF_75705_S70_L006,mutant,female,-0.4572022567694099
+thalamus,Autophagy / lysosome,PPF_75707_S72_L006,mutant,female,-0.7305260117872651
+thalamus,Autophagy / lysosome,PPF_75708_S73_L006,mutant,male,-0.5284090472334596
+thalamus,Autophagy / lysosome,PPF_75709_S74_L006,mutant,female,-0.4585833995166176
+thalamus,Autophagy / lysosome,PPF_75712_S77_L006,mutant,male,-0.10802591120336613
+thalamus,Autophagy / lysosome,PPF_75714_S79_L006,mutant,female,1.4871185890439487
+thalamus,Autophagy / lysosome,PPF_75706_S71_L006,wildtype,female,-0.17096268002339252
+thalamus,Autophagy / lysosome,PPF_75710_S75_L006,wildtype,male,0.1120638311071332
+thalamus,Autophagy / lysosome,PPF_75711_S76_L006,wildtype,male,-0.055536943595010324
+thalamus,Autophagy / lysosome,PPF_75713_S78_L006,wildtype,female,0.44360324907342585
+thalamus,Autophagy / lysosome,PPF_75715_S80_L006,wildtype,male,0.0715780385703199
+thalamus,Autophagy / lysosome,PPF_75716_S81_L006,wildtype,male,0.15550355846967126
+thalamus,Autophagy / lysosome,PPF_75717_S82_L006,wildtype,female,0.2393789838639689
+thalamus,Astrogliosis,PPF_75705_S70_L006,mutant,female,-0.12041254611691399
+thalamus,Astrogliosis,PPF_75707_S72_L006,mutant,female,-0.12495348455552116
+thalamus,Astrogliosis,PPF_75708_S73_L006,mutant,male,-1.0668846085190054
+thalamus,Astrogliosis,PPF_75709_S74_L006,mutant,female,0.21078137187026696
+thalamus,Astrogliosis,PPF_75712_S77_L006,mutant,male,0.11365643339168244
+thalamus,Astrogliosis,PPF_75714_S79_L006,mutant,female,0.24595954874940024
+thalamus,Astrogliosis,PPF_75706_S71_L006,wildtype,female,-0.010253414614920086
+thalamus,Astrogliosis,PPF_75710_S75_L006,wildtype,male,-0.3220491995226312
+thalamus,Astrogliosis,PPF_75711_S76_L006,wildtype,male,-0.0032398024367078946
+thalamus,Astrogliosis,PPF_75713_S78_L006,wildtype,female,0.07187358036678317
+thalamus,Astrogliosis,PPF_75715_S80_L006,wildtype,male,0.22608158461391414
+thalamus,Astrogliosis,PPF_75716_S81_L006,wildtype,male,-0.040519107152911016
+thalamus,Astrogliosis,PPF_75717_S82_L006,wildtype,female,0.8199596439265658
+thalamus,Microglia / neuroinflammation,PPF_75705_S70_L006,mutant,female,-0.4657849642957468
+thalamus,Microglia / neuroinflammation,PPF_75707_S72_L006,mutant,female,-0.9549007800913392
+thalamus,Microglia / neuroinflammation,PPF_75708_S73_L006,mutant,male,-0.9037971344652237
+thalamus,Microglia / neuroinflammation,PPF_75709_S74_L006,mutant,female,-0.38184085084904307
+thalamus,Microglia / neuroinflammation,PPF_75712_S77_L006,mutant,male,-0.17355776446824264
+thalamus,Microglia / neuroinflammation,PPF_75714_S79_L006,mutant,female,1.500203195577764
+thalamus,Microglia / neuroinflammation,PPF_75706_S71_L006,wildtype,female,-0.5203975203353679
+thalamus,Microglia / neuroinflammation,PPF_75710_S75_L006,wildtype,male,-0.5435463875805137
+thalamus,Microglia / neuroinflammation,PPF_75711_S76_L006,wildtype,male,-0.3073992972597791
+thalamus,Microglia / neuroinflammation,PPF_75713_S78_L006,wildtype,female,0.47013319521435676
+thalamus,Microglia / neuroinflammation,PPF_75715_S80_L006,wildtype,male,0.6629887450934697
+thalamus,Microglia / neuroinflammation,PPF_75716_S81_L006,wildtype,male,0.6157538334897681
+thalamus,Microglia / neuroinflammation,PPF_75717_S82_L006,wildtype,female,1.0021457299698868
+thalamus,Disease-associated microglia,PPF_75705_S70_L006,mutant,female,-0.17422999867215905
+thalamus,Disease-associated microglia,PPF_75707_S72_L006,mutant,female,-0.7758178380349462
+thalamus,Disease-associated microglia,PPF_75708_S73_L006,mutant,male,-0.11976073872046367
+thalamus,Disease-associated microglia,PPF_75709_S74_L006,mutant,female,-0.6268669521587481
+thalamus,Disease-associated microglia,PPF_75712_S77_L006,mutant,male,-0.2004743984085734
+thalamus,Disease-associated microglia,PPF_75714_S79_L006,mutant,female,0.885202040058968
+thalamus,Disease-associated microglia,PPF_75706_S71_L006,wildtype,female,-0.14363896319611422
+thalamus,Disease-associated microglia,PPF_75710_S75_L006,wildtype,male,-0.8180719218652921
+thalamus,Disease-associated microglia,PPF_75711_S76_L006,wildtype,male,0.38223172301979796
+thalamus,Disease-associated microglia,PPF_75713_S78_L006,wildtype,female,0.24892235183229225
+thalamus,Disease-associated microglia,PPF_75715_S80_L006,wildtype,male,0.027795638450821114
+thalamus,Disease-associated microglia,PPF_75716_S81_L006,wildtype,male,0.16662353630056606
+thalamus,Disease-associated microglia,PPF_75717_S82_L006,wildtype,female,1.1480855213938734
+thalamus,Neuronal integrity,PPF_75705_S70_L006,mutant,female,0.20771221626064207
+thalamus,Neuronal integrity,PPF_75707_S72_L006,mutant,female,0.5341807488326311
+thalamus,Neuronal integrity,PPF_75708_S73_L006,mutant,male,0.4771607180331245
+thalamus,Neuronal integrity,PPF_75709_S74_L006,mutant,female,-0.09202872497588531
+thalamus,Neuronal integrity,PPF_75712_S77_L006,mutant,male,0.03921890621907765
+thalamus,Neuronal integrity,PPF_75714_S79_L006,mutant,female,-1.3518165486674103
+thalamus,Neuronal integrity,PPF_75706_S71_L006,wildtype,female,0.5387822842645346
+thalamus,Neuronal integrity,PPF_75710_S75_L006,wildtype,male,0.15407874588010095
+thalamus,Neuronal integrity,PPF_75711_S76_L006,wildtype,male,0.8170593424702656
+thalamus,Neuronal integrity,PPF_75713_S78_L006,wildtype,female,-0.19390087785453208
+thalamus,Neuronal integrity,PPF_75715_S80_L006,wildtype,male,-0.2690367193858149
+thalamus,Neuronal integrity,PPF_75716_S81_L006,wildtype,male,-0.8578287124147548
+thalamus,Neuronal integrity,PPF_75717_S82_L006,wildtype,female,-0.003581378662008906
+thalamus,Heat shock (cytosolic),PPF_75705_S70_L006,mutant,female,0.5138825691287279
+thalamus,Heat shock (cytosolic),PPF_75707_S72_L006,mutant,female,0.9300185939833836
+thalamus,Heat shock (cytosolic),PPF_75708_S73_L006,mutant,male,-0.08471746859254758
+thalamus,Heat shock (cytosolic),PPF_75709_S74_L006,mutant,female,-0.21795949666993253
+thalamus,Heat shock (cytosolic),PPF_75712_S77_L006,mutant,male,-0.20821573690968886
+thalamus,Heat shock (cytosolic),PPF_75714_S79_L006,mutant,female,-1.2216809314628427
+thalamus,Heat shock (cytosolic),PPF_75706_S71_L006,wildtype,female,0.3261403518121701
+thalamus,Heat shock (cytosolic),PPF_75710_S75_L006,wildtype,male,0.03485849632133148
+thalamus,Heat shock (cytosolic),PPF_75711_S76_L006,wildtype,male,-0.2782680663447791
+thalamus,Heat shock (cytosolic),PPF_75713_S78_L006,wildtype,female,-0.10711486447080715
+thalamus,Heat shock (cytosolic),PPF_75715_S80_L006,wildtype,male,0.862173545604892
+thalamus,Heat shock (cytosolic),PPF_75716_S81_L006,wildtype,male,-0.6490393100956457
+thalamus,Heat shock (cytosolic),PPF_75717_S82_L006,wildtype,female,0.0999223176957599
+thalamus,Oxidative stress (NRF2),PPF_75705_S70_L006,mutant,female,0.022862060190648657
+thalamus,Oxidative stress (NRF2),PPF_75707_S72_L006,mutant,female,-0.1763370952927158
+thalamus,Oxidative stress (NRF2),PPF_75708_S73_L006,mutant,male,-0.4758438484838226
+thalamus,Oxidative stress (NRF2),PPF_75709_S74_L006,mutant,female,0.17933175186197647
+thalamus,Oxidative stress (NRF2),PPF_75712_S77_L006,mutant,male,0.5042993088401331
+thalamus,Oxidative stress (NRF2),PPF_75714_S79_L006,mutant,female,0.06233624867375009
+thalamus,Oxidative stress (NRF2),PPF_75706_S71_L006,wildtype,female,0.18520688248358147
+thalamus,Oxidative stress (NRF2),PPF_75710_S75_L006,wildtype,male,0.6509279412779949
+thalamus,Oxidative stress (NRF2),PPF_75711_S76_L006,wildtype,male,0.09709297351112597
+thalamus,Oxidative stress (NRF2),PPF_75713_S78_L006,wildtype,female,0.016589711636579175
+thalamus,Oxidative stress (NRF2),PPF_75715_S80_L006,wildtype,male,-0.7134820258879372
+thalamus,Oxidative stress (NRF2),PPF_75716_S81_L006,wildtype,male,-0.34899556343530025
+thalamus,Oxidative stress (NRF2),PPF_75717_S82_L006,wildtype,female,-0.003988345376006775
+thalamus,Immediate-early / activity,PPF_75705_S70_L006,mutant,female,0.2900675011810915
+thalamus,Immediate-early / activity,PPF_75707_S72_L006,mutant,female,-0.26646637567309145
+thalamus,Immediate-early / activity,PPF_75708_S73_L006,mutant,male,-0.04180604203106958
+thalamus,Immediate-early / activity,PPF_75709_S74_L006,mutant,female,-0.6807732409455268
+thalamus,Immediate-early / activity,PPF_75712_S77_L006,mutant,male,-0.5434050962484154
+thalamus,Immediate-early / activity,PPF_75714_S79_L006,mutant,female,-1.1102922591729556
+thalamus,Immediate-early / activity,PPF_75706_S71_L006,wildtype,female,0.5512243199835283
+thalamus,Immediate-early / activity,PPF_75710_S75_L006,wildtype,male,-0.3098440701559988
+thalamus,Immediate-early / activity,PPF_75711_S76_L006,wildtype,male,0.05942733097184131
+thalamus,Immediate-early / activity,PPF_75713_S78_L006,wildtype,female,-0.2907604415631638
+thalamus,Immediate-early / activity,PPF_75715_S80_L006,wildtype,male,1.528429868405959
+thalamus,Immediate-early / activity,PPF_75716_S81_L006,wildtype,male,0.6275041295126575
+thalamus,Immediate-early / activity,PPF_75717_S82_L006,wildtype,female,0.1866943757351479
+thalamus,Kv4 complex,PPF_75705_S70_L006,mutant,female,0.48987857074445224
+thalamus,Kv4 complex,PPF_75707_S72_L006,mutant,female,0.23191730876355093
+thalamus,Kv4 complex,PPF_75708_S73_L006,mutant,male,0.5293202581618127
+thalamus,Kv4 complex,PPF_75709_S74_L006,mutant,female,0.32879963766302334
+thalamus,Kv4 complex,PPF_75712_S77_L006,mutant,male,0.16266336808187612
+thalamus,Kv4 complex,PPF_75714_S79_L006,mutant,female,-1.5366326105398844
+thalamus,Kv4 complex,PPF_75706_S71_L006,wildtype,female,0.31291343714421294
+thalamus,Kv4 complex,PPF_75710_S75_L006,wildtype,male,0.15729990153583
+thalamus,Kv4 complex,PPF_75711_S76_L006,wildtype,male,0.22813542942931886
+thalamus,Kv4 complex,PPF_75713_S78_L006,wildtype,female,0.06854533485195431
+thalamus,Kv4 complex,PPF_75715_S80_L006,wildtype,male,-0.06801836532819278
+thalamus,Kv4 complex,PPF_75716_S81_L006,wildtype,male,-0.3154389534520946
+thalamus,Kv4 complex,PPF_75717_S82_L006,wildtype,female,-0.5893833170558571
+thalamus,Other K channels (compensation),PPF_75705_S70_L006,mutant,female,0.6787646607954492
+thalamus,Other K channels (compensation),PPF_75707_S72_L006,mutant,female,0.4613650364813265
+thalamus,Other K channels (compensation),PPF_75708_S73_L006,mutant,male,0.47693080397505694
+thalamus,Other K channels (compensation),PPF_75709_S74_L006,mutant,female,-0.06943444650049886
+thalamus,Other K channels (compensation),PPF_75712_S77_L006,mutant,male,-0.17658086179697483
+thalamus,Other K channels (compensation),PPF_75714_S79_L006,mutant,female,-1.9814663348720587
+thalamus,Other K channels (compensation),PPF_75706_S71_L006,wildtype,female,0.9426025541053938
+thalamus,Other K channels (compensation),PPF_75710_S75_L006,wildtype,male,0.010469629770987067
+thalamus,Other K channels (compensation),PPF_75711_S76_L006,wildtype,male,1.257841629381951
+thalamus,Other K channels (compensation),PPF_75713_S78_L006,wildtype,female,-0.43794093601312867
+thalamus,Other K channels (compensation),PPF_75715_S80_L006,wildtype,male,-0.3668658487091484
+thalamus,Other K channels (compensation),PPF_75716_S81_L006,wildtype,male,-1.0240424695970114
+thalamus,Other K channels (compensation),PPF_75717_S82_L006,wildtype,female,0.22835658297865635
+cerebellum,ISR (ATF4 output),PPF_75718_S83_L006,mutant,female,-0.10348249034806499
+cerebellum,ISR (ATF4 output),PPF_75720_S85_L006,mutant,female,-0.5375791771940978
+cerebellum,ISR (ATF4 output),PPF_75721_S86_L006,mutant,male,-0.7151578262662712
+cerebellum,ISR (ATF4 output),PPF_75722_S87_L006,mutant,female,0.22628789951574935
+cerebellum,ISR (ATF4 output),PPF_75725_S89_L006,mutant,male,0.7186210012111163
+cerebellum,ISR (ATF4 output),PPF_75727_S91_L006,mutant,female,-0.11559640683301264
+cerebellum,ISR (ATF4 output),PPF_75719_S84_L006,wildtype,female,-0.4931142131522246
+cerebellum,ISR (ATF4 output),PPF_75724_S88_L006,wildtype,male,0.6166101903316161
+cerebellum,ISR (ATF4 output),PPF_75726_S90_L006,wildtype,female,0.40341102273517176
+cerebellum,ISR kinases,PPF_75718_S83_L006,mutant,female,0.3670768025410092
+cerebellum,ISR kinases,PPF_75720_S85_L006,mutant,female,-0.014410595029148598
+cerebellum,ISR kinases,PPF_75721_S86_L006,mutant,male,-0.08340185108498038
+cerebellum,ISR kinases,PPF_75722_S87_L006,mutant,female,-0.10277620245467767
+cerebellum,ISR kinases,PPF_75725_S89_L006,mutant,male,-0.5514736632482656
+cerebellum,ISR kinases,PPF_75727_S91_L006,mutant,female,-0.3981706949495086
+cerebellum,ISR kinases,PPF_75719_S84_L006,wildtype,female,0.8002421482784388
+cerebellum,ISR kinases,PPF_75724_S88_L006,wildtype,male,0.12868552670454328
+cerebellum,ISR kinases,PPF_75726_S90_L006,wildtype,female,-0.14577147075743171
+cerebellum,UPR chaperones (ATF6),PPF_75718_S83_L006,mutant,female,-0.05290074611278485
+cerebellum,UPR chaperones (ATF6),PPF_75720_S85_L006,mutant,female,-0.007888576856906436
+cerebellum,UPR chaperones (ATF6),PPF_75721_S86_L006,mutant,male,0.3796730350181346
+cerebellum,UPR chaperones (ATF6),PPF_75722_S87_L006,mutant,female,-0.3062276861167412
+cerebellum,UPR chaperones (ATF6),PPF_75725_S89_L006,mutant,male,0.8723536450801106
+cerebellum,UPR chaperones (ATF6),PPF_75727_S91_L006,mutant,female,0.041891913856838575
+cerebellum,UPR chaperones (ATF6),PPF_75719_S84_L006,wildtype,female,-0.5814585232895961
+cerebellum,UPR chaperones (ATF6),PPF_75724_S88_L006,wildtype,male,-0.9665482198942839
+cerebellum,UPR chaperones (ATF6),PPF_75726_S90_L006,wildtype,female,0.6211051583152253
+cerebellum,UPR IRE1/XBP1,PPF_75718_S83_L006,mutant,female,0.1166356634317007
+cerebellum,UPR IRE1/XBP1,PPF_75720_S85_L006,mutant,female,0.35938212899585803
+cerebellum,UPR IRE1/XBP1,PPF_75721_S86_L006,mutant,male,0.11437532371923434
+cerebellum,UPR IRE1/XBP1,PPF_75722_S87_L006,mutant,female,-0.16937301189914594
+cerebellum,UPR IRE1/XBP1,PPF_75725_S89_L006,mutant,male,-0.7566863074436148
+cerebellum,UPR IRE1/XBP1,PPF_75727_S91_L006,mutant,female,0.23563241870041168
+cerebellum,UPR IRE1/XBP1,PPF_75719_S84_L006,wildtype,female,0.1701371621482323
+cerebellum,UPR IRE1/XBP1,PPF_75724_S88_L006,wildtype,male,-0.06926591759793337
+cerebellum,UPR IRE1/XBP1,PPF_75726_S90_L006,wildtype,female,-0.0008374600547390143
+cerebellum,Apoptosis (intrinsic),PPF_75718_S83_L006,mutant,female,-0.01822582895141036
+cerebellum,Apoptosis (intrinsic),PPF_75720_S85_L006,mutant,female,0.15899210498925664
+cerebellum,Apoptosis (intrinsic),PPF_75721_S86_L006,mutant,male,-0.22230908468101457
+cerebellum,Apoptosis (intrinsic),PPF_75722_S87_L006,mutant,female,-0.2380369600731513
+cerebellum,Apoptosis (intrinsic),PPF_75725_S89_L006,mutant,male,0.40152286650824653
+cerebellum,Apoptosis (intrinsic),PPF_75727_S91_L006,mutant,female,0.22205441098597983
+cerebellum,Apoptosis (intrinsic),PPF_75719_S84_L006,wildtype,female,-0.12502221206432318
+cerebellum,Apoptosis (intrinsic),PPF_75724_S88_L006,wildtype,male,-0.055140054628151455
+cerebellum,Apoptosis (intrinsic),PPF_75726_S90_L006,wildtype,female,-0.12383524208543817
+cerebellum,p53 / DNA damage,PPF_75718_S83_L006,mutant,female,-0.21981114026670914
+cerebellum,p53 / DNA damage,PPF_75720_S85_L006,mutant,female,-0.3533326676721929
+cerebellum,p53 / DNA damage,PPF_75721_S86_L006,mutant,male,-0.008811744440283055
+cerebellum,p53 / DNA damage,PPF_75722_S87_L006,mutant,female,-0.4565129230161537
+cerebellum,p53 / DNA damage,PPF_75725_S89_L006,mutant,male,0.7465996129003529
+cerebellum,p53 / DNA damage,PPF_75727_S91_L006,mutant,female,-0.05766142133106403
+cerebellum,p53 / DNA damage,PPF_75719_S84_L006,wildtype,female,0.03104040162413741
+cerebellum,p53 / DNA damage,PPF_75724_S88_L006,wildtype,male,0.3122352463819787
+cerebellum,p53 / DNA damage,PPF_75726_S90_L006,wildtype,female,0.006254635819944676
+cerebellum,Necroptosis / inflammasome,PPF_75718_S83_L006,mutant,female,-0.1721008350765334
+cerebellum,Necroptosis / inflammasome,PPF_75720_S85_L006,mutant,female,0.10611051375614416
+cerebellum,Necroptosis / inflammasome,PPF_75721_S86_L006,mutant,male,0.08584739955492622
+cerebellum,Necroptosis / inflammasome,PPF_75722_S87_L006,mutant,female,-0.25240199787566986
+cerebellum,Necroptosis / inflammasome,PPF_75725_S89_L006,mutant,male,0.2648909989620194
+cerebellum,Necroptosis / inflammasome,PPF_75727_S91_L006,mutant,female,0.049629723927869046
+cerebellum,Necroptosis / inflammasome,PPF_75719_S84_L006,wildtype,female,-0.10746674202741799
+cerebellum,Necroptosis / inflammasome,PPF_75724_S88_L006,wildtype,male,-0.3612357521609594
+cerebellum,Necroptosis / inflammasome,PPF_75726_S90_L006,wildtype,female,0.38672669093962597
+cerebellum,Autophagy / lysosome,PPF_75718_S83_L006,mutant,female,-0.08343882583145386
+cerebellum,Autophagy / lysosome,PPF_75720_S85_L006,mutant,female,-0.7340051735479741
+cerebellum,Autophagy / lysosome,PPF_75721_S86_L006,mutant,male,-0.06861073764360288
+cerebellum,Autophagy / lysosome,PPF_75722_S87_L006,mutant,female,-0.17072335410178105
+cerebellum,Autophagy / lysosome,PPF_75725_S89_L006,mutant,male,1.4332178638818842
+cerebellum,Autophagy / lysosome,PPF_75727_S91_L006,mutant,female,0.19683446470671032
+cerebellum,Autophagy / lysosome,PPF_75719_S84_L006,wildtype,female,-0.5633605279216098
+cerebellum,Autophagy / lysosome,PPF_75724_S88_L006,wildtype,male,-0.4864290563096902
+cerebellum,Autophagy / lysosome,PPF_75726_S90_L006,wildtype,female,0.4765153467675098
+cerebellum,Astrogliosis,PPF_75718_S83_L006,mutant,female,0.23731559396926044
+cerebellum,Astrogliosis,PPF_75720_S85_L006,mutant,female,-0.4310891500691221
+cerebellum,Astrogliosis,PPF_75721_S86_L006,mutant,male,0.012006514308419957
+cerebellum,Astrogliosis,PPF_75722_S87_L006,mutant,female,-0.12164298942442446
+cerebellum,Astrogliosis,PPF_75725_S89_L006,mutant,male,0.15442180199905145
+cerebellum,Astrogliosis,PPF_75727_S91_L006,mutant,female,-0.33236329759003524
+cerebellum,Astrogliosis,PPF_75719_S84_L006,wildtype,female,0.8474686707099444
+cerebellum,Astrogliosis,PPF_75724_S88_L006,wildtype,male,-0.013423579661980701
+cerebellum,Astrogliosis,PPF_75726_S90_L006,wildtype,female,-0.352693564241108
+cerebellum,Microglia / neuroinflammation,PPF_75718_S83_L006,mutant,female,-0.5544214531505954
+cerebellum,Microglia / neuroinflammation,PPF_75720_S85_L006,mutant,female,-0.1569336307913614
+cerebellum,Microglia / neuroinflammation,PPF_75721_S86_L006,mutant,male,-0.09782408357324895
+cerebellum,Microglia / neuroinflammation,PPF_75722_S87_L006,mutant,female,-0.19935865766791533
+cerebellum,Microglia / neuroinflammation,PPF_75725_S89_L006,mutant,male,1.3198526330915137
+cerebellum,Microglia / neuroinflammation,PPF_75727_S91_L006,mutant,female,0.24671146723312437
+cerebellum,Microglia / neuroinflammation,PPF_75719_S84_L006,wildtype,female,-0.6840842578205822
+cerebellum,Microglia / neuroinflammation,PPF_75724_S88_L006,wildtype,male,-0.762269228986136
+cerebellum,Microglia / neuroinflammation,PPF_75726_S90_L006,wildtype,female,0.8883272116652106
+cerebellum,Disease-associated microglia,PPF_75718_S83_L006,mutant,female,-0.011499748383440839
+cerebellum,Disease-associated microglia,PPF_75720_S85_L006,mutant,female,-0.6786080242468453
+cerebellum,Disease-associated microglia,PPF_75721_S86_L006,mutant,male,0.1827298456724853
+cerebellum,Disease-associated microglia,PPF_75722_S87_L006,mutant,female,-0.08313837269284033
+cerebellum,Disease-associated microglia,PPF_75725_S89_L006,mutant,male,0.7064565719715314
+cerebellum,Disease-associated microglia,PPF_75727_S91_L006,mutant,female,0.2106099153013623
+cerebellum,Disease-associated microglia,PPF_75719_S84_L006,wildtype,female,-0.7074580476181775
+cerebellum,Disease-associated microglia,PPF_75724_S88_L006,wildtype,male,-0.56150672634396
+cerebellum,Disease-associated microglia,PPF_75726_S90_L006,wildtype,female,0.9424145863399044
+cerebellum,Neuronal integrity,PPF_75718_S83_L006,mutant,female,0.29183808437879977
+cerebellum,Neuronal integrity,PPF_75720_S85_L006,mutant,female,-0.5213755750945044
+cerebellum,Neuronal integrity,PPF_75721_S86_L006,mutant,male,-0.3320459770550192
+cerebellum,Neuronal integrity,PPF_75722_S87_L006,mutant,female,0.5235906108720827
+cerebellum,Neuronal integrity,PPF_75725_S89_L006,mutant,male,0.03956248147842762
+cerebellum,Neuronal integrity,PPF_75727_S91_L006,mutant,female,0.08559793256485547
+cerebellum,Neuronal integrity,PPF_75719_S84_L006,wildtype,female,-0.7686439308492602
+cerebellum,Neuronal integrity,PPF_75724_S88_L006,wildtype,male,-0.1141088751460896
+cerebellum,Neuronal integrity,PPF_75726_S90_L006,wildtype,female,0.7955852488506356
+cerebellum,Heat shock (cytosolic),PPF_75718_S83_L006,mutant,female,0.6638852883508461
+cerebellum,Heat shock (cytosolic),PPF_75720_S85_L006,mutant,female,-0.4990461022802486
+cerebellum,Heat shock (cytosolic),PPF_75721_S86_L006,mutant,male,-0.2445955442341816
+cerebellum,Heat shock (cytosolic),PPF_75722_S87_L006,mutant,female,-0.4225837172709654
+cerebellum,Heat shock (cytosolic),PPF_75725_S89_L006,mutant,male,0.5432698239555166
+cerebellum,Heat shock (cytosolic),PPF_75727_S91_L006,mutant,female,-0.14758936277657625
+cerebellum,Heat shock (cytosolic),PPF_75719_S84_L006,wildtype,female,0.28008161140140275
+cerebellum,Heat shock (cytosolic),PPF_75724_S88_L006,wildtype,male,-0.6706315651577852
+cerebellum,Heat shock (cytosolic),PPF_75726_S90_L006,wildtype,female,0.4972095680120111
+cerebellum,Oxidative stress (NRF2),PPF_75718_S83_L006,mutant,female,0.48313679545075366
+cerebellum,Oxidative stress (NRF2),PPF_75720_S85_L006,mutant,female,-0.43730346732078584
+cerebellum,Oxidative stress (NRF2),PPF_75721_S86_L006,mutant,male,0.3688986785010075
+cerebellum,Oxidative stress (NRF2),PPF_75722_S87_L006,mutant,female,0.14200879093417315
+cerebellum,Oxidative stress (NRF2),PPF_75725_S89_L006,mutant,male,0.6102367037931288
+cerebellum,Oxidative stress (NRF2),PPF_75727_S91_L006,mutant,female,-0.0824653934284854
+cerebellum,Oxidative stress (NRF2),PPF_75719_S84_L006,wildtype,female,-0.3605759579615413
+cerebellum,Oxidative stress (NRF2),PPF_75724_S88_L006,wildtype,male,-0.8242691126166443
+cerebellum,Oxidative stress (NRF2),PPF_75726_S90_L006,wildtype,female,0.10033296264841418
+cerebellum,Immediate-early / activity,PPF_75718_S83_L006,mutant,female,0.8929365513261491
+cerebellum,Immediate-early / activity,PPF_75720_S85_L006,mutant,female,-0.02583676896627063
+cerebellum,Immediate-early / activity,PPF_75721_S86_L006,mutant,male,-0.7615156386882627
+cerebellum,Immediate-early / activity,PPF_75722_S87_L006,mutant,female,-0.156359574428575
+cerebellum,Immediate-early / activity,PPF_75725_S89_L006,mutant,male,-0.4039206402120017
+cerebellum,Immediate-early / activity,PPF_75727_S91_L006,mutant,female,-0.5231156826755211
+cerebellum,Immediate-early / activity,PPF_75719_S84_L006,wildtype,female,0.9022899561264403
+cerebellum,Immediate-early / activity,PPF_75724_S88_L006,wildtype,male,0.1615890943338102
+cerebellum,Immediate-early / activity,PPF_75726_S90_L006,wildtype,female,-0.08606729681576468
+cerebellum,Kv4 complex,PPF_75718_S83_L006,mutant,female,0.007682355382518736
+cerebellum,Kv4 complex,PPF_75720_S85_L006,mutant,female,-0.6524015118391554
+cerebellum,Kv4 complex,PPF_75721_S86_L006,mutant,male,0.3270923444868922
+cerebellum,Kv4 complex,PPF_75722_S87_L006,mutant,female,0.46141944639537336
+cerebellum,Kv4 complex,PPF_75725_S89_L006,mutant,male,-0.6737864189209044
+cerebellum,Kv4 complex,PPF_75727_S91_L006,mutant,female,0.03571910636400225
+cerebellum,Kv4 complex,PPF_75719_S84_L006,wildtype,female,0.4602736712135673
+cerebellum,Kv4 complex,PPF_75724_S88_L006,wildtype,male,0.3218280093337164
+cerebellum,Kv4 complex,PPF_75726_S90_L006,wildtype,female,-0.287827002415952
+cerebellum,Other K channels (compensation),PPF_75718_S83_L006,mutant,female,0.35472136639018564
+cerebellum,Other K channels (compensation),PPF_75720_S85_L006,mutant,female,-0.49633107817337463
+cerebellum,Other K channels (compensation),PPF_75721_S86_L006,mutant,male,-0.15532487014432322
+cerebellum,Other K channels (compensation),PPF_75722_S87_L006,mutant,female,0.5872246539744871
+cerebellum,Other K channels (compensation),PPF_75725_S89_L006,mutant,male,-0.8682052726938745
+cerebellum,Other K channels (compensation),PPF_75727_S91_L006,mutant,female,0.24409923987286633
+cerebellum,Other K channels (compensation),PPF_75719_S84_L006,wildtype,female,-0.23337140109432897
+cerebellum,Other K channels (compensation),PPF_75724_S88_L006,wildtype,male,0.12404747004097523
+cerebellum,Other K channels (compensation),PPF_75726_S90_L006,wildtype,female,0.44313989182739083
