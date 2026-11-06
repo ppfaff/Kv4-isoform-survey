@@ -688,30 +688,34 @@ are the shortest. DPP6, whose knockdown collapses everything, outlasts the pore 
 That is the hierarchy expected if DPP6 anchors the assembly, Kv4 is the core, and KChIPs cycle on and
 off a complex that survives their departure.
 
-**Correction, and it matters: the RNAi was assayed one week after the virus went in.** An earlier
-version of this section credited that result with establishing, from the lab's own hands, that free
-subunits are degraded — the premise the two-pool model needs. At a single 7-day endpoint it does not
-establish that. Seven days is 1.5–3.5 half-lives for these subunits, so loss of protein then is fully
-consistent with DPP6 being required to **assemble** new complexes while standing complexes simply
-decay normally. Under that null (`scripts/er_triage_and_rnai_timing.py`):
+**Correction: the RNAi experiment is about assembly, not turnover, and cannot speak to either
+co-degradation or exchange.** The design, per the lab: neurons isolated by enzymatic digestion and
+plated; **DIV 2**, infection with DPP6 RNAi virus or a scrambled RNAi that leaves DPP6 intact;
+**DIV 10**, western blot. The comparison is therefore *knockdown versus control at one timepoint*,
+with no measurement of Kv4 at DIV 2.
 
-| subunit | remaining at 7 d, no knockdown delay | with a 2–3 d delay |
-|---|---|---|
-| Kv4.2 | 36% | 49–56% |
-| Kv4.3 | 29% | 41–49% |
-| DPP6 | 34% | 46–54% |
-| KChIP1 | 16% | 27–35% |
-| KChIP4 | 9% | 18–25% |
+That removes the interpretation this section previously built on it. An earlier version credited the
+result with showing that free subunits are degraded, and then — worse — tried to rescue the point with
+a table of "protein remaining at 7 days" under a decay-from-plateau null. **Both are wrong.** At DIV 2
+a freshly plated neuron has barely begun to express the complex; the Kv4/KChIP/DPP pool is being built
+for the first time across DIV 2–10. So there is no standing pool to decay, and the null is not decay
+at all but *failure to accumulate*. The table has been removed rather than corrected, because the
+quantity it computed is not a quantity this experiment contains.
 
-So **the extent of the loss is the discriminator, not the fact of it.** Roughly 30–50% of Kv4
-remaining is what assembly failure alone predicts, and would say only that DPP6 is needed to build
-complexes. Near-total loss — under ~10% — is faster than any of these subunits can decay unaided and
-would require active co-degradation. The quantified blots settle which it was. A **2–3 day timepoint**
-would separate the two far better than the one-week endpoint: assembly failure alone predicts 70% of
-Kv4.3 remaining at day 2 and 58% at day 3, so an early steep loss is diagnostic.
+**What the experiment does establish, which is cleaner than what was claimed for it.** Knocking down
+DPP6 during the window when the complex is first assembled prevents Kv4.2, Kv4.3 and KChIP3 protein
+from accumulating. Since the knockdown targets DPP6 and not the others, their newly synthesised
+protein must be failing to survive — which is exactly the ER quality control of unassembled subunits
+raised below. So **DPP6 is required for biogenesis of the complex, and is upstream of the rest in
+assembly order.**
 
-What the RNAi cannot settle either way is which subunit exchanges, because removing DPP6 removes
-everything regardless.
+That is independently satisfying next to the turnover data: DPP6 is both the first subunit needed to
+build the complex and the longest-lived subunit within it. Assembly order and turnover order agree,
+and they agree on DPP6 as the anchor. Neither requires co-degradation of mature complexes.
+
+**A further reason not to move conclusions between the two experiments:** the RNAi reads out at DIV 10,
+while Dörrbaum's cultures were labelled at DIV 18–19. Those are different developmental stages, and
+channel-complex expression is still climbing at DIV 10.
 
 ### Could the degradation just be ER quality control of unassembled subunits?
 

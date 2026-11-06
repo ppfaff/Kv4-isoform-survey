@@ -21,14 +21,21 @@ ER quality control - but it cannot produce the observed number, for two independ
     The conclusion inverts the objection: because ER degradation is FAST, it cannot explain an
     apparent half-life as SLOW as 2 days.
 
-OBJECTION 2: the RNAi was assessed a week after the virus went in.
+OBJECTION 2: the RNAi timing. RETRACTED SECTION - see the note below.
 
-This one lands, and it corrects an over-reading. Seven days is 1.5-3.5 half-lives for these
-subunits, so loss of protein at that timepoint is consistent with DPP6 being required to ASSEMBLE
-new complexes while pre-existing complexes simply decay at their normal rate. It does not, on its
-own, show that removing DPP6 destabilises standing complexes - which is what the two-pool model was
-credited with. What discriminates is the EXTENT of the loss: assembly failure alone leaves a
-predictable residue, and loss beyond that residue is the part that needs active co-degradation.
+The RNAi design is: neurons plated, infected at DIV 2 with DPP6 RNAi or scrambled control, western
+blotted at DIV 10. The comparison is knockdown vs control at ONE timepoint, with no measurement at
+DIV 2. A freshly plated neuron has barely begun to express the complex, so across DIV 2-10 the pool
+is being BUILT, not decaying from a plateau. The decay-null calculation this script used to perform
+("protein remaining at 7 days") computed a quantity the experiment does not contain, and has been
+removed rather than corrected.
+
+What the experiment establishes instead: knocking down DPP6 while the complex is first assembled
+prevents Kv4.2, Kv4.3 and KChIP3 from accumulating. Since only DPP6 is targeted, the others' newly
+made protein must be failing to survive - the ER quality control of objection 1, operating during
+biogenesis. So DPP6 is required for assembly and sits upstream of the rest, which agrees with its
+being the longest-lived subunit in the mature complex. Neither fact bears on whether mature KChIP
+exchanges, so the RNAi is out of the turnover argument entirely.
 
 Usage:  python3 er_triage_and_rnai_timing.py [out_dir]
 """
@@ -76,49 +83,22 @@ def main():
     print('  light-to-heavy medium switch at 18-19 DIV, not the fate of a labelled new cohort, so the')
     print('  young-protein bias that ER triage would create is not in this design.')
 
-    # ---------------------------------------------------------------- objection 2
     print('\n' + '=' * 100)
-    print(f'OBJECTION 2: what does the {RNAI_DAYS:.0f}-day RNAi timepoint actually discriminate?')
+    print('OBJECTION 2: RETRACTED - the RNAi design cannot be read as a decay experiment')
     print('=' * 100)
-    print('  Null model: DPP6 knockdown blocks assembly of NEW complexes; everything already made')
-    print('  decays at its own normal rate. Protein remaining when assayed:\n')
-    print(f'  {"subunit":22} ' + ' '.join(f'{"delay "+str(int(d))+"d":>11}' for d in KD_DELAY))
-    res = []
-    for name, th in HALF.items():
-        k = LN2 / th
-        cells = []
-        for d in KD_DELAY:
-            eff = max(RNAI_DAYS - d, 0.0)
-            cells.append(np.exp(-k * eff))
-        print(f'  {name:22} ' + ' '.join(f'{c*100:10.0f}%' for c in cells))
-        res.append(dict(subunit=name, half_life_d=th,
-                        **{f'remaining_delay{int(d)}d': round(float(np.exp(-LN2/th*max(RNAI_DAYS-d,0))), 4)
-                           for d in KD_DELAY}))
-    print('\n  Reading this. With no knockdown delay, assembly failure alone leaves roughly a THIRD of')
-    print('  Kv4.2 and Kv4.3 at one week, and 9-16% of the KChIPs. Allowing 2-3 days for the virus to')
-    print('  take hold and for existing DPP6 protein to fall, the predicted residue rises to about')
-    print('  half for the Kv4 subunits.')
-    print('\n  THEREFORE: the extent of the loss is the discriminator, not the fact of it.')
-    print('   - If the blots showed roughly 30-50% of Kv4.2/Kv4.3 remaining, assembly failure alone')
-    print('     accounts for it and the experiment says DPP6 is needed to BUILD complexes. It says')
-    print('     nothing about whether standing complexes are destabilised.')
-    print('   - If the blots showed near-total loss (say under 10%), that is faster than any of these')
-    print('     subunits can decay on its own, and active co-degradation is required.')
-    print('\n  CORRECTION TO THE RECORD: this analysis previously credited the DPP6 RNAi result with')
-    print('  establishing that free subunits are degraded, i.e. with supplying the premise the')
-    print('  two-pool model needs. At a single 7-day timepoint it does not establish that. Whether it')
-    print('  does depends on the quantified extent of loss in the lab\'s own blots.')
-    print('\n  WHAT WOULD SETTLE IT CHEAPLY: a 2-3 day timepoint. At 2 days, assembly failure predicts')
-    for d in (1, 2, 3):
-        k = LN2 / T_COMPLEX
-        print(f'     day {d}: {np.exp(-k*d)*100:.0f}% of Kv4.3 remaining under assembly failure alone,')
-    print('   so an early, steep loss of Kv4 would separate destabilisation from assembly failure')
-    print('   far better than the one-week endpoint can.')
+    print('  Infection at DIV 2, blot at DIV 10, knockdown vs scrambled control at that one')
+    print('  timepoint, with no measurement at DIV 2. The complex is being BUILT across that window,')
+    print('  not decaying from a plateau, so a "protein remaining" calculation computes a quantity')
+    print('  the experiment does not contain. That calculation has been removed.')
+    print('  The experiment establishes that DPP6 is required for the complex to ACCUMULATE, and')
+    print('  sits upstream of Kv4 and KChIP3 in assembly - consistent with DPP6 also being the')
+    print('  longest-lived subunit of the mature complex. It says nothing about mature-state')
+    print('  exchange, so it is out of the turnover argument.')
+    print('  Note also DIV 10 here vs DIV 18-19 in Dorrbaum: different developmental stages.')
 
     os.makedirs(f'{OUT}/tables', exist_ok=True)
     pd.DataFrame(rows).to_csv(f'{OUT}/tables/er_triage_requirement.csv', index=False)
-    pd.DataFrame(res).to_csv(f'{OUT}/tables/rnai_timing_null.csv', index=False)
-    print(f'\nwrote {OUT}/tables/{{er_triage_requirement,rnai_timing_null}}.csv')
+    print(f'\nwrote {OUT}/tables/er_triage_requirement.csv')
 
     print('\n' + '=' * 100)
     print('WHERE THE EXCHANGE INFERENCE STANDS AFTER BOTH OBJECTIONS')
@@ -127,8 +107,8 @@ def main():
     print(f'  (2.02 d) and KChIP1 (2.67 d) turn over faster than Kv4.3 ({T_COMPLEX} d), and a mixture')
     print('  whose protected component decays at the slower rate cannot present the faster apparent')
     print('  rate. ER triage cannot rescue a protected-pool model, per objection 1.')
-    print('  Weakened: the claim that the lab\'s RNAi independently demonstrates degradation of free')
-    print('  subunits. That now rests on how complete the loss was.')
+    print('  Withdrawn: any use of the lab\'s RNAi as evidence about mature-complex turnover. It is')
+    print('  an assembly experiment, and it is now out of the turnover argument entirely.')
     print('  Unchanged: the co-IP test is the decisive one. What fraction of KChIP4 is bound to Kv4?')
 
 
