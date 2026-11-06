@@ -40,7 +40,8 @@ RNG    = np.random.default_rng(0)
 # (no pseudocount: Hellinger coordinates need none -- see hellinger() for why CLR was wrong here)
 OUT    = sys.argv[1] if len(sys.argv) > 1 else '.'
 SWEEP  = [20, 50, 100, 200, 300, 500, 1000, 2000]
-N_SPLIT = int(os.environ.get('N_SPLIT', 3))      # independent split replicates per cell, averaged
+ALPHA   = float(os.environ.get('ALPHA', 0.5))    # Jeffreys prior for the per-cell composition posterior
+N_DRAWS = int(os.environ.get('N_DRAWS', 24))    # posterior draws per cell
 
 PANEL_V = {
     'Kv4':   ['Kv4.1', 'Kv4.2', 'Kv4.3S', 'Kv4.3L'],
@@ -77,15 +78,34 @@ def panel_counts(d, panel):
     return C, meta.reindex(C.index)
 
 
-def noise_floor(C):
-    """Per-cell technical-replicate distance, halved to full-depth error (see module docstring)."""
-    A = C.to_numpy()
-    out = np.zeros(len(A))
-    for _ in range(N_SPLIT):
-        h1 = RNG.binomial(A, 0.5)
-        h2 = A - h1
-        out += np.linalg.norm(hellinger(h1) - hellinger(h2), axis=1)
-    return (out / N_SPLIT) / 2.0
+def noise_floor(C, alpha=ALPHA, draws=N_DRAWS):
+    """Posterior uncertainty of each cell's composition, in Hellinger coordinates.
+
+    Replaces the split-half estimator, which was structurally unable to do this job: splitting conditions on
+    the OBSERVED SUPPORT, so a cell with all its reads in one variant gives identically zero noise at any
+    depth (normalising [n,0,0,0] always yields [1,0,0,0]). Real panels are full of such cells -- most Kv4
+    reads are Kv4.2 -- and each one dragged the median noise toward zero, inflating the ratio without bound
+    (observed: 8-211, where the metric's own calibration puts pure noise at 1.0 and strong heterogeneity
+    near 9). For [200,0,0,0] the true composition could be [0.995,0.005,0,0]; that is real uncertainty, and
+    a resample of the observed counts cannot see it.
+
+    Instead draw p ~ Dirichlet(counts + alpha) -- the posterior under a Jeffreys prior -- and take the mean
+    Hellinger distance of a draw from the posterior mean. Validated on synthetic data where the truth is
+    ratio 1.0: identical compositions give 1.02 diffuse, 1.02 for a concentrated Kv4-like 4-variant panel,
+    both at depths spread over 100-5000, and the single-variant cell's noise now falls as 1/sqrt(n)
+    (0.049 / 0.023 / 0.008 at depth 200 / 1000 / 5000). For very sparse compositions (3 of 17 variants real)
+    it returns 0.34, i.e. it OVERSTATES noise, because the prior adds alpha to each true zero -- conservative,
+    so it cannot manufacture heterogeneity, at some cost in sensitivity. Real heterogeneity still reads
+    1.55 and 3.34 (mild, depth 200 and 2000) and 3.25 and 8.85 (strong).
+
+    Vectorised through the Gamma construction of the Dirichlet, since numpy's rng.dirichlet takes one
+    concentration vector at a time and these datasets run to 8,000 cells.
+    """
+    A = np.asarray(C, float) + alpha                       # (n, K) posterior concentrations
+    G = RNG.gamma(shape=np.broadcast_to(A, (draws,) + A.shape), scale=1.0)
+    P = G / G.sum(axis=2, keepdims=True)                   # (draws, n, K) posterior draws
+    H = np.sqrt(P)
+    return np.linalg.norm(H - H.mean(axis=0, keepdims=True), axis=2).mean(axis=0)
 
 
 def within_spread(X, labels):
