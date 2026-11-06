@@ -108,11 +108,13 @@ def shape_stats(frac, noise_sd):
         b1 = GaussianMixture(1, random_state=0).fit(X).bic(X)
         b2 = GaussianMixture(2, random_state=0, n_init=3).fit(X).bic(X)
         out['bic_1comp'], out['bic_2comp'], out['delta_bic'] = b1, b2, b1 - b2
-        out['shape'] = 'bimodal' if (b1 - b2) > 10 else ('graded' if out['bimodality_coef'] and
-                                                         out['bimodality_coef'] < 0.555 else 'unclear')
+        # NB: named shape_call, not shape -- 'shape' collides with the pandas Series attribute, so
+        # row.shape returns the shape tuple and never the column.
+        out['shape_call'] = 'bimodal' if (b1 - b2) > 10 else ('graded' if out['bimodality_coef'] and
+                                                              out['bimodality_coef'] < 0.555 else 'unclear')
     except Exception:
         out['bic_1comp'] = out['bic_2comp'] = out['delta_bic'] = np.nan
-        out['shape'] = 'unclear'
+        out['shape_call'] = 'unclear'
     return out
 
 
@@ -205,8 +207,8 @@ def main():
         for _, r in E.head(40).iterrows():
             print(f'{r.dataset:7} {r.cell_type[:16]:16} {r.variant:8} {int(r.n_cells):4d} '
                   f'{r["mean"]:6.3f} {r.excess_sd:6.3f} {r.median_noise_sd:6.3f} '
-                  f'{r.frac_below_5pct:5.2f} {r.frac_above_50pct:5.2f} {r.delta_bic:7.1f} {r.shape:9} '
-                  f'{r.predicted_spread:5.1f} {r.predicted_param}')
+                  f'{r.frac_below_5pct:5.2f} {r.frac_above_50pct:5.2f} {r.delta_bic:7.1f} '
+                  f'{r["shape_call"]:9} {r.predicted_spread:5.1f} {r.predicted_param}')
     print('\n' + '=' * 108)
     print('HOW TO READ THIS')
     print('=' * 108)
