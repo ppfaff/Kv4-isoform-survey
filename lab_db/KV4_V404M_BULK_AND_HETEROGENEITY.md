@@ -10,9 +10,11 @@ Two separate pieces of work, reported together because the second changes how th
 
 What the mutants *do* show is **a reactive astrocyte state in hippocampus and cortex and nowhere else** (Gfap +0.79 and +0.62; Serpina3n +0.89 and +0.54; Timp1, Ptx3, Vim, Osmr in hippocampus). Three findings constrain its interpretation. It is **not proliferation**: astrocyte identity genes (Aqp4, Slc1a3, Gja1, Aldoc) are flat at −0.04 in hippocampus. It is **not the complement/neurotoxic program**: C3 is *down*. And **per-astrocyte homeostatic capacity is preserved** — Kcnj10 (Kir4.1) +0.17 in hippocampus, Slc1a2 (GLT-1) −0.01, so the two canonical routes by which reactive astrocytes amplify hyperexcitability are not engaged. Decisively, the regional pattern does **not** track mutant protein dose: cerebellum expresses the most Kcnd2 of any tissue (341 CPM vs hippocampus 166, thalamus 112, cortex 101) and shows no reactive signature at all. It tracks which circuits are epileptogenic. On this evidence the astrogliosis is a **readout of circuit dysfunction, not a driver of it**.
 
-**Within-type heterogeneity.** Asked whether the large per-cell variance in Kv4/KChIP/DPP composition reflects lumping distinct neuron types or intrinsic variation within coherent ones, the answer is unambiguous: **intrinsic**. Every subclass in all three single-cell datasets shows within-subclass spread 4–25× the measurement noise floor. The ratios scale as √sequencing-depth across the three datasets (observed 2.02, 3.13, 1.55 against predicted 1.87, 3.53, 1.89), meaning all three see the same underlying heterogeneity and differ only in their power to resolve it. **Kv4-complex composition is therefore not a cell-type property**: it varies more cell-to-cell within a transcriptomic type than between types. Every `*_variant_fracs_by_type.csv` table in this project reports a mean over a highly heterogeneous population. Whether that heterogeneity is biological or a residue of methodology is not yet settled — sampling noise is excluded, isoform-assignment uncertainty is not — and the tests that would settle it are specified below.
+**Within-type heterogeneity.** Asked whether the large per-cell variance in Kv4/KChIP/DPP composition reflects lumping distinct neuron types or intrinsic variation within coherent ones, the answer is **intrinsic**. Every subclass in all three single-cell datasets shows within-subclass spread 4–25× the per-cell measurement noise floor, and the ratios scale as √sequencing-depth across the three (observed 2.02, 3.13, 1.55 against predicted 1.87, 3.53, 1.89), so all three see the same underlying heterogeneity and differ only in power to resolve it. **Kv4-complex composition is not a cell-type property**: it varies more cell-to-cell within a transcriptomic type than between types, and every `*_variant_fracs_by_type.csv` table in this project reports a mean over a heterogeneous population. Within a type, the functionally decisive DPP variants are **all-or-none rather than graded** — `Vip Gpc3` carries DPP6K at a mean of 10% with 76% of cells below 5% and 8% above 50%; `L6b Serpinb11` carries DPP10a at a mean of 49% with 37% below 5% and 58% above 50% — with excess spread 30–60× the counting noise.
 
-Two metric failures found and fixed along the way are recorded in *Technical findings*, because both produced confident, wrong results that looked like findings.
+**A quantification artefact was found and bounded in the course of testing that claim, and it invalidates a different result.** salmon's assignment of the DPP N-terminal variants is *exact* under full-length coverage — 100% correct for all seven variants, verified at 51,000–306,000 reads and again at 385–705 reads, in both SE 100 bp and PE 50 bp — but under 3′ coverage bias it collapses into two default bins, one per gene: DPP6K and DPP6L flow into **DPP6S**, DPP10a flows into **DPP10d**. Applying the measured confusion matrix to the efficiency-calibrated qRT-PCR composition of cerebellar granule cells (Jerng & Pfaffinger 2012) predicts DPP6S at 50–57% against the 53.7% actually observed in the V404M bulk, so the artefact is real and quantitatively sufficient. Consequently **the V404M bulk DPP variant results are withdrawn**, while the single-cell results stand: SMART-seq is full-length, shows none of the collapse signature, and recovers DPP10a at 62.5% of the DPP panel in excitatory cells, consistent with DPP10a being the dominant N-type variant in cortical pyramidal neurons.
+
+Four methodological failures found and fixed are recorded in *Technical findings*, because each produced a confident wrong result that looked like a finding. The fourth is the most instructive: the first three were caught by testing against synthetic cases, which can only catch errors already imagined, whereas this one was caught by an external measurement with a known answer.
 
 ## Datasets and methods
 
@@ -114,44 +116,119 @@ This reframes the L6 CT problem rather than overturning it. The 20–35 percenta
 
 **Consequence for the project.** Kv4-complex composition is not a cell-type property. Every by-type variant-fraction table reports a mean over a population whose members differ substantially, and that should be stated wherever those tables appear. It also recasts the Kv4-null DG cells: less a distinct subpopulation than the tail of a continuum running through every subclass.
 
+### Within a type, the decisive DPP variants are all-or-none, not graded — solid
+
+The variance ratio above does not say what the distribution *looks like*, and the two possibilities predict entirely different electrophysiology. A population mean of 20% DPP6K is equally consistent with every cell at 20% (narrow V½-inactivation, no surprise in recordings) and with 20% of cells near 100% and the rest at zero (bimodal V½ spanning most of the DPP6 shift). Synthetic data at mean 0.20 gives excess SD 0.013 for the first case and 0.393 for the second, so the two are cleanly separable once per-cell measurement uncertainty is removed.
+
+The data are the second case. Representative rows, where excess SD is the across-cell spread after removing counting noise:
+
+| dataset | type | variant | mean | excess SD | noise SD | <5% | >50% | ΔBIC | shape |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| T16 | Vip Gpc3 | DPP6K | 0.103 | 0.241 | 0.001 | 0.76 | 0.08 | 245 | bimodal |
+| T16 | L6b Serpinb11 | DPP10a | 0.491 | 0.419 | 0.007 | 0.37 | 0.58 | 20 | bimodal |
+| T16 | L4 Ctxn3 | DPP10a | 0.397 | 0.380 | 0.006 | 0.35 | 0.42 | 198 | bimodal |
+| T16 | Vip Chat | DPP6S | 0.318 | 0.339 | 0.008 | 0.30 | 0.33 | 14 | bimodal |
+| T16 | Ndnf Car4 | DPP6K | 0.165 | 0.297 | 0.001 | 0.64 | 0.14 | 16 | bimodal |
+
+Excess SD runs 30–60× the measurement noise in the deep data. Dropout cannot produce this: a cell in the >50% bin carries ≥100 reads on that one variant given the ≥200-read gate, so the split is between *absent* and *dominant*, not between absent and barely-detected. The Allen sets, with 3–4× higher noise, call the same types "graded" while still showing large excess SD — i.e. the bimodality is resolved wherever there is power to resolve it.
+
+Predicted 1 SD spreads in V½ inactivation, under a deliberately crude linear subunit-share mapping, are 6.0–8.5 mV, implying a ±1 SD range of 12–17 mV within a single population.
+
+### Variant assignment is exact at full-length coverage and collapses into two sinks under 3′ bias — solid, and it invalidates the bulk DPP results
+
+Nothing in this project had ever checked salmon's isoform assignment against a known ratio. The 2012 standardizing constructs — tandem plasmids carrying GAPDH exons 5–8 followed by exons 1–3 of two DPLP variants at a guaranteed 1:1:1 molar ratio — are precisely that control for qRT-PCR, and the logic transfers: simulate equal molar amounts of each variant, quantify against this project's own index, and compare.
+
+**At full-length coverage, assignment is exact**: 100% correct for all seven DPP variants, at 51,000–306,000 reads per variant and again at 385–705 reads, in SE 100 bp (the Tasic 2016 layout) and PE 50 bp (the Allen layout). There is no intrinsic sequence ambiguity and no low-depth instability.
+
+**Under 3′ coverage bias it collapses into two default bins, one per gene** (PE, tau = 250 nt):
+
+| true origin | correctly assigned | where the rest goes |
+| --- | --- | --- |
+| DPP6K | 0–34% | **66–100% → DPP6S** |
+| DPP6L | 37% | **63% → DPP6S** |
+| DPP10a | 23% | **77% → DPP10d** |
+| DPP6S, DPP6a, DPP10c, DPP10d | 100% | — |
+
+DPP6S absorbs 129–166% of other variants' reads summed; DPP10d absorbs 77% of DPP10a's. The magnitude is sufficient to explain the real data: pushing the 2012 cerebellar granule cell composition (DPP6K 41%, DPP6a 33%, DPP6S 18%, DPP6L 8%) through this matrix predicts DPP6S at 50–57% against 53.7% observed in the V404M bulk cerebellum, where an unbiased pipeline would have returned 18%.
+
+**Therefore the V404M bulk DPP variant results are withdrawn.** The bulk libraries are 3′-biased polyA, and they report DPP10a at 12.4% of the DPP panel in cortex where the full-length single-cell data gives 62.5% — a ~5-fold under-call of the variant that carries N-type inactivation in cortical pyramidal neurons. DPP6K is destroyed outright. The one bulk DPP measurement that survives is **DPP6a**, which never collapses at any tau; its near-absence in cortex (0.44% of the panel) is therefore real, and consistent with DPP10a rather than DPP6a carrying the N-type function there.
+
+The single-cell results are unaffected and show none of the collapse signature — DPP10a reads 62.5% in excitatory cells with DPP10d at 15.4%, the opposite of the collapse direction:
+
+| | DPP10a | DPP10d | DPP6S | DPP6a | DPP6K |
+| --- | --- | --- | --- | --- | --- |
+| Tasic 2016 excitatory | 62.5% | 15.4 | 8.6 | 8.3 | 0.0 |
+| Tasic 2016 inhibitory | 2.8 | 35.8 | 12.7 | 31.0 | 9.7 |
+
+One route remained by which the artefact could have reached the single-cell data: RNA integrity varies cell to cell, so an intact cell reports DPP6K correctly while a degraded one reports the same molecule as DPP6S, splitting cells into "expresses it" and "doesn't" by quality alone — which is the observed bimodality. Because Dpp6 and Dpp10 have *independent* sinks, a shared coverage profile would move both together. It does not: across 29 cell types in three datasets, the DPP6S–DPP10d correlation has a median rho of −0.005 and sits a median 0.254 *below* its compositional null, with 1 of 29 types exceeding the null (chance alone gives ~5%). A synthetic shared-quality driver produces +0.63 beyond null, so this is not a power limitation. **The bimodality is not a coverage artefact.**
+
 ### Technical findings worth recording
 
-**Two metric failures, both of which produced confident wrong answers.**
+**Four methodological failures, each of which produced a confident wrong answer.**
 
 *Centred log-ratio with a pseudocount reads out sequencing depth on sparse data.* A structural zero contributes log(pseudo/total), so two cells with identical composition at 100 vs 5,000 reads differ by log(50) ≈ 3.9 in every zero entry. Synthetic cells with identical composition, true zeros and depths spread over 100–5,000 returned a spread/noise ratio of **12.23 against a true value of 1.0**; the same cells gave 0.85 under Hellinger coordinates (√proportions, where √0 = 0 at any depth). Sparsity and depth variation are both required to trigger it, which is exactly single-cell isoform data. This invalidated the first grouping run, which returned "split" for 24 of 28 groupings — including Allen subclasses against their own clusters — on R² of 0.01–0.22.
 
 *Split-half resampling cannot estimate noise for concentrated compositions.* It conditions on the observed support, so a cell with all reads in one variant yields **identically zero** noise at any depth (normalising [n,0,0,0] always gives [1,0,0,0]). Real panels are full of such cells; each contributed a zero to the median and the ratio inflated without bound (observed 8–211, where Hellinger distance to a centroid is bounded at 1.0, so those values were arithmetically impossible). Replaced with a Dirichlet(counts + 0.5) posterior, which represents uncertainty about *unobserved* variants: for [200,0,0,0] the truth could be [0.995,0.005,0,0]. Validated at 1.02 on diffuse and on concentrated Kv4-like nulls at variable depth, conservative (0.34) on very sparse compositions, and sensitive to real heterogeneity (1.55/3.34 mild, 3.25/8.85 strong at depth 200/2000).
 
-*General lesson.* Compositional methods needing a pseudocount are hazardous on sparse, depth-variable data. The only reason either failure surfaced is that the noise-floor metric has a **calibration target** — pure noise must give 1.0 — so 131 was visibly impossible. The original script's R² had no such anchor, which is why its failure looked like a result. Any new metric in this project should carry a known-answer null.
+*Mutual exclusivity cannot distinguish real exclusive expression from EM collapse.* A test built to separate them could not, because exclusivity is the expected signature of both: a cell genuinely expressing only DPP6K is indistinguishable from one whose reads the EM dumped there. Its validation hid this by constructing the "biological" case as cells in one of two *mixture* states, so the answer was built into the premise, and it also flagged its own Kv4.3S/L positive control. Abandoned.
+
+*Resampling measures precision, not accuracy, and the error here was accuracy.* Bootstraps and split-half both resample reads **under the quantifier's own model**, so a systematic model failure is invisible to them. The planned bootstrap run — two machines overnight, ~90 GB of re-downloaded FASTQ each — would have returned a reassuring answer while the DPP6S bias went undetected, exactly as the 4-fold Kv4.3L underestimate from 3′UTR model asymmetry would not appear in a bootstrap. It was cancelled in favour of the known-ratio calibration, which cost an hour.
+
+*General lesson, and the one worth carrying forward.* Compositional methods needing a pseudocount are hazardous on sparse, depth-variable data, and any new metric should carry a known-answer null — the noise-floor metric's failures surfaced only because pure noise *must* give 1.0, making 131 visibly impossible, whereas the original R² had no such anchor and its failure looked like a result. But note the asymmetry between the first three failures and the fourth. The first three were caught by testing against synthetic cases, which can only catch errors already imagined. The DPP assignment bias was caught by an **external measurement with a known answer** — the lab's own 2012 efficiency-calibrated qRT-PCR — and no amount of internal self-consistency checking would have found it, because every internal check shares the quantifier's assumptions. Isoform-level claims in this project should be anchored to an outside standard before they are believed.
 
 **Infrastructure.** `hip_common.py` pointed `HIP_PKL`/`CTX_PKL` at paths inside an ephemeral analysis container; those pickles no longer exist anywhere. Both loaders now read the durable annotated CSVs from the collapse step (`HIP_DATA`/`CTX_DATA`). `region_compare3.py` still carries a dead scratchpad path and needs the same treatment before it can be re-run.
 
 ## Is the within-type heterogeneity biological or methodological?
 
-Not yet settled, and the distinction matters more than anything else in this document. What the noise floor establishes is narrow but firm: **the variance is not multinomial sampling noise.** It is 4–25× that, consistently, across two chemistries. What it does *not* exclude is any source of technical variance that is depth-independent, because such a source sits in the numerator alongside biology and is invisible to this test. The √depth scaling confirms the noise floor is correctly estimated; it does **not** adjudicate the numerator.
+Largely settled, in favour of biological, by four tests that between them close the routes a technical
+explanation could take. The honest residue is stated at the end.
 
-Candidate non-biological sources, in rough order of concern:
+**Sampling noise is excluded.** The per-cell Dirichlet posterior puts the within-subclass spread at 4–25×
+the counting noise, and the ratio scales as √depth across three datasets and two chemistries, so all three
+see the same heterogeneity and differ only in resolution.
 
-1. **Isoform-assignment uncertainty — the main worry.** salmon's EM distributes ambiguous reads across isoforms and reports point estimates. Our analysis treats those as data, so assignment error passes straight into apparent heterogeneity. This project already has direct evidence that salmon's assignment here is imperfect: the 4-fold underestimate of Kv4.3L traced to 3′UTR model asymmetry. Short reads (50 bp PE in the Allen sets) make this worse, and variants differing only at an internal cassette exon or an alternative acceptor are exactly the hard cases.
-2. **PCR amplification noise.** SMART-seq amplifies before sequencing; stochastic early-cycle amplification is multiplicative and depth-independent, so it would inflate apparent composition variance without touching the noise floor. Both v1 and v4 chemistries amplify, so cross-chemistry consistency does not rule it out.
-3. **Reverse-transcription efficiency and length bias** differing between variants, varying cell to cell with RNA quality.
-4. **Dissociation-induced transcriptional change.** Both protocols dissociate tissue, which induces stress and immediate-early programs and can shift splicing.
-5. **Ambient RNA and index hopping**, lower in plate-based than droplet data but non-zero.
+**Isoform-assignment error is excluded for this panel, by direct calibration.** This was the main worry, and
+it was well-founded — the artefact is real and large, but it requires 3′ coverage bias. Under full-length
+coverage assignment is exact (100% for all seven DPP variants) at both the high depths and the single-cell
+depths where the heterogeneity is measured, and in both the SE 100 bp and PE 50 bp layouts the datasets
+actually use. The single-cell data show none of the collapse signature.
 
-And if biological, it still splits two ways with very different consequences: **stable cell-to-cell differences** (developmental, epigenetic, allelic) versus **dynamic state** (activity, circadian, cell cycle). The first means a cell's A-current phenotype is a durable property; the second means it fluctuates in the same cell over hours.
+**Cell-to-cell variation in RNA integrity is excluded.** This was the one way the assignment artefact could
+still have reached the single-cell data, and it is the mechanism that would most naturally manufacture
+all-or-none variant usage. Because Dpp6 and Dpp10 have independent sinks, a shared per-cell coverage profile
+would move both together; across 29 cell types the sink–sink correlation sits a median 0.254 *below* its
+compositional null, where a synthetic shared driver gives +0.63 above it.
 
-Four tests, in order of decisiveness per unit effort:
+**Dropout is excluded by the shape of the distribution.** Cells in the >50% bin carry ≥100 reads on that one
+variant, so the split is between absent and dominant, not between absent and barely-detected.
 
-- **salmon inferential replicates.** Re-quantify a few hundred cells with `--numBootstraps 100` (or Gibbs samples) and compare the bootstrap variance of each cell's composition against the within-subclass spread. This directly measures assignment uncertainty and would settle concern 1 outright. Cheapest decisive experiment available; the quant directories and index are already in place.
-- **A negative-control gene family.** Run the identical noise-floor analysis on isoform families of comparable expression with no expected biological heterogeneity — housekeeping genes, or a structural family. If they return ratios of 10–20 as well, the variance is technical and generic. If Kv4-complex ratios are specifically high, that is strong evidence for biology. Uses existing data; a few hours.
-- **Is the variance structured?** Random technical noise is uncorrelated with anything. Test whether a cell's Kv4 composition correlates with its KChIP and DPP composition, with activity/IEG state, or with dissection position. Coherent structure across the three panels within a cell would be hard to explain technically.
-- **Patch-seq.** The decisive biological test, below.
+What remains unexcluded, in rough order of concern:
 
-Until at least the first two are done, the honest statement is: *within-type variance exceeds sampling noise by a large margin and is consistent across datasets; how much of it is isoform-assignment error is unmeasured.*
+1. **PCR amplification noise.** SMART-seq amplifies before sequencing, and stochastic early-cycle
+   amplification is multiplicative and depth-independent, so it sits in the numerator and the noise floor
+   cannot see it. Both v1 and v4 amplify, so cross-chemistry agreement does not rule it out. A negative-
+   control gene family would address this: run the identical analysis on isoform families of comparable
+   expression with no expected biological heterogeneity. If those return ratios of 10–20 too, the variance
+   is generic and technical; if the Kv4-complex ratios are specifically high, that is strong evidence for
+   biology. Uses existing data, a few hours, and is the one remaining cheap test.
+2. **Reverse-transcription efficiency** differing between variants and varying with cell state.
+3. **Dissociation-induced transcriptional change**, which both protocols impose and which can shift splicing.
 
-## If it is biological: predicted consequences for recorded A-currents in pyramidal neurons
+And biological itself splits two ways with different consequences: **stable cell-to-cell differences**
+(developmental, epigenetic, allelic) versus **dynamic state** (activity, circadian, cell cycle). The first
+makes a cell's A-current phenotype a durable property; the second makes it fluctuate within a cell over
+hours. Nothing here distinguishes them, and the distinction matters for whether composition could be
+reprogrammed.
 
-The Kv4 complex is a three-component machine, and the auxiliary subunits — not the pore — set most of the biophysics. So composition variance maps onto specific, measurable current parameters rather than onto current amplitude alone.
+The defensible statement is: *within-type variance exceeds sampling noise by 4–25×, is not isoform-assignment
+error, is not coverage-driven, and takes an all-or-none rather than graded form in the functionally decisive
+DPP variants. Amplification noise remains formally unexcluded and is testable with existing data.*
+
+## Predicted consequences for recorded A-currents in pyramidal neurons
+
+The Kv4 complex is a three-component machine, and the auxiliary subunits — not the pore — set most of the biophysics. So composition variance maps onto specific, measurable current parameters rather than onto current amplitude alone. Since the composition data now survive calibration, these are predictions to test rather than conditionals.
+
+The quantitative anchor: the measured all-or-none distributions give predicted 1 SD spreads of 6.0–8.5 mV in V½ inactivation under a linear subunit-share mapping, i.e. a ±1 SD range of 12–17 mV within one pyramidal population — large enough to dominate most other sources of variance in a recording.
 
 **What each component contributes.** KChIPs increase surface expression, slow inactivation and speed recovery, with **KChIP4a the outlier**: its N-terminal KIS domain suppresses inactivation outright, converting fast-inactivating A-type current toward a slowly- or non-inactivating form. DPP6 and DPP10 shift activation and steady-state inactivation to markedly hyperpolarised potentials (on the order of 20–25 mV for DPP6) and accelerate both inactivation and recovery; their N-terminal variants (DPP6-S vs DPP6-L vs DPP6-K; DPP10a) differ in how strongly they do so. Kv4.2 and Kv4.3 differ more modestly from each other, and the Kv4.3L cassette adds a C-terminal insert.
 
@@ -167,44 +244,65 @@ The Kv4 complex is a three-component machine, and the auxiliary subunits — not
 - Within a single pyramidal type, the variance in V½inact and τrec should **exceed what recording noise and series-resistance error can account for** — an analysis that can be done retrospectively on recordings the lab already holds, with no new experiments.
 - Parameters should **co-vary within cells** rather than vary independently, if composition is coherent (a cell rich in DPP6 and KChIP1 should sit at a predictable combination of V½inact and τrec). Independent scatter across parameters would argue for measurement noise; correlated structure argues for composition.
 - Cluster structure in the ephys parameter space should **not respect transcriptomic type boundaries**, mirroring the RNA result.
-- **Patch-seq is the decisive experiment**: record A-current properties, then sequence the same cell, and ask whether composition predicts kinetics. Public mouse cortical patch-seq datasets exist (Gouwens 2020, Scala 2020) and could be reanalysed before committing to new experiments — with the large caveat that patch-seq transcriptomes are shallow, and this document's own depth analysis says isoform-level resolution needs far more than they provide. That may make reanalysis infeasible and new, deeply-sequenced patch-seq the only route.
+- **Patch-seq is not the right instrument**, and the calibration says why. If the distribution is all-or-none, as it is, the subpopulations are separable by patch-clamp alone and no sequencing is needed; patch-seq would only be necessary in the graded case, where per-cell composition must be correlated against per-cell kinetics — and that is precisely where its depth (0.5–2 M reads, against 8.7 M for Tasic 2016, with RNA degraded by dialysis and partial aspiration) is least adequate. Patch-seq is most useful in the regime where it is least feasible. For presence/absence of a handful of variants, which is all a bimodality claim requires, targeted single-cell RT-PCR with the 2012 nested primers is more sensitive and involves no assignment inference at all.
 
-**Two caveats that could break the whole chain.** mRNA composition is not protein composition: translation efficiency, trafficking, assembly stoichiometry and protein half-life all intervene, and the lab's own evidence for direct FMRP–Kv4 protein interaction (Zhan 2024) is a reminder that regulation sits downstream of transcript abundance. And the complex assembles somatically (companion document, Oct 30), so a cell's surface channel population integrates its transcript composition over the mRNA and protein lifetime — which would *smooth* transcript-level variance and predict less current variance than the RNA suggests. If recorded A-current parameters turn out to be *tighter* than composition variance predicts, that difference is itself informative: it would imply a post-transcriptional buffering mechanism setting A-current to a target.
+**Two caveats that could still break the chain, both downstream of the RNA.** mRNA composition is not protein composition: translation efficiency, trafficking, assembly stoichiometry and protein half-life all intervene, and the lab's own evidence for direct FMRP–Kv4 protein interaction (Zhan 2024) is a reminder that regulation sits downstream of transcript abundance. And the complex assembles somatically (companion document, Oct 30), so a cell's surface channel population integrates its transcript composition over the mRNA and protein lifetime — which would *smooth* transcript-level variance and predict less current variance than the RNA suggests. If recorded A-current parameters turn out to be *tighter* than composition variance predicts, that difference is itself informative: it would imply a post-transcriptional buffering mechanism setting A-current to a target.
 
-**Relevance to V404M.** If auxiliary-subunit composition varies this much between neighbouring pyramidal cells, the functional impact of V404M should vary with it — the mutation acts on a channel whose properties are set by partners the cell chooses. That predicts a *distribution* of severity across cells within a region rather than a uniform deficit, and offers a mechanism for why a single V404M copy is worse than one or two nulls: a null removes a channel, whereas V404M inserts a defective subunit into every complex the cell assembles, whatever its composition.
+**Relevance to V404M.** Since auxiliary-subunit composition does vary this much between neighbouring pyramidal cells, the functional impact of V404M should vary with it — the mutation acts on a channel whose properties are set by partners the cell chooses. That predicts a *distribution* of severity across cells within a region rather than a uniform deficit, and offers a mechanism for why a single V404M copy is worse than one or two nulls: a null removes a channel, whereas V404M inserts a defective subunit into every complex the cell assembles, whatever its composition.
 
 ## Concerns and open questions
 
 1. The cortex composition confound invalidates all cortical gene-level Kv4 calls until a neuronal-fraction covariate is added. Hippocampus is unaffected.
 2. The XBP1 and ΔFosB junction readouts are too shallow to support ratio estimates and should not be quoted as quantitative.
-3. Whether the within-type heterogeneity survives correction for isoform-assignment uncertainty is unknown and is the single most important open question here.
+3. PCR amplification noise is the one technical explanation for the within-type heterogeneity still formally unexcluded; a negative-control gene family would close it with existing data.
+3b. **All DPP variant numbers from the V404M bulk are withdrawn** (3′-bias collapse into DPP6S and DPP10d). DPP6a is the exception and survives. Any earlier document or table quoting bulk DPP6/DPP10 composition needs the same correction.
 4. The OPC Kv4.2 observation rests on 22 cells and lacks a contamination check.
 5. ΔFosB cannot be assayed properly by bulk junction counting; the IHC remains the better evidence.
 6. Bulk RNA cannot exclude a small, severely reactive astrocyte subpopulation.
 7. `region_compare3.py` and the three-way comparison it produced are not currently reproducible (dead paths, and the CLR metric issue applies to its distance calculations).
+8. The DPP calibration covers the DPP panel only. The Kv4 and KChIP panels have not been calibrated, and the Kv4.3L 3′UTR underestimate found earlier shows that panel is not immune. The same script covers them with one flag change.
+9. Whether the per-cell heterogeneity is a stable property or a dynamic state is untested, and it decides whether composition could be reprogrammed.
 
 ## Recommended additional analyses
 
 | Priority | Analysis | Why |
 | --- | --- | --- |
-| 1 | salmon bootstraps on a cell subset; negative-control gene family | Decides whether the heterogeneity result stands at all |
-| 2 | Neuronal-fraction covariate / deconvolution for cortex and hippocampus | Makes the V404M gene-level numbers interpretable |
-| 3 | Retrospective variance analysis of existing pyramidal A-current recordings | Tests the central prediction with data already in hand |
+| 1 | Retrospective variance analysis of existing pyramidal A-current recordings | Tests the central prediction against data already in hand, at no cost. V½ inactivation and recovery kinetics should vary beyond recording noise, and co-vary within cells |
+| 2 | Negative-control gene family through the noise-floor analysis | Closes the last technical explanation for the heterogeneity; existing data, a few hours |
+| 3 | Calibrate the Kv4 and KChIP panels (`simulate_variant_calibration.py --panels Kv4,KChIP`) | The DPP panel turned out to have a 5-fold bias; these are unchecked, and Kv4.3L is already known to be mis-estimated |
+| 3b | Neuronal-fraction covariate / deconvolution for cortex and hippocampus | Makes the V404M gene-level numbers interpretable |
 | 4 | Neuronal-specific conditional V404M | Separates neuronal from OPC contributions *and* tests whether astrogliosis is secondary — one experiment, two questions |
 | 5 | Developmental time course of the astrogliosis | Cause vs consequence |
 | 6 | Neuronal-marker contamination check on Tasic 2016 OPC libraries | Cheap; closes or opens the OPC thread |
 | 7 | Pdgfra⁺/Olig2⁺ counts in V404M cortex | Tests the OPC prediction directly |
 | 8 | Astrocyte-resolved (sorted or snRNA) sequencing with per-cell Kcnj10 | Excludes a severely reactive subpopulation |
-| 9 | Rebuild `channel_phenotype_groups.py` with the Hellinger metric and the noise floor as effect-size gate | Only worth doing after item 1 |
+| 9 | Rebuild `channel_phenotype_groups.py` with the Hellinger metric and the noise floor as effect-size gate | Its first run is retracted; now worth doing |
+| 10 | Targeted single-cell RT-PCR for DPP variants using the 2012 nested primers | For presence/absence — which is all bimodality requires — this beats whole-transcriptome sequencing on both sensitivity and freedom from assignment inference |
 
 ### Going forward
 
-The immediate decision point is item 1. If isoform-assignment uncertainty accounts for most of the within-type spread, the heterogeneity result retracts and the by-type tables stand as they are. If it does not, then Kv4-complex composition is a per-cell property rather than a per-type one, and that changes how the survey's central tables should be read and what the ephys should be looking for — at which point item 3 becomes the cheapest way to test it against data the lab already owns.
+The heterogeneity question has moved from open to largely settled, so the next step is no longer a
+sequencing experiment but an electrophysiological one, and it costs nothing. If within-type DPP composition
+is all-or-none as the data say, then V½ inactivation within a single pyramidal population should be spread
+over roughly 12–17 mV and possibly bimodal, parameters should co-vary within cells, and the clustering
+should ignore transcriptomic type boundaries. All three are testable retrospectively on recordings already
+in the lab's files. The asymmetry is worth exploiting: a tight unimodal V½ inactivation in a population the
+RNA calls bimodal would **falsify** the functional consequence outright, far more cheaply than any
+sequencing could confirm it.
+
+Patch-seq is not the way to pursue this, and the calibration explains why. If the distribution is
+all-or-none, the subpopulations are findable by patch-clamp alone and no sequencing is needed; if it were
+graded, per-cell composition would have to be correlated against per-cell kinetics at depths where DPP
+recovery is marginal. Patch-seq is most useful in exactly the regime where it is least feasible. Targeted
+single-cell RT-PCR with the 2012 nested primers is the better instrument for presence/absence, which is all
+a bimodality claim requires.
 
 For V404M, the biology now points away from proteotoxicity and toward circuit dysfunction: both alleles expressed, no stress response, no change in Kcnd2 processing, astrogliosis confined to epileptogenic regions and not tracking mutant dose, homeostatic astrocyte function intact. The conditional line is the experiment that would most efficiently advance this, since it addresses the neuronal-vs-OPC and the cause-vs-consequence questions at once.
 
 ## Data, code and provenance
 
-Repository `ppfaff/Kv4-isoform-survey`. V404M pipeline: `pipeline/build_v404m_runlist.py`, `find_v404m_codon.py`, `set_v404m_haplotypes.py`, `v404m_allele_extract.py`, `run_v404m_salmon.sh`, `run_v404m_star.sh`, `collapse_v404m.py`; analysis `scripts/v404m_panels.py`, `v404m_stress.py`, `v404m_kv4.py`, `v404m_passenger.py`. Heterogeneity: `scripts/channel_noise_floor.py` (Dirichlet floor), `channel_phenotype_groups.py` (grouping, pending rebuild), `hip_common.py`. Dataset provenance for all public data in `lab_db/DATASETS.md`. Output tables in `C:\Users\paulp\kv4_v404m_tables` and `tables/` in the repository.
+Repository `ppfaff/Kv4-isoform-survey`. V404M pipeline: `pipeline/build_v404m_runlist.py`, `find_v404m_codon.py`, `set_v404m_haplotypes.py`, `v404m_allele_extract.py`, `run_v404m_salmon.sh`, `run_v404m_star.sh`, `collapse_v404m.py`; analysis `scripts/v404m_panels.py`, `v404m_stress.py`, `v404m_kv4.py`, `v404m_passenger.py`. Heterogeneity and calibration: `scripts/channel_noise_floor.py` (Dirichlet floor), `variant_distribution_shape.py` (graded vs all-or-none), `sink_coupling.py` (RNA-integrity control), `pipeline/simulate_variant_calibration.py` (known-ratio calibration, mix and purity modes), `channel_phenotype_groups.py` (grouping, retracted pending rebuild), `hip_common.py`. Abandoned: `variant_exclusivity.py` (cannot separate the hypotheses it was built for; see *Technical findings*). Not run: `pipeline/run_bootstrap_uncertainty.sh` and `scripts/bootstrap_vs_biological.py`, superseded by the known-ratio calibration before execution. Dataset provenance for all public data in `lab_db/DATASETS.md`. Output tables in `C:\Users\paulp\kv4_v404m_tables` and `tables/` in the repository.
+
+Reference measurement: Jerng HH, Pfaffinger PJ (2012) *Incorporation of DPP6a and DPP6K variants in ternary Kv4 channel complex reconstitutes properties of A-type K current in rat cerebellar granule cells.* PLoS ONE 7(6):e38205 — the standardizing constructs described there (GAPDH exons 5–8 in tandem with exons 1–3 of two DPLP variants, 1:1:1 molar) are the only known-ratio standard this project has, and are what identified the DPP assignment bias.
 
 Companion documents: *Kv4 Complex mRNAs Are Somatic* (Oct 30) and the isoform survey conclusions (Oct 29).
