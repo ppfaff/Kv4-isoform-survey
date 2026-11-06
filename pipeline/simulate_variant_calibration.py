@@ -88,7 +88,18 @@ def load_seqs(fasta, tx2v):
                 buf.append(line.strip())
     if name is not None and name in want:
         seqs[name] = ''.join(buf).upper()
-    return {t: (want[t], s) for t, s in seqs.items() if len(s) > 200}
+    out = {t: (want[t], s) for t, s in seqs.items() if len(s) > 200}
+    # Every identifier a matched transcript carries, mapped to its variant class. The map file is keyed on
+    # transcript NAMES (Dpp10-202), which are one pipe field of the GENCODE header, but salmon's quant.sf
+    # Name is whatever the INDEX was built from: with --gencode the header is cut at the first '|', leaving
+    # a bare ENSMUST id with no name to match. Looking up only by the map's own keys therefore returned
+    # nothing and every result silently read 0.
+    id2v = {}
+    for t, (v, _) in out.items():
+        for c in [t] + t.split('|') + [f.split('.')[0] for f in t.split('|')]:
+            if c:
+                id2v[c] = v
+    return out, id2v
 
 
 def simulate(seqs, mol, readlen, tau, layout, rng, fraglen=250, fragsd=40, err=0.001):
@@ -167,8 +178,9 @@ def run_salmon(index, r1p, r2p, outdir, threads):
     return os.path.join(outdir, 'quant.sf')
 
 
-def read_quant(sf, tx2v):
+def read_quant(sf, id2v):
     tot = {}
+    seen = 0
     with open(sf) as fh:
         hdr = fh.readline().rstrip('\n').split('\t')
         iN, iT = hdr.index('Name'), hdr.index('TPM')
@@ -176,12 +188,31 @@ def read_quant(sf, tx2v):
         for line in fh:
             f = line.rstrip('\n').split('\t')
             n = f[iN]
-            cand = [n] + n.split('|') + [n.split('|')[0].split('.')[0]]
-            v = next((tx2v[c] for c in cand if c in tx2v), None)
+            cand = [n] + n.split('|') + [x.split('.')[0] for x in n.split('|')]
+            v = next((id2v[c] for c in cand if c in id2v), None)
             if v:
+                seen += 1
                 a, b = tot.get(v, (0.0, 0.0))
                 tot[v] = (a + float(f[iT]), b + float(f[iR]))
+    if seen == 0:
+        sys.stderr.write(
+            f'ERROR: no transcript in {sf} matched any known identifier, so every result would read 0.\n'
+            f'  quant.sf Names look like: {_peek_names(sf)}\n'
+            f'  identifiers being matched: {list(id2v)[:4]}\n')
+        sys.exit(1)
     return tot
+
+
+def _peek_names(sf, k=3):
+    out = []
+    with open(sf) as fh:
+        fh.readline()
+        for _ in range(k):
+            line = fh.readline()
+            if not line:
+                break
+            out.append(line.split('\t')[0])
+    return out
 
 
 def _emit_purity(conf, out):
@@ -227,7 +258,7 @@ def main():
     tx2v = load_map(a.map)
     panels = a.panels.split(',')
     tx2v = {t: v for t, v in tx2v.items() if VAR_PANEL[v] in panels}
-    seqs = load_seqs(a.fasta, tx2v)
+    seqs, id2v = load_seqs(a.fasta, tx2v)
     print(f'{len(seqs)} transcripts across {len(set(v for v, _ in seqs.values()))} variant classes')
     if not seqs:
         sys.exit('no sequences matched -- check --fasta and --map')
@@ -268,7 +299,7 @@ def main():
                         os.remove(r2p)
                     if not sf:
                         continue
-                    got = read_quant(sf, tx2v)
+                    got = read_quant(sf, id2v)
                     panel = VAR_PANEL[v]
                     vs = [x for x in PANEL_V[panel] if x in set(w for w, _ in seqs.values())]
                     tot = sum(got.get(x, (0, 0))[1] for x in vs) or 1.0
@@ -295,7 +326,7 @@ def main():
             sf = run_salmon(a.index, r1p, r2p, os.path.join(d, 'quant'), a.threads)
             if not sf:
                 print(f'{tag}: salmon failed'); continue
-            got = read_quant(sf, tx2v)
+            got = read_quant(sf, id2v)
             for panel in panels:
                 vs = [v for v in PANEL_V[panel] if v in truth]
                 if not vs:
