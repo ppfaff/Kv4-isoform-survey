@@ -142,6 +142,28 @@ def main():
     print('  2.02 d - the late-time slope pins any fit near the slow component. Dragging the fit')
     print('  down requires a free fraction so large that the curve turns visibly biphasic and R^2')
     print('  collapses, which is what the sweep shows.')
+    # how large must the unassembled fraction be for H2 to survive?
+    print('\n  HOW LARGE WOULD THE SURPLUS HAVE TO BE? Solving for the free fraction that makes a')
+    print('  single-exponential fit land on 2.02 d, with the bound pool pinned at the channel rate:')
+    for tf_h in (2, 6, 24):
+        d_free = LN2 / (tf_h / 24)
+        lo, hi = 0.0, 0.999
+        for _ in range(60):
+            mid = (lo + hi) / 2
+            y = mid * np.exp(-d_free * t) + (1 - mid) * np.exp(-k_ch * t)
+            if LN2 / fit_single_exp(t, y)[0] > 2.02:
+                lo = mid
+            else:
+                hi = mid
+        y = lo * np.exp(-d_free * t) + (1 - lo) * np.exp(-k_ch * t)
+        _, r2 = fit_single_exp(t, y)
+        print(f'    free t1/2 {tf_h:2d} h  ->  needs f_free = {lo:.2f}  '
+              f'(single-exp R2 would be {r2:.3f} vs published 0.989)')
+    print('  So H2 is not excluded outright - it survives only if MOST cellular KChIP4 is')
+    print('  unassembled surplus, and even then the decay curve should look visibly biphasic.')
+    print('  That is a falsifiable claim with a simple test: what fraction of KChIP4 co-precipitates')
+    print('  with Kv4? If most of it does, H2 is dead and exchange is required.')
+
     print('\n  CONCLUSION: a PROTECTED channel-bound KChIP pool is incompatible with these numbers.')
     print(f'  KChIP4 at 2.02 d is faster than Kv4.3 at {T_CHANNEL:.2f} d measured in the SAME')
     print('  preparation, so bound KChIP must be lost while the channel survives. Quality control of')

@@ -659,6 +659,66 @@ full-length coverage and collapsed into sinks under 3′ bias. The Kv4 and KChIP
 uncalibrated, so the gene-level sums above are far safer than individual variant shares, and the
 KChIP2x localisation should be treated as provisional until that calibration is run.
 
+### The turnover hierarchy matches the lab's own RNAi dependency hierarchy
+
+The lab previously showed, in cerebellar granule neurons and hippocampal pyramidal neurons, that
+RNAi knockdown of DPP6 causes loss of **Kv4.2, Kv4.3 and KChIP3 protein along with DPP6**. No subunit
+is stable without the complex. Put next to the measured half-lives, that is more informative than
+either result alone.
+
+Within the neuron-enriched preparation, decay rate constants with the fits' own SEs:
+
+| subunit | half-life | k (per day) | vs the next one down |
+|---|---|---|---|
+| DPP6 | 4.52 d | 0.1532 ± 0.0025 | — |
+| DPP10 | 4.36 d | 0.1589 ± 0.0042 | p = 0.24, indistinguishable |
+| Kv4.3 | 3.87 d | 0.1789 ± 0.0033 | p = 1.8 × 10⁻⁴ |
+| KChIP1 | 2.67 d | 0.2601 ± 0.0055 | p = 1 × 10⁻³⁶ |
+| KChIP4 | 2.02 d | 0.3429 ± 0.0145 | p = 9 × 10⁻⁸ |
+
+**DPPs ≈ 4.4 d > Kv4 3.87 d > KChIPs 2.0–2.7 d**, a 2.24× span end to end, every step significant
+except DPP6 against DPP10. (These SEs come from the exponential fits, not from biological replicates,
+so they understate the true uncertainty — the *ordering* is the robust claim, not the p-values.)
+
+**The two results together say the complex is not one kinetic unit.** Co-dependence alone — remove
+one member and all are lost — predicts that every member shares a single half-life, that of complex
+destruction. They do not. So something turns over while the assembly persists, and the ordering says
+what: the structurally required member is the longest-lived, the pore is intermediate, and the KChIPs
+are the shortest. DPP6, whose knockdown collapses everything, outlasts the pore subunit it stabilises.
+That is the hierarchy expected if DPP6 anchors the assembly, Kv4 is the core, and KChIPs cycle on and
+off a complex that survives their departure.
+
+The RNAi result also supplies, from the lab's own hands, the premise the two-pool model needs: free
+subunits are degraded. What it cannot settle is which subunit exchanges, because removing DPP6 removes
+everything regardless.
+
+**How much room is left for the deflationary explanation.** Surplus quality control with a protected
+bound pool requires a free fraction of **0.82–0.96** to drag an apparent half-life down to 2.02 d
+(0.82 if free KChIP4 clears in 24 h, 0.96 if in 2 h), and even then the decay should look visibly
+biphasic — single-exponential R² of 0.89 down to 0.004 against the published 0.989. So it is not
+excluded outright, but it needs most cellular KChIP4 to be unassembled. **A co-IP settles it: what
+fraction of KChIP4 co-precipitates with Kv4?** If most of it does, exchange is required.
+
+### What this predicts for recorded A-currents, and it is a prediction about shape rather than spread
+
+Two earlier findings now combine. The DPPs are the **longest-lived** members of the complex, and their
+variant identity is **all-or-none per cell** (the DPP6/DPP10 variant result above). The KChIPs are the
+shortest-lived and are expressed as graded levels. So the two auxiliary families should contribute
+differently shaped variability to a recording:
+
+- **DPP-determined properties** — N-type inactivation, the V₁⁄₂ shifts carried by DPP6a/DPP10a — rest
+  on a discrete, all-or-none, slowly-turning-over subunit. Across cells these should be **bimodal or
+  discrete**, and stable within a cell over days.
+- **KChIP-determined properties** — recovery from inactivation, surface trafficking, Ca²⁺ sensitivity
+  — rest on the fastest-turning element in the complex. Across cells these should be **continuous and
+  unimodal**, and capable of drifting within a cell on a timescale of a day or two.
+
+This sharpens the question asked earlier about whether recorded parameter variance is real. It
+predicts that the *shape* of the distribution, not its width, is the diagnostic: look for discreteness
+in the DPP-dependent parameters and smooth spread in the KChIP-dependent ones. Testing it needs no new
+preparation — only that both kinds of parameter be extracted from the same recordings and their
+distributions examined separately rather than pooled into a single SD.
+
 ### Technical findings worth recording
 
 **Six methodological failures, each of which produced a confident wrong answer.**
