@@ -221,7 +221,32 @@ wild-type L6 recordings give it directly: the genotype difference in mean V½ in
 within-type SD. That single number says whether this is an 80-cell experiment, a 200-cell experiment, or one
 not to run.
 
-**What fraction truly lacks an A-current** is a separate question, and 6.5% is an upper bound. Detection
+**What fraction truly lacks an A-current — resolved, and it is essentially none.** Among the deeper half of
+L6a Sla libraries (n = 31), **not one cell has zero Kv4 reads** (95% upper bound 9.2%), against 6.5% at the
+≥5-read threshold across all cells. The 6.5% was detection. The metric validates on the controls, which stay
+zero at depth where they should: Astro Aqp4 63.6%, Oligo Opalin 53.3%, Micro Ctss 54.5%.
+
+**But the Kv4.2-negative population survives the same test, and that dissociation is the key result.** In the
+identical cells, 19.4% (6 of 31) carry zero Kcnd2 reads while every one of them has Kv4 reads from Kcnd1 or
+Kcnd3 — against 20.7% at the ≥5-read threshold, i.e. essentially unchanged. One call collapsed with depth
+and the other did not, which is strong evidence the second is biological: these are cells running an
+A-current on a different pore subunit, not cells sequenced too shallowly. `L5a Batf3` shows the same
+dissociation (0.0% Kv4-null, 21.2% Kv4.2-null) and `L6a Mgp` likewise (4.8% / 14.3%).
+
+It is type-specific rather than general: `L5b Tph2`, `L5b Cdh13`, `L5a Tcerg1l` and `L6a Car12` sit at 0%,
+though with n of 10–18 their upper bounds are 15–26% and a modest population is not excluded. Among
+interneurons the same test confirms **`Pvalb Tacr3` at 5.6%** (UB 16.5%) and `Sst Chodl` at 4.8% as the
+cleanest targets, against `Pvalb Rspo2` 81.2% and `Vip Gpc3` 80.0%.
+
+**So the corrected figures for an L6a Sla recording are: ~0% with no A-current, ~19% with an A-current that
+V404M cannot touch, ~81% affected.** That is the p = 0.194 the power analysis assumed, now established
+rather than asserted. The earlier statement that 6.5% should have no A-current is superseded.
+
+The residual caveat is unchanged and unquantified: bursting means a cell with no detectable Kcnd2 mRNA may
+still hold Kv4.2 protein made earlier, so 19% remains an upper bound on the genuinely genotype-insensitive
+fraction, by an amount set by the protein half-life relative to the message.
+
+*(Superseded text follows for the record:)* 6.5% was an upper bound. Detection
 threshold, transcriptional bursting and an arbitrary cutoff all push the same way, and mature Kcnd2 mRNA is a
 long-lived pool fed by bursts (companion document, Oct 30), so a cell silent at capture may still hold
 channel protein. The defensible estimate is the fraction with exactly zero Kv4 reads among the deepest
