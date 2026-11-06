@@ -312,6 +312,30 @@ Plain Pvalb-IRES-Cre at 27% makes the intersectional `PvalbF-Gad2` (32%) not wor
 population. **The dilution-aware interneuron experiment is therefore cheap**: at d = 2, `Pvalb Tacr3` needs
 five cells per group, or about 19 Pvalb⁺ cells patched per genotype.
 
+**Layer restriction changes the picture substantially**, and in one case reverses the ranking:
+
+| target | best line + layer | yield |
+| --- | --- | --- |
+| Pvalb Tacr3 | **PvalbF-Gad2, upper** | 60.9% (14/23) |
+| Pvalb Tacr3 | Pvalb, upper | 43.8% (14/32) |
+| Pvalb Tacr3 | pan-GABAergic (Viaat/Gad2), upper | 21% (35/167) |
+| Sst Chodl | **Nos1**, no restriction | 43.1% (31/72) |
+| L2/3 Ptgs2 | **Cux2, L1–L2/3** | 66.7% (32/48) |
+| L6a Sla | **Ntsr1, L6a** | 61.0% (47/77) |
+| L5a Batf3 | **Rorb, L5** | 56.2% (9/16) |
+
+A pan-GABAergic driver is more usable than its unrestricted yield suggests — 6% overall but 21% in upper
+layers — though still behind Pvalb-Cre. The intersectional `PvalbF-Gad2` only earns its keep once layer is
+applied (32% unrestricted, 60.9% upper). For Sst no layer restriction beats 7%, so `Nos1` is the choice
+there, and since `Sst Chodl` are the long-range NOS1⁺ cells of deep layers and the white-matter border, that
+line gives a population that is both clean and deep.
+
+**Pvalb Tacr3 is an upper-layer type** (Pvalb-Cre: 43.8% upper vs 12.5% lower; pan-GABAergic 21% upper vs 0%
+in L6), so deep-layer inhibitory recordings do not sample it. Deep inhibitory recordings instead sample
+`Pvalb Gpx3` (40.6% Kv4.2-negative), `Pvalb Wt1` (41.4%) and `Pvalb Rspo2` (81.2%) mixed with deep Sst —
+squarely in the diluted regime, which is the likely explanation for the doubled SD observed in the lab's own
+deep inhibitory recordings (below).
+
 Yields are rank orderings, not hit rates — Tasic 2016 stratified sampling by line and dissected layer — and
 they come from VISp, so composition may differ in other cortical areas.
 
@@ -321,6 +345,53 @@ Kv4.2-negative) and Allen `L6 CT CTX` (3.7–6.2%) might reconcile if L6a Sla we
 discrepancy is real and unexplained; depth does not account for it either, since the Allen data is shallower
 and should over-call rather than under-call Kv4.2-negative. The likeliest remaining explanation is that the
 two clusters are not the same cells despite both being broadly CT — the taxonomy mismatch recorded above.
+
+### The lab's deep inhibitory recordings already show the mixture signature — first independent test
+
+Existing recordings of cortical deep inhibitory neurons, V404M/+ against +/+ littermates:
+
+| | n | mean | SD |
+| --- | --- | --- | --- |
+| KCND2(V404M/+) | 5 | −71.50 | **6.75** |
+| KCND2(+/+) | 7 | −61.34 | **3.43** |
+
+The mean shift of −10.16 mV is significant (Welch p = 0.024). **The informative part is that the mutant SD
+is 1.97× the wild-type SD**, which is what a mixture produces and a uniform shift does not: if a fraction p
+of mutant cells is genotype-insensitive, the mean shift falls to (1−p)Δ while the variance rises to
+σ² + p(1−p)Δ². Two equations, two unknowns:
+
+- **unaffected fraction p = 0.247**
+- **per-cell shift Δ = 13.5 mV**, against the 10.2 mV measured
+- true per-cell effect size d = 3.94, against an observed d = 2.02
+
+**That p = 0.247 was inferred from electrophysiology alone, with no knowledge of the RNA**, and the RNA
+predicts 20–40% Kv4.2-negative for a mixed deep-layer interneuron population (`Pvalb Gpx3` 40.6%,
+`Pvalb Wt1` 41.4%, `Sst Cbln4` 8.8%, `Sst Myh8` 40.0%). Two independent measurements converging on the same
+quantity.
+
+**The honest caveats are large.** At n = 5/7 the bootstrap interval on p is [0.029–0.671], 10.4% of
+resamples show no excess variance at all, and the variance ratio itself is not significant (F = 3.89,
+p = 0.137). The excess variance could also come from variable allele expression, from V404M interacting with
+variable auxiliary composition, or simply from chance at n = 5. This is consistent with the prediction, not
+confirmation of it.
+
+**What it would take**, simulated at the observed effect size (Δ = 13.5 mV, σ = 3.43, p = 0.247):
+
+| n per group | variance F-test | mixture LRT | estimate of p, 90% CI |
+| --- | --- | --- | --- |
+| 5 (current) | 0.32 | 0.61 | 0.20 [0.00–0.60] |
+| 15 | 0.81 | 0.94 | 0.21 [0.00–0.43] |
+| **20** | **0.91** | **0.97** | **0.24 [0.06–0.41]** |
+| 30 | 0.97 | 0.99 | 0.24 [0.10–0.37] |
+
+Twenty per group establishes the mixture and gives an interval on p excluding zero — about 15 more mutant
+and 13 more wild-type cells. The effect is large, which is what makes this cheap.
+
+**Two consequences.** The measured −10.2 mV **understates the per-cell effect by a third**, and every V404M
+effect size measured in a diluted population is understated by 1/(1−p). And the cleanest version of this
+experiment is not in deep layers: `Nos1`-driven `Sst Chodl` cells are 4.8% Kv4.2-negative and sit in deep
+layers and at the white-matter border, so switching to them would move p from ~0.25 to ~0.05 and bring the
+measured shift close to the true one.
 
 ### Technical findings worth recording
 
@@ -429,7 +500,8 @@ The quantitative anchor: the measured all-or-none distributions give predicted 1
 
 | Priority | Analysis | Why |
 | --- | --- | --- |
-| 1 | Measure d (genotype shift ÷ within-type SD) from existing V404M and wild-type L6 recordings | One number, from data already in hand, that decides whether the mixture experiment is 80 cells, 200 cells, or not worth running |
+| 1 | Extend the deep inhibitory recordings to n = 20 per genotype | 97% power to establish the mixture and a CI on p excluding zero; d is already known to be ~3.9 from the existing 5/7 cells |
+| 1a2 | Repeat in Nos1-driven Sst Chodl cells (4.8% Kv4.2-negative, deep) | Near-undiluted measurement of the true per-cell effect |
 | 1a | Re-read any existing V404M interneuron recordings in light of the dilution table | A non-significant result in Vip or Lamp5 types means little; a significant one is an underestimate by 1/(1−p) |
 | 1b | Retrospective variance analysis of existing pyramidal A-current recordings | Tests the central prediction at no cost. V½ inactivation and recovery kinetics should vary beyond recording noise, and co-vary within cells |
 | 2 | Negative-control gene family through the noise-floor analysis | Closes the last technical explanation for the heterogeneity; existing data, a few hours |
