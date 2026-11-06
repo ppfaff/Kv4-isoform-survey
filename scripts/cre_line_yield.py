@@ -59,12 +59,20 @@ def main():
     if not ctx or not os.path.exists(ctx):
         sys.exit('set CTX_DATA to the Tasic 2016 annotated per-cell CSV')
     d = pd.read_csv(ctx, usecols=lambda c: c in (
-        'sample_name', 'primary_type_label', 'cluster_label', 'subclass', 'cluster'))
+        'sample_name', 'primary_type_label', 'cluster_label', 'subclass', 'cluster',
+        'dissection', 'layer', 'broad_type'))
     tcol = next((c for c in ('primary_type_label', 'cluster_label', 'cluster', 'subclass')
                  if c in d.columns), None)
     if tcol is None:
         sys.exit(f'no type column found; columns were {list(d.columns)}')
-    cells = d[['sample_name', tcol]].drop_duplicates().rename(columns={tcol: 'cell_type'})
+    lcol = next((c for c in ('dissection', 'layer') if c in d.columns), None)
+    bcol = 'broad_type' if 'broad_type' in d.columns else None
+    keep = ['sample_name', tcol] + [c for c in (lcol, bcol) if c]
+    cells = d[keep].drop_duplicates().rename(columns={tcol: 'cell_type'})
+    if lcol:
+        cells = cells.rename(columns={lcol: 'layer'})
+    if bcol:
+        cells = cells.rename(columns={bcol: 'broad_type'})
 
     E = get_ena()
     E['cre_line'], E['tdT_pos'] = zip(*E['sample_title'].map(parse_line))
@@ -115,6 +123,45 @@ def main():
         for _, r in sub.head(6).iterrows():
             print(f'    {r.cre_line:22} {r.yield_pct:5.1f}%  ({int(r.n_in_type)} of '
                   f'{int(r.n_line_total)} cells from this line)')
+
+    # ---- line x layer: does restricting the dissection improve yield?
+    if 'layer' in m.columns:
+        print('\n' + '=' * 96)
+        print('LINE x LAYER: does restricting the dissected layer improve yield?')
+        print('  A pan-GABAergic line (Gad2, Slc32a1/Viaat) is only worth using if some layer')
+        print('  concentrates the target enough to beat the subclass-specific line.')
+        print('=' * 96)
+        for t in TARGETS:
+            sub = m[m.cell_type == t]
+            if sub.empty:
+                continue
+            print(f'\n{t}')
+            g = (m.groupby(['cre_line', 'layer'])
+                   .agg(n_total=('cell_type', 'size'),
+                        n_target=('cell_type', lambda x, tt=t: int((x == tt).sum())))
+                   .reset_index())
+            g = g[(g.n_total >= MIN_LINE) & (g.n_target > 0)]
+            g['yield_pct'] = g.n_target / g.n_total * 100
+            for _, r in g.sort_values('yield_pct', ascending=False).head(8).iterrows():
+                print(f'    {r.cre_line:20} {str(r.layer)[:18]:18} {r.yield_pct:5.1f}%  '
+                      f'({int(r.n_target)} of {int(r.n_total)})')
+        # what a pan-GABAergic line would give, by layer
+        if 'broad_type' in m.columns:
+            gaba = m[m.broad_type.astype(str).str.contains('GABA', case=False, na=False)]
+            if not gaba.empty:
+                print('\n' + '-' * 96)
+                print('If a pan-GABAergic driver (Viaat/Slc32a1, Gad2) is used, what each layer yields:')
+                print('-' * 96)
+                for t in [x for x in TARGETS if x in set(gaba.cell_type)]:
+                    sub = (gaba.assign(hit=gaba.cell_type == t)
+                               .groupby('layer').agg(n=('hit', 'size'), k=('hit', 'sum')))
+                    sub = sub[sub.n >= MIN_LINE]
+                    if sub.empty:
+                        continue
+                    best = (sub.k / sub.n * 100).sort_values(ascending=False)
+                    line = '  '.join(f'{str(i)[:14]} {v:.0f}% ({int(sub.k[i])}/{int(sub.n[i])})'
+                                     for i, v in best.head(4).items())
+                    print(f'  {t:16} {line}')
 
     print('\n' + '=' * 96)
     print('All lines in the dataset, by total cells (for reference)')
