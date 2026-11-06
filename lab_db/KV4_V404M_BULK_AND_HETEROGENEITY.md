@@ -523,6 +523,86 @@ than its degradation, so these bound the total protein, not the functional surfa
 activity-dependent Kv4.2 degradation is itself established). Kcnd2 was quantified only in mixed
 cultures, which contain glia, so its 4.81 d is not a clean neuronal figure.
 
+### Why a KChIP half-life shorter than the channel's forces an exchange — solid arithmetic, soft inputs
+
+`scripts/kchip_turnover_model.py`. Within the **same** neuron-enriched preparation, Dörrbaum's values
+order as DPP6 4.52 d > Kv4.3 3.87 d > KChIP1 2.67 d > KChIP4 2.02 d. Kcnd2's 4.81 d is from mixed
+cultures, so Kv4.3 is used as the within-preparation reference and the cross-culture objection does
+not arise (neuronal and mixed medians are 5.24 and 5.36 d, so the sheets are on the same scale).
+
+A KChIP sitting in an assembled Kv4 complex cannot be degraded unless the complex is taken apart, so
+these numbers are not free parameters. Three readings:
+
+**H1, fast exchange.** KChIP cycles off faster than either pool is degraded, the pools stay
+equilibrated, and one effective rate is observed. Solving `k_obs = f_free·d_free + (1−f_free)·d_chan`:
+if 90% of KChIP4 is channel-bound, the free pool must clear with a **9 h** half-life; at 95% bound,
+4.8 h. So H1 requires KChIP to unbind on a timescale of **hours**, which is fast enough for the
+released protein to be a signal rather than debris.
+
+**H2, orphan quality control with no exchange.** KChIP made in excess, surplus destroyed by
+orphan-subunit QC (HUWE1 and relatives target unassembled soluble proteins), bound pool as stable as
+the channel. **This is excluded, and for a structural reason rather than a numerical one.** A sum of
+exponentials is dominated at late times by its slowest component, so a mixture whose protected pool
+decays at 3.87 d cannot present an apparent half-life of 2.02 d — the late slope pins any fit near
+the slow component. Across a sweep of free fractions (0.1–0.7) and free half-lives (2–24 h), the
+closest any scenario gets is 2.37 d, and only at a 70% free fraction with R² = 0.88 against the
+published 0.989. Surplus QC can coexist with exchange but cannot be the whole story.
+
+So **bound KChIP must be lost while the channel survives.** That conclusion is forced by the data,
+not merely permitted by it. Independent support: deleting Kv4.2 reduces KChIP1–3 protein in mouse
+brain, and loss of Kv4.2 in cortical pyramidal neurons causes targeted degradation of KChIP3 — the
+channel protects its auxiliary subunit, which is the two-pool structure the model needs.
+
+**Where this gets interesting, and where it is speculative.** All four KChIPs bind downstream
+regulatory element (DRE) sites and repress transcription — not only KChIP3/DREAM/calsenilin; KChIP1–4
+repress DRE promoters in pineal gland, and KChIP2 represses *Cacnb2*. DNA binding needs the tetramer
+and is cation-sensitive in a specific direction: Mg²⁺ promotes it and **rising Ca²⁺ prevents** it, so
+DREAM represses at rest and activity *derepresses* its targets. KChIP3 relocates from membrane to
+nucleus in hippocampal neurons after fear conditioning, and sumoylation favours the nuclear pool
+while palmitoylation and phosphorylation hold it at the membrane — a post-translational switch for
+the partition. That is a coherent route from channel occupancy to transcription.
+
+Two things keep this a hypothesis. **KChIP binding to Kv4 is reported as Ca²⁺-*independent*** — the
+cation sensitivity is on DNA binding and on partners like PSD95 and presenilin, not on the Kv4
+interaction, and no direct evidence has KChIPs routinely dissociating from Kv4 (only NS5806's effect
+on the dissociation rate shows the interaction is reversible). And **the measured short half-lives
+are KChIP1 and KChIP4; Kcnip2 and Kcnip3 were not detected at all.** So the turnover result and the
+transcription-factor literature do not yet meet in the same protein.
+
+### A test of that loop in the V404M data, which came back negative — and turned up something else
+
+`scripts/dre_target_test.py`. If hypofunctional Kv4.2 raises Ca²⁺ entry, DREAM should come off DNA
+and its targets should rise. Tested competitively (set vs all other genes) against a matched set of
+activity-regulated genes that are *not* DRE targets, because a bare "DRE targets moved" result is
+answered by any global activity shift.
+
+| tissue | DRE targets (n=6) | IEG controls (n=11) |
+|---|---|---|
+| cortex | median −0.176, p = 0.106 | median −0.780, **p < 0.001** |
+| hippocampus | median −0.056, p = 0.079 | median −0.389, **p < 0.001** |
+| thalamus | median −0.047, p = 0.819 | median −0.397, **p < 0.001** |
+| cerebellum | median −0.070, p = 0.266 | median −0.261, **p < 0.001** |
+
+**No DRE-specific shift in any tissue**, and the only DRE genes that move (*Fos*, *Fosl2* in cortex)
+are the ones that are also IEGs. The direction is also wrong for the hypothesis — targets should have
+gone *up*. With six genes the test has little power, so this is weak evidence against rather than a
+refutation, but there is no transcriptional footprint of KChIP derepression here.
+
+**The incidental finding is larger than the thing being tested: immediate-early genes are
+systematically DOWN in V404M in all four tissues** (p < 0.001 competitively in each). Cortex is
+strongest — *Npas4* −1.48, *Fos* −1.24, *Egr1* −1.05, *Nr4a1* −1.05, *Fosl2* −0.95, with *Fos*,
+*Fosl2*, *Npas4* and *Egr1* surviving FDR. Reduced activity-dependent transcription is not what a
+straightforwardly hyperexcitable mutant should show.
+
+Before that is believed, note that **the most likely explanation is already in this document**: cortex
+Kv4 "decreases" in this dataset were shown to be cell-composition shifts, not regulation, and there
+is astrogliosis. More glia and proportionally fewer neurons dilutes every neuronal transcript,
+IEGs included. The neuronal-fraction covariate already on the recommended-analyses list is the test,
+and it should be run before this is treated as a biological result. Design confounds are at least
+not the issue: all 48 libraries are on one lane (L006, S44–S91), genotypes are interleaved within
+each tissue block rather than blocked, sex is balanced, and the same animals supplied all four
+tissues — and handling stress would push IEGs up, not down.
+
 ### Technical findings worth recording
 
 **Six methodological failures, each of which produced a confident wrong answer.**
