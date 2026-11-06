@@ -38,6 +38,14 @@ C, source = load_counts(TABLES)
 meta = load_meta(TABLES)
 common = [s for s in C.columns if s in meta.index]
 C, meta = C[common].round().astype(int), meta.loc[common]
+# DROP_SAMPLES removes named samples before any modelling — used for libraries that sit apart in the PCA
+drop = [d.strip() for d in os.environ.get('DROP_SAMPLES', '').split(',') if d.strip()]
+if drop:
+    keep = [s for s in C.columns if s not in drop]
+    missing = [d for d in drop if d not in C.columns]
+    print(f'dropping {len(C.columns) - len(keep)} sample(s) on request: {", ".join(d for d in drop if d in C.columns)}'
+          + (f'  (not found: {", ".join(missing)})' if missing else ''))
+    C, meta = C[keep], meta.loc[keep]
 print(f'counts from {source}: {C.shape[0]} genes x {C.shape[1]} samples')
 print(meta.groupby(['tissue', 'genotype']).size().unstack(fill_value=0).to_string())
 
