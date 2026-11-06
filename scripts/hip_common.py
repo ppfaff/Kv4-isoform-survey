@@ -1,8 +1,22 @@
 """Shared definitions for the hippocampal (Allen SSv4, Yao 2021) Kv4-complex isoform analysis.
 Variant nomenclature and colour/hatch scheme are identical to the cortex (Tasic 2016) work."""
+import os
 import pandas as pd, numpy as np
 
-HIP_PKL = '/home/claude/kv4/hip/hip_per_cell.pkl'
+# Per-cell input. The original pickles were built inside an ephemeral analysis container and no longer exist;
+# the durable form of the same data is the annotated CSV that collapse_hip.py / collapse_ctx.py write on the
+# analysis machine (same columns: sample_name, gene, transcript, biotype, reads, *_label). Either is accepted,
+# chosen by extension, and both are overridable so the loaders work wherever the data actually sits.
+HIP_PKL = os.environ.get('HIP_DATA', 'tables/hip_isoform_per_cell_annotated.csv')
+
+
+def _read_percell(path):
+    if not os.path.exists(path):
+        raise FileNotFoundError(
+            f'per-cell table not found: {path}\n'
+            f'    set HIP_DATA / CTX_DATA to the annotated CSV written by collapse_hip.py / collapse_ctx.py '
+            f'(tables/*_isoform_per_cell_annotated.csv), or to a .pkl of the same table.')
+    return pd.read_pickle(path) if path.endswith(('.pkl', '.pickle')) else pd.read_csv(path)
 
 final_map = {
  'Dpp6-201':'DPP6a','Dpp6-206':'DPP6a','Dpp6-208':'DPP6a',
@@ -111,7 +125,7 @@ def load_hip():
     """Per-transcript-per-cell table with variant classes applied, same filtering as the cortex work:
     unmapped transcripts (no literature support) dropped; retained_intron transcripts dropped only when
     they fall in an unnamed other/fragment bucket."""
-    d = pd.read_pickle(HIP_PKL)
+    d = _read_percell(HIP_PKL)
     d['vclass'] = d['transcript'].map(final_map)
     d = d.dropna(subset=['vclass']).copy()
     is_other = d['vclass'].str.contains('other|fragment', case=False, regex=True)
@@ -123,12 +137,12 @@ def load_hip():
 
 
 # ---------------------------------------------------------------- cortex (Tasic 2016, full 1,677 cells)
-CTX_PKL = '/home/claude/kv4/ctx/ctx_per_cell.pkl'
+CTX_PKL = os.environ.get('CTX_DATA', 'tables/ctx_isoform_per_cell_annotated.csv')
 CTX_CLS = {'GABA-ergic Neuron': 'GABA', 'Glutamatergic Neuron': 'Glut'}
 
 def load_ctx():
     """Same shape as load_hip(): columns subclass (=Tasic primary type), cluster (=same), cls, region, vclass, panel."""
-    d = pd.read_pickle(CTX_PKL)
+    d = _read_percell(CTX_PKL)
     d['vclass'] = d['transcript'].map(final_map)
     d = d.dropna(subset=['vclass']).copy()
     is_other = d['vclass'].str.contains('other|fragment', case=False, regex=True)
