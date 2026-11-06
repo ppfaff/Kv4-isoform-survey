@@ -469,6 +469,60 @@ uncertainty. **polyA⁺ libraries cannot be used at all** — pre-mRNA is not po
 the V404M bulk's 2.9–11.6% intronic Kcnd2 is a property of the selection chemistry, not the RNA.
 Metabolic labelling (SLAM-seq, 4sU) measures decay directly and would settle this.
 
+### Measured protein half-lives, and why they now bound the 19.4% prediction — solid, with a species caveat
+
+`scripts/protein_lifetime.py`. Source: Dörrbaum, Kochen, Langer & Schuman, *eLife* 2018;7:e34202,
+Supplementary file 1 — SILAC LC-MS/MS pulse-chase in rat cortex/hippocampus cultures (P1-derived,
+18–19 DIV), reported separately for mixed, neuron-enriched and glia-enriched cultures. This is the
+dataset plotted in Supplementary Fig. 19b of Qiu et al., *Nat Neurosci* 29:2685 (2026). The
+half-life column was verified as ln2/k before use (median relative error 1.2 × 10⁻¹⁵), so the units
+are days.
+
+| gene | neuron-enriched | mixed | glia-enriched | percentile (own culture) | R² |
+|---|---|---|---|---|---|
+| **Kcnd2** | — | **4.81 d** | — | 40th | 0.96 |
+| Kcnd3 | 3.87 d | — | — | 24th | 0.999 |
+| Kcnip1 | 2.67 d | — | — | **5th** | 0.998 |
+| Kcnip4 | 2.02 d | — | — | **2nd** | 0.989 |
+| Dpp6 | 4.52 d | 5.95 d | 2.33 d | 36th | 0.95 |
+| Dpp10 | 4.36 d | 5.87 d | 2.73 d | 33rd | 0.98 |
+
+Kcnd1, Kcnip2 and Kcnip3 were not detected; at ~3,500 proteins quantified that is proteomic depth,
+not biology. Median protein half-life is 5.24 d in neurons and 2.85 d in glia — glial proteins turn
+over about twice as fast across the board, which is worth remembering next to the astrogliosis
+result, since a state change there will equilibrate faster than in neurons.
+
+**Kv4.2 protein outlives its own transcript by roughly 20-fold** (4.81 d = 115 h against an mRNA
+half-life of 2.6–13 h). Two consequences pull in opposite directions:
+
+- *For the stability argument.* The A-current cannot track transcription on any timescale shorter
+  than days. Combined with the 4.3 h it takes to transcribe Kcnd2 once, this is a sufficient
+  mechanism for the near-constitutive behaviour of Fig. 7 in `KV4_SURVEY_CONCLUSIONS.md`.
+- *Against the 19.4% prediction, and this is now the binding limitation.* A cell scored
+  Kv4.2-negative at capture may still carry protein synthesised over the preceding week. For ~1 in 5
+  V404M recordings to read as wild-type, the negative state must **persist for days**, not merely
+  hold at the instant of capture. The mRNA zero is necessary but not sufficient. This replaces the
+  bursting caveat, which the mRNA lifetime retired — the limitation has moved from "is the zero
+  real?" to "how long does the zero last?", which is a question about state stability, and the
+  single-cell data cannot answer it because every cell is observed once. Patch-seq cannot either,
+  for the same reason. What would answer it is a Kv4.2 reporter followed over days, or an
+  immunostain asking whether the Kv4.2-negative fraction of a given type matches the mRNA-negative
+  fraction — if protein-negative cells are rarer than 19%, the state is transient.
+
+**A second finding, unprompted by the question.** The KChIPs are among the shortest-lived proteins in
+the dataset — Kcnip4 at the 2nd percentile, Kcnip1 at the 5th — while the pore subunit and both DPPs
+sit mid-distribution at the 24th–36th. KChIP4 turns over 2.2× faster than DPP6 within the same
+complex. So the auxiliary subunit that is near-constitutive at the *mRNA* level is the least stable
+member at the *protein* level, and KChIP supply, not Kv4 supply, is the plausible rate-limiting step
+in assembling the complex. That is a testable handle on what sets A-current properties, and it is the
+opposite of what the mRNA data alone would suggest.
+
+**Caveats.** Rat, cultured, P1-derived, 18–19 DIV, no intact circuit — not adult mouse in vivo. The
+values are whole-cell pools: surface delivery, endocytosis and recycling of Kv4.2 are much faster
+than its degradation, so these bound the total protein, not the functional surface channel (and
+activity-dependent Kv4.2 degradation is itself established). Kcnd2 was quantified only in mixed
+cultures, which contain glia, so its 4.81 d is not a clean neuronal figure.
+
 ### Technical findings worth recording
 
 **Six methodological failures, each of which produced a confident wrong answer.**
