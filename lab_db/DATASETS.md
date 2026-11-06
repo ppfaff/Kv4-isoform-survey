@@ -140,3 +140,56 @@ pydeseq2 0.5.4.
 
 *Compiled from the download code in this repository (`pipeline/`), which is the authoritative
 record of what was actually fetched.*
+
+---
+
+## Candidate sources for DIRECT mRNA half-life measurement (not yet downloaded)
+
+The exon:intron estimate in `KV4_V404M_BULK_AND_HETEROGENEITY.md` infers Kcnd2's half-life as
+2.6-13 h with the splicing commitment time as the dominant uncertainty. Two published datasets
+measure decay directly and would replace that inference.
+
+### 1. Qiu, Zhang, Xia, Gao et al., *Nat Neurosci* 29(11):2685-2698 (Nov 2026). PMID 42675226
+
+In vivo transgenesis-free 4sU labelling in mouse brain with SLAM chemistry; droplet scNT-seq2 plus
+spatial NT-seq on Visium. Reports gene-level half-lives for **12,483 genes across 15 cortical cell
+types**, mean 4.6 h, range <1 h to >100 h; neurite-enriched mRNAs mean 11.9 h. Our 112:1 density
+ratio for Kcnd2 puts it at 2.6-13 h, i.e. squarely on their transcriptome average.
+
+| accession | content | size | format |
+|---|---|---|---|
+| GSE249405 | SuperSeries | 6.7 Gb | — |
+| GSE249398 | scNT-seq2, cortical cell types | 2.0 Gb | **tar of H5AD** |
+| GSE249403 | Spatial NT-seq | 4.6 Gb | tar |
+| PRJNA1048969 | BioProject | — | — |
+
+The H5AD files carry per-cell **new and total** RNA counts, so no FASTQ, no alignment and no
+conversion-calling is needed. Pseudobulk new and total counts within a cell type, then
+`tau = -t / ln(1 - NTR)` and `half-life = tau * ln2` at the known labelling time t. Include *Fos*
+(minutes) and *Actb*/*Gapdh* (hours) as known-answer anchors before believing any Kv4-panel number.
+
+**Caveat that decides whether this is worth it: the labelled animals are E16.5, P7 and P12** —
+developing brain, not adult. Kcnd2 is developmentally regulated, so these are a weaker reference for
+adult V404M recordings than the cell-type resolution suggests.
+
+Supplementary Table S2 (per-gene synthesis, degradation and abundance across the 15 cortical types)
+would answer the panel question on its own without the 2 Gb download. It is **not** in GEO and
+**not** attached to the bioRxiv/PMC preprint (PMC12874000 carries the PDF only; its availability
+statement still says "upon publication"), so it has to come from the *Nat Neurosci* article.
+
+### 2. Loedige et al., *Mol Cell* (2023) — mRNA stability and m6A in neuronal localization
+
+Bulk SLAM-seq pulse-chase in **mouse primary cortical neurons** and mESC-derived neurons, with
+half-lives resolved by compartment (soma vs neurites). Bulk gives far better per-gene precision than
+single-cell NTR, and the compartment split parallels the Farris soma/dendrite libraries already used
+here. Deposited in ArrayExpress, **E-MTAB-9400** and **E-MTAB-12888**; per-gene values in its
+Tables S1/S2, codon optimality vs half-life in S7. Reports that longer 3'UTRs are destabilising,
+which is a direct testable prediction for Kcnd2's long 3'UTR.
+
+### Access note
+
+Neither the analysis container nor the linked Windows VM can reach ncbi.nlm.nih.gov, ebi.ac.uk or
+biorxiv.org — both sit behind an egress allowlist that passes only package registries and GitHub
+(the VM does reach pypi, so `h5py`/`anndata` can be installed there). The desktop browser pane
+reaches all of them but each host needs a separate approval, and it has 1.9 Gb free on its session
+disk, so a multi-Gb download must land in a connected Windows folder and be processed in place.
