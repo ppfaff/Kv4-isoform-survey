@@ -162,6 +162,72 @@ The single-cell results are unaffected and show none of the collapse signature �
 
 One route remained by which the artefact could have reached the single-cell data: RNA integrity varies cell to cell, so an intact cell reports DPP6K correctly while a degraded one reports the same molecule as DPP6S, splitting cells into "expresses it" and "doesn't" by quality alone — which is the observed bimodality. Because Dpp6 and Dpp10 have *independent* sinks, a shared coverage profile would move both together. It does not: across 29 cell types in three datasets, the DPP6S–DPP10d correlation has a median rho of −0.005 and sits a median 0.254 *below* its compositional null, with 1 of 29 types exceeding the null (chance alone gives ~5%). A synthetic shared-quality driver produces +0.63 beyond null, so this is not a power limitation. **The bimodality is not a coverage artefact.**
 
+### What a pipette would encounter, and what it would take to test it — solid
+
+Recast as recordable categories, with the A-current-bearing population (any Kv4 detected) as the denominator,
+since that is the population a patch electrode samples from. For `L6a Sla` (n = 62):
+
+| | % |
+| --- | --- |
+| cells with any Kv4 subunit | 93.5 |
+| of those: full ternary complex (KChIP + DPP) | 96.6 |
+| of those: DPP only, no KChIP | 1.7 |
+| of those: KChIP only, no DPP | 1.7 |
+| **of those: no Kv4.2 (Kv4.1/Kv4.3 only)** | **20.7** |
+| of the Kv4.2-negative cells, those carrying the full auxiliary set | 91.7 |
+
+**The auxiliary complement does not vary in cortical pyramidal cells.** Across every excitatory type the
+A-current-bearing cells carry KChIP + DPP essentially without exception — L2/3 Ptgs2 98.9%, L4 Arf5 100%,
+L4 Scnn1a 100%, L5a Batf3 100%, L5b Tph2 100%, L6a Mgp 100%, L6a Car12 100%, L6b Serpinb11 100%. What varies
+is the pore subunit, not its partners. An earlier version of this analysis reported ~73% "full complex" for
+L6a Sla; that was an artefact of a category scheme in which categories 3–6 all required Kcnd2 and so never
+assessed the auxiliary complement of a cell running on Kv4.1/Kv4.3. On synthetic data where 97.7% of
+A-current cells carried the full complement, that scheme returned 73.6%.
+
+**Partial complexes do exist, but not in cortex.** `77_Sst HPF` has 73.3% of its A-current cells on DPP
+without KChIP, `78_Sst HPF` 37.0%, `8_Lamp5 Lhx6` 36.0% — a real hippocampal interneuron configuration, with
+the faster kinetics and hyperpolarised V½ that implies.
+
+**Within L6a, Sla carries the largest Kv4.2-negative fraction** (20.7%, against Mgp 11.1% and Car12 5.0%).
+Note the Allen data puts `L6 CT CTX` at 3.7–6.2% and `L6 IT CTX` at 16.7%, so if `L6a Sla` is IT rather than
+CT — and the Oct 30 mapping of L6a types onto CT/IT was our inference, not a published crosswalk — the two
+datasets reconcile.
+
+**Implication for V404M.** About 19% of L6a Sla cells one would patch carry no Kv4.2 and should be
+genotype-insensitive: identical between V404M and wild-type littermates. That predicts a **mixture** in the
+mutant A-current distribution against a unimodal wild-type one — a within-animal control needing no
+sequencing.
+
+**How many recordings.** Simulated, using wild-type littermates as a fixed reference component and testing by
+likelihood ratio whether the mutant sample needs it (far more powerful than asking one sample whether it
+looks bimodal; critical values calibrated by simulation because the mixing proportion is on a boundary under
+H0). With d = shift ÷ within-type SD of the parameter:
+
+| | power at n = 80 | power at n = 200 | estimate of p at n = 200 |
+| --- | --- | --- | --- |
+| d = 1.0 | 0.06 | 0.13 | — |
+| d = 1.5 | 0.21 | 0.44 | 0.19 [0.00–0.32] |
+| d = 2.0 | 0.60 | 0.76 | 0.19 [0.08–0.28] |
+| d = 3.0 | 0.97 | 1.00 | 0.19 [0.14–0.25] |
+
+**The hypothesis test is the wrong goal; the estimate is the right one.** Formal detection of the mixture
+needs d ≥ 3 (80% power at n = 40) or n beyond 200 at d = 2. But the *estimate* of the unshifted fraction is
+unbiased from n ≈ 80 — median 0.19 against a true 0.194 at every effect size — and its precision is what
+decides feasibility: at d = 3, n = 80 gives 0.19 [0.10–0.29]; at d = 2, n = 200 gives [0.08–0.28]; at
+d = 1.5 the interval includes zero even at n = 300, so the experiment is not worth attempting.
+
+**Therefore the first step is to measure d, not to plan the experiment.** The lab's existing V404M and
+wild-type L6 recordings give it directly: the genotype difference in mean V½ inactivation divided by the
+within-type SD. That single number says whether this is an 80-cell experiment, a 200-cell experiment, or one
+not to run.
+
+**What fraction truly lacks an A-current** is a separate question, and 6.5% is an upper bound. Detection
+threshold, transcriptional bursting and an arbitrary cutoff all push the same way, and mature Kcnd2 mRNA is a
+long-lived pool fed by bursts (companion document, Oct 30), so a cell silent at capture may still hold
+channel protein. The defensible estimate is the fraction with exactly zero Kv4 reads among the deepest
+libraries — a cell sequenced to millions of reads with not one Kv4 read — computed by
+`scripts/recording_design.py`.
+
 ### Technical findings worth recording
 
 **Four methodological failures, each of which produced a confident wrong answer.**
@@ -262,12 +328,15 @@ The quantitative anchor: the measured all-or-none distributions give predicted 1
 7. `region_compare3.py` and the three-way comparison it produced are not currently reproducible (dead paths, and the CLR metric issue applies to its distance calculations).
 8. The DPP calibration covers the DPP panel only. The Kv4 and KChIP panels have not been calibrated, and the Kv4.3L 3′UTR underestimate found earlier shows that panel is not immune. The same script covers them with one flag change.
 9. Whether the per-cell heterogeneity is a stable property or a dynamic state is untested, and it decides whether composition could be reprogrammed.
+10. The ~19% Kv4.2-negative figure assumes a cell with no detectable Kcnd2 mRNA has no Kv4.2 protein. Bursting makes that an upper bound, by an amount set by the protein half-life relative to the message, which nothing here measures.
+11. The mixture experiment is infeasible below d = 2 regardless of n, so measuring d comes before designing it.
 
 ## Recommended additional analyses
 
 | Priority | Analysis | Why |
 | --- | --- | --- |
-| 1 | Retrospective variance analysis of existing pyramidal A-current recordings | Tests the central prediction against data already in hand, at no cost. V½ inactivation and recovery kinetics should vary beyond recording noise, and co-vary within cells |
+| 1 | Measure d (genotype shift ÷ within-type SD) from existing V404M and wild-type L6 recordings | One number, from data already in hand, that decides whether the mixture experiment is 80 cells, 200 cells, or not worth running |
+| 1b | Retrospective variance analysis of existing pyramidal A-current recordings | Tests the central prediction at no cost. V½ inactivation and recovery kinetics should vary beyond recording noise, and co-vary within cells |
 | 2 | Negative-control gene family through the noise-floor analysis | Closes the last technical explanation for the heterogeneity; existing data, a few hours |
 | 3 | Calibrate the Kv4 and KChIP panels (`simulate_variant_calibration.py --panels Kv4,KChIP`) | The DPP panel turned out to have a 5-fold bias; these are unchecked, and Kv4.3L is already known to be mis-estimated |
 | 3b | Neuronal-fraction covariate / deconvolution for cortex and hippocampus | Makes the V404M gene-level numbers interpretable |
@@ -301,7 +370,7 @@ For V404M, the biology now points away from proteotoxicity and toward circuit dy
 
 ## Data, code and provenance
 
-Repository `ppfaff/Kv4-isoform-survey`. V404M pipeline: `pipeline/build_v404m_runlist.py`, `find_v404m_codon.py`, `set_v404m_haplotypes.py`, `v404m_allele_extract.py`, `run_v404m_salmon.sh`, `run_v404m_star.sh`, `collapse_v404m.py`; analysis `scripts/v404m_panels.py`, `v404m_stress.py`, `v404m_kv4.py`, `v404m_passenger.py`. Heterogeneity and calibration: `scripts/channel_noise_floor.py` (Dirichlet floor), `variant_distribution_shape.py` (graded vs all-or-none), `sink_coupling.py` (RNA-integrity control), `pipeline/simulate_variant_calibration.py` (known-ratio calibration, mix and purity modes), `channel_phenotype_groups.py` (grouping, retracted pending rebuild), `hip_common.py`. Abandoned: `variant_exclusivity.py` (cannot separate the hypotheses it was built for; see *Technical findings*). Not run: `pipeline/run_bootstrap_uncertainty.sh` and `scripts/bootstrap_vs_biological.py`, superseded by the known-ratio calibration before execution. Dataset provenance for all public data in `lab_db/DATASETS.md`. Output tables in `C:\Users\paulp\kv4_v404m_tables` and `tables/` in the repository.
+Repository `ppfaff/Kv4-isoform-survey`. V404M pipeline: `pipeline/build_v404m_runlist.py`, `find_v404m_codon.py`, `set_v404m_haplotypes.py`, `v404m_allele_extract.py`, `run_v404m_salmon.sh`, `run_v404m_star.sh`, `collapse_v404m.py`; analysis `scripts/v404m_panels.py`, `v404m_stress.py`, `v404m_kv4.py`, `v404m_passenger.py`. Recording-facing: `scripts/complex_composition_per_cell.py` (recordable categories, pore x auxiliary cross-tab, N-type, DPP6K, detection checks), `scripts/recording_design.py` (true-absence estimate; mixture power by EM). Heterogeneity and calibration: `scripts/channel_noise_floor.py` (Dirichlet floor), `variant_distribution_shape.py` (graded vs all-or-none), `sink_coupling.py` (RNA-integrity control), `pipeline/simulate_variant_calibration.py` (known-ratio calibration, mix and purity modes), `channel_phenotype_groups.py` (grouping, retracted pending rebuild), `hip_common.py`. Abandoned: `variant_exclusivity.py` (cannot separate the hypotheses it was built for; see *Technical findings*). Not run: `pipeline/run_bootstrap_uncertainty.sh` and `scripts/bootstrap_vs_biological.py`, superseded by the known-ratio calibration before execution. Dataset provenance for all public data in `lab_db/DATASETS.md`. Output tables in `C:\Users\paulp\kv4_v404m_tables` and `tables/` in the repository.
 
 Reference measurement: Jerng HH, Pfaffinger PJ (2012) *Incorporation of DPP6a and DPP6K variants in ternary Kv4 channel complex reconstitutes properties of A-type K current in rat cerebellar granule cells.* PLoS ONE 7(6):e38205 — the standardizing constructs described there (GAPDH exons 5–8 in tandem with exons 1–3 of two DPLP variants, 1:1:1 molar) are the only known-ratio standard this project has, and are what identified the DPP assignment bias.
 
