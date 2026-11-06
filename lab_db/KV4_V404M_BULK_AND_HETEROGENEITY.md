@@ -295,8 +295,32 @@ subclass. The practical options are the standard subclass lines — Pvalb-IRES-C
 Vip-IRES-Cre, Ndnf-IRES2-dgCre — followed by post-hoc identification, or an intersectional Cre × Flp
 strategy. Note that PV-IRES-Cre has documented incomplete labelling of Pvalb cells in some cortical regions,
 so labelling efficiency should be checked for the region of interest rather than assumed. The empirical
-question of which Cre lines actually yielded which transcriptomic cluster is answerable from the Tasic 2016
-metadata, since every cell in that dataset was collected from a named driver line; that mapping is pending.
+question of which lines actually yield which cluster is answerable from the Tasic 2016 metadata, since every
+cell was FACS-sorted from a named driver line crossed to tdTomato. That mapping (1,530 of 1,677 cells):
+
+| target | best line | yield | cells to patch per 5 of target |
+| --- | --- | --- | --- |
+| Sst Chodl (4.8% Kv4.2-neg) | **Nos1** | 43.1% (31/72) | ~12 |
+| Pvalb Tacr3 (5.6%) | PvalbF-Gad2 | 32.2% (28/87) | ~16 |
+| Pvalb Tacr3 | **Pvalb** | 27.0% (24/89) | ~19 |
+| L6a Sla (19.4%) | **Ntsr1** | 61.0% (47/77) | ~8 |
+| L2/3 Ptgs2 | Cux2 | 47.5% (58/122) | ~11 |
+| L5a Batf3 | Rbp4 | 23.1% (40/173) | ~22 |
+
+Plain Pvalb-IRES-Cre at 27% makes the intersectional `PvalbF-Gad2` (32%) not worth the extra cross, and
+`Nos1` at 43% is simply hitting its native target, since `Sst Chodl` is the long-range-projecting Sst/NOS1
+population. **The dilution-aware interneuron experiment is therefore cheap**: at d = 2, `Pvalb Tacr3` needs
+five cells per group, or about 19 Pvalb⁺ cells patched per genotype.
+
+Yields are rank orderings, not hit rates — Tasic 2016 stratified sampling by line and dissected layer — and
+they come from VISp, so composition may differ in other cortical areas.
+
+**One consequence worth recording.** `Ntsr1` is the canonical L6 corticothalamic driver and supplies 78.3%
+of `L6a Sla` cells, so **L6a Sla is CT**. The earlier suggestion that the gap between `L6a Sla` (19.4%
+Kv4.2-negative) and Allen `L6 CT CTX` (3.7–6.2%) might reconcile if L6a Sla were IT therefore fails. The
+discrepancy is real and unexplained; depth does not account for it either, since the Allen data is shallower
+and should over-call rather than under-call Kv4.2-negative. The likeliest remaining explanation is that the
+two clusters are not the same cells despite both being broadly CT — the taxonomy mismatch recorded above.
 
 ### Technical findings worth recording
 
