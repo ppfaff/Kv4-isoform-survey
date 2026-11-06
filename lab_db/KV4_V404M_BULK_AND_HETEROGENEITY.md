@@ -779,6 +779,58 @@ pathway, silencing the cultures should rescue the DPP6-RNAi phenotype — so add
 knockdown cultures and blotting for Kv4.2 is a one-plate experiment with the virus already in hand. A
 rescue would identify what the DPPs are protecting against; no rescue would rule the idea out cheaply.
 
+### The DPP6 rescue pins the surplus, and that is what decides it
+
+**The lab's rescue result.** DPP6 RNAi knocks down endogenous DPP6; co-expressing an RNAi-resistant
+rat DPP6 from a CMV promoter with a β-globin intron restores the current — **to normal, not above it**,
+despite a construct that should massively overexpress. So DPP6 is not limiting: adding more does
+nothing once the available Kv4 is served. Separately, overexpressing Kv4.2 *does* raise current
+amplitude. The pore subunit is the limiting component and the auxiliary subunits sit in functional
+excess.
+
+That is independently confirmed by this project's own single-cell data. Per-cell family totals give
+**KChIP:Kv4 = 3.24** and DPP:Kv4 = 2.67 in cortical excitatory neurons (2.67 and 2.95 in GABAergic),
+and the `limiting` call in `ctx_acurrent_index_per_cell.csv` names Kv4 the limiting family more often
+than either auxiliary family (316 of 764 excitatory cells). Functional and transcriptional measurements
+agree.
+
+**Why this settles the surplus-versus-exchange question.** The earlier free-parameter sweep failed
+because `f_free` was unconstrained — and with only four harvest timepoints the curve shape could not
+constrain it either. The rescue experiment removes that freedom: it *measures* the excess. If Kv4 is
+limiting, every Kv4 subunit acquires a KChIP, so a fraction 1/r of KChIP synthesis assembles and the
+rest is surplus, with steady-state pools given by flux × lifetime
+(`scripts/surplus_from_stoichiometry.py`):
+
+| free-pool t½ | f_free | predicted apparent KChIP t½ |
+|---|---|---|
+| 6 h | 0.126 | 3.60 d |
+| 12 h | 0.224 | 3.33 d |
+| 24 h | 0.367 | 2.92 d |
+| 48 h | 0.537 | 2.84 d |
+
+At the measured r = 3.24, the shortest apparent half-life pure surplus can produce over *any* plausible
+free-pool lifetime is **2.84 d**. Observed for KChIP4: **2.02 d**. Surplus falls short by 0.82 d. To
+reach 2.02 d would need r = 10.9 (24 h free pool) to 59 (6 h) — **3–18× more excess than measured**.
+
+So **KChIP4's turnover cannot be accounted for by surplus degradation at the measured stoichiometry**,
+and something must additionally remove KChIP from intact complexes. Note the asymmetry: **KChIP1 at
+2.67 d is nearly reachable** (needs r = 4.3–4.4 against a measured 2.67–3.24), so it is roughly
+consistent with surplus alone. The subunit that forces exchange is specifically KChIP4 — the one at
+the 2nd percentile of the whole proteome.
+
+**The loophole that remains.** r is an mRNA ratio standing in for a protein *synthesis* ratio. If
+KChIP were translated ~3× more efficiently than Kv4, the protein-level excess would reach r ≈ 10 and
+surplus would suffice. Sub-saturated complexes would also raise the effective surplus, and t_bound here
+is Kv4.3 rather than Kv4.2. All three are settled by the same measurement: **a protein-level
+KChIP:Kv4 ratio**, which is the co-IP already identified as decisive.
+
+**What the CHO result adds.** Since Kv4 + KChIP express fine in CHO with no DPP, the ratio experiment
+can be done there with the stoichiometry set by the experimenter rather than inferred: vary KChIP:Kv4
+and ask whether the apparent KChIP half-life shortens as predicted. Surplus QC predicts it tracks the
+ratio; exchange predicts near-independence. And if KChIP and Kv4 decay at the same rate in CHO at
+matched expression, the 2× difference seen in neurons is neuron-imposed and belongs with whatever makes
+DPP obligatory there.
+
 ### What this predicts for recorded A-currents, and it is a prediction about shape rather than spread
 
 Two earlier findings now combine. The DPPs are the **longest-lived** members of the complex, and their

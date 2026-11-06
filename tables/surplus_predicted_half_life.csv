@@ -1,0 +1,11 @@
+cell_class,r_mrna,free_half_life_h,f_free,predicted_half_life_d,r2
+cortex Glut,3.24,2,0.046,3.78,0.995
+cortex Glut,3.24,6,0.126,3.6,0.967
+cortex Glut,3.24,12,0.224,3.33,0.947
+cortex Glut,3.24,24,0.367,2.92,0.97
+cortex Glut,3.24,48,0.537,2.84,0.998
+cortex GABA,2.67,2,0.035,3.8,0.997
+cortex GABA,2.67,6,0.097,3.66,0.98
+cortex GABA,2.67,12,0.177,3.44,0.965
+cortex GABA,2.67,24,0.301,3.08,0.977
+cortex GABA,2.67,48,0.463,2.97,0.998
