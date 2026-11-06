@@ -603,6 +603,62 @@ not the issue: all 48 libraries are on one lane (L006, S44–S91), genotypes are
 each tissue block rather than blocked, sex is balanced, and the same animals supplied all four
 tissues — and handling stress would push IEGs up, not down.
 
+### The KChIP repertoire is class-specific, and the protein half-lives cover one class but not the other
+
+`scripts/kchip_class_vs_halflife.py`. Gene-level KChIP share, % of KChIP reads:
+
+| dataset | class | KChIP1 | KChIP2 | KChIP3 | KChIP4 |
+|---|---|---|---|---|---|
+| cortex (Tasic 2016) | GABA | 29.0 | 13.2 | 8.4 | **49.5** |
+| cortex | Glut | 0.1 | 4.2 | **76.5** | 19.3 |
+| hippocampus | GABA | **65.9** | 5.0 | 2.7 | 26.4 |
+| hippocampus | Glut | 4.8 | 37.5 | 18.3 | **39.4** |
+
+Cortical inhibitory neurons run on KChIP4 + KChIP1 (78.5% together); cortical excitatory neurons on
+KChIP3 + KChIP4 (95.8%), dominated by KChIP3. Cortical KChIP2 is minor (4.2% of excitatory KChIP)
+and is concentrated as the **2x** variant — and `region_variant_tests.csv` localises it further:
+KChIP2x is 27.2% of KChIP in cortical Pvalb interneurons against 3.6% in hippocampal Pvalb
+(p_BH < 10⁻⁴). So KChIP2x is a cortical Pvalb feature, which is worth knowing given that Pvalb is the
+population the Cre-line work is trying to isolate.
+
+The "KChIP2 is negligible in brain" statement is **cortical only**. Hippocampal excitatory neurons
+carry KChIP2a at 37.5% of their KChIP against 0.7% in cortex (p_BH < 10⁻⁴), and the reciprocal holds
+for KChIP3a (cortex 0.602, hippocampus 0.121). The two regions use different KChIPs in their
+principal cells.
+
+**The consequence for the lifetime work.** Dörrbaum quantified KChIP1 and KChIP4 but not KChIP2 or
+KChIP3, so coverage is badly uneven across exactly the populations being recorded:
+
+| class | dominant KChIP | % of KChIP reads with a measured half-life |
+|---|---|---|
+| cortex GABA | KChIP4 (49%) | **78%** |
+| cortex Glut | KChIP3 (76%) | **19%** |
+| hippocampus GABA | KChIP1 (66%) | 92% |
+| hippocampus Glut | KChIP4 (39%) | 44% |
+
+The protein-lifetime argument is nearly complete for inhibitory neurons and mostly empty for cortical
+pyramidal cells, whose dominant KChIP has no measured turnover at all.
+
+**That asymmetry happens to favour the experiment in hand.** The lab's deep cortical inhibitory
+recordings — V404M n=5 SD 6.75 against WT n=7 SD 3.43, a 1.97× SD ratio implying p = 0.247 — are in
+the population whose Kv4 complex depends entirely on the two shortest-lived KChIPs in the proteome
+(2nd and 5th percentile, 2.02 d and 2.67 d). If KChIP supply is rate-limiting and turns over in ~2
+days, an inflated cell-to-cell SD is what that predicts.
+
+**Testable, and cheap:** cortical excitatory neurons run on KChIP3, so unless KChIP3 also turns over
+fast, pyramidal A-current parameters should show *less* cell-to-cell variance than deep inhibitory
+ones. Measuring the same parameters in both classes in **wild-type** animals tests the premise before
+any genotype comparison, using recordings the lab is set up to make.
+
+**The single most useful missing number in this whole analysis is the KChIP3 protein half-life in
+pyramidal neurons** — it is both the dominant excitatory KChIP and the best-characterised
+transcription factor of the family.
+
+**Caveat.** Variant-level assignment is calibrated for the DPP panel only, where it proved exact at
+full-length coverage and collapsed into sinks under 3′ bias. The Kv4 and KChIP panels remain
+uncalibrated, so the gene-level sums above are far safer than individual variant shares, and the
+KChIP2x localisation should be treated as provisional until that calibration is run.
+
 ### Technical findings worth recording
 
 **Six methodological failures, each of which produced a confident wrong answer.**
