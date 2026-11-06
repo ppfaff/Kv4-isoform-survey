@@ -393,9 +393,85 @@ experiment is not in deep layers: `Nos1`-driven `Sst Chodl` cells are 4.8% Kv4.2
 layers and at the white-matter border, so switching to them would move p from ~0.25 to ~0.05 and bring the
 measured shift close to the true one.
 
+### Mature mRNA lifetime, and why it retires the bursting caveat — solid for Kcnd2
+
+`scripts/mrna_lifetime.py`, on the Farris laminar libraries (24 total-RNA libraries, the only ones here that
+can support this — see the polyA caveat below).
+
+At steady state the mature pool is `M = k_synth · τ_m` and the unspliced pool is `P = k_init · τ_pre`, so if
+every initiation yields a mature transcript, **τ_mature = (M/P) · τ_pre**. The ratio must be taken as
+per-base **density**, not as read fractions: Kcnd2 is 509,151 bp of intron against 5,151 bp of exon, a 98.8:1
+length ratio, so its 46.8% intronic read fraction is a **112:1 density ratio**. Reading the read fraction
+directly would misstate the answer by two orders of magnitude.
+
+| τ_s (splicing commitment) | τ_m | implied half-life |
+|---|---|---|
+| 2 min | 3.7 h | **2.6 h** |
+| 5 min | 9.4 h | **6.5 h** |
+| 10 min | 18.7 h | **13.0 h** |
+
+Kcnd3 gives 330:1 (half-life 7.6–38 h) and Kcnip3 108:1 (2.5–12.5 h). That Kcnd2 and Kcnip3 land within 4%
+of each other despite a 23× difference in intron burden and an 8× difference in gene span is the useful
+internal check: the ratio is behaving as a property of mRNA stability, not of gene architecture.
+
+**The regime question is the whole calculation, and it is measured, not assumed.** τ_pre is the intron
+*residence* time. If splicing waited for each intron's own 3′ splice site to be transcribed, mean residence
+would be `L/2v` — 121 min for Kcnd2's 497-kb first intron, not 5 min — and τ_m would come out at 231 h, which
+is absurd. The two regimes are distinguished by whether per-base intron coverage rises with intron length:
+
+| introns fitted | n | slope (log–log) | 95% CI | verdict |
+|---|---|---|---|---|
+| all | 123 | −0.150 | [−0.291, −0.009] | not length-limited |
+| ≥ 2 kb (junction-overhang-free) | 78 | −0.365 | [−0.645, −0.085] | not length-limited |
+| ≥ 10 kb | 47 | −0.548 | [−1.057, −0.040] | not length-limited |
+
+Length-limited splicing predicts slope +1. Observed is flat-to-negative across three orders of magnitude of
+intron length, so **splicing keeps up with transcription and τ_pre is the short commitment time.** The
+≥ 2 kb fit is the one to read: below that, junction-spanning reads deposit coverage a read length into each
+intron end and inflate short introns, which would fake a flat slope. Two further biases both make this
+conservative — multi-mapper inflation in repeat-rich long introns, and the depth-table scale problem below,
+both push the slope positive.
+
+**This retires the caveat that has been limiting the 19.4% figure.** A pool with τ_m of 4–19 h integrates
+transcription over many hours. For the Kv4.2-negative cells to be an artefact of catching cells between
+transcriptional bursts, burst intervals would have to be comparable to τ_m — i.e. many hours — which is far
+slower than bursting in a gene expressed at this level. So a cell scored Kcnd2-zero is not plausibly a
+positive cell caught in a trough; the measurement reflects a stable property of that cell. The 19.4% should
+no longer be presented as an upper bound on bursting grounds. Detection sensitivity remains a separate and
+still-live limitation.
+
+**One round of transcription is itself slow**, and this is independent of τ_m: at 2 kb/min, Dpp10 (1.51 Mb)
+takes 12.6 h, Kcnip4 (1.13 Mb) 9.4 h, Dpp6 (907 kb) 7.6 h, Kcnd2 (514 kb) 4.3 h. A transcriptional change
+initiated now does not reach the mature pool for hours. Combined with a multi-hour τ_m, the mRNA pool for
+this gene family is heavily low-pass filtered and **cannot track activity on a sub-hour timescale.**
+
+**On "transcribed like housekeeping genes because the transcripts are huge."** The near-constitutive finding
+in the record is `KV4_SURVEY_CONCLUSIONS.md` Fig. 7 — KChIP and DPP totals stay flat across the entire Kv4
+gradient, Spearman ρ 0.07–0.09 — which is a statement about *expression stability of the auxiliary subunits*,
+not about transcript size, and the word housekeeping appears nowhere in the record. The size argument also
+runs the other way: housekeeping genes are compact (*Actb*, *Gapdh* a few kb), whereas megabase spans with
+alternative first exons are the signature of **neuron-specific, developmentally regulated** genes. So
+"huge → housekeeping" is backwards as gene-class reasoning. But the underlying intuition survives in better
+form: the hugeness is a sufficient *kinetic mechanism* for why these genes must behave constitutively on
+short timescales, which is what Fig. 7 observed. Mechanism and observation, not one evidence for the other.
+
+**Unused annotated first exons, read off intronic coverage alone.** Coverage rises 5′→3′ in every panel gene
+except Kcnip2, with intron 1 specifically near-empty: Dpp6 0.0024×, Dpp10 0.017×, Kcnip3 0.010× the median of
+the remaining introns. A 20×-plus swing is too steep for polymerase attrition and is the expected signature
+of a dominant internal promoter — for Dpp6 and Dpp10, of the DPP6S/DPP6K and DPP10a/DPP10d start sites. This
+is independent of the isoform quantification and so is worth having, given that the bulk DPP variant results
+were withdrawn.
+
+**Caveats, in both directions.** Confounds that inflate the unspliced pool (premature termination, undebranched
+lariats, retained-intron isoforms, the two independent transcription units inside the Kcnd2 locus) make τ_m an
+*under*estimate; mappability loss in long repeat-rich introns makes it an *over*estimate. τ_s is the dominant
+uncertainty. **polyA⁺ libraries cannot be used at all** — pre-mRNA is not polyadenylated until cleavage, so
+the V404M bulk's 2.9–11.6% intronic Kcnd2 is a property of the selection chemistry, not the RNA.
+Metabolic labelling (SLAM-seq, 4sU) measures decay directly and would settle this.
+
 ### Technical findings worth recording
 
-**Four methodological failures, each of which produced a confident wrong answer.**
+**Six methodological failures, each of which produced a confident wrong answer.**
 
 *Centred log-ratio with a pseudocount reads out sequencing depth on sparse data.* A structural zero contributes log(pseudo/total), so two cells with identical composition at 100 vs 5,000 reads differ by log(50) ≈ 3.9 in every zero entry. Synthetic cells with identical composition, true zeros and depths spread over 100–5,000 returned a spread/noise ratio of **12.23 against a true value of 1.0**; the same cells gave 0.85 under Hellinger coordinates (√proportions, where √0 = 0 at any depth). Sparsity and depth variation are both required to trigger it, which is exactly single-cell isoform data. This invalidated the first grouping run, which returned "split" for 24 of 28 groupings — including Allen subclasses against their own clusters — on R² of 0.01–0.22.
 
@@ -404,6 +480,10 @@ measured shift close to the true one.
 *Mutual exclusivity cannot distinguish real exclusive expression from EM collapse.* A test built to separate them could not, because exclusivity is the expected signature of both: a cell genuinely expressing only DPP6K is indistinguishable from one whose reads the EM dumped there. Its validation hid this by constructing the "biological" case as cells in one of two *mixture* states, so the answer was built into the premise, and it also flagged its own Kv4.3S/L positive control. Abandoned.
 
 *Resampling measures precision, not accuracy, and the error here was accuracy.* Bootstraps and split-half both resample reads **under the quantifier's own model**, so a systematic model failure is invisible to them. The planned bootstrap run — two machines overnight, ~90 GB of re-downloaded FASTQ each — would have returned a reassuring answer while the DPP6S bias went undetected, exactly as the 4-fold Kv4.3L underestimate from 3′UTR model asymmetry would not appear in a bootstrap. It was cancelled in favour of the known-ratio calibration, which cost an hour.
+
+*Genomic coordinate order is not transcriptional order, and the sign of a gradient depends on which you use.* The first positional fit on intron coverage regressed on genomic start, and returned coverage *rising* 400× along Dpp6 while *falling* 0.04× along Dpp10 — an incoherent result, because Dpp6 is on the plus strand and Dpp10 on the minus. Refitting on the intron *number*, which is already in transcriptional order and needs no strand lookup, made every gene agree: coverage rises 5′→3′ in all of them. A result whose sign flips between minus- and plus-strand genes is diagnostic of this specific error.
+
+*Two tables of the "same" quantity were on scales differing 300-fold, and only one was usable.* The lifetime is a ratio of exonic to intronic abundance, so the units had to be verified rather than assumed. `dendrite_exon_intron_per_sample.csv` and `star_exon_intron_counts.tsv` agree exactly across all 216 gene × library pairs at `strand_setting=1`, so both are genuine uniquely-assigned read counts. The depth tables do not reconcile with them: Kcnd2 has 19,078 intronic reads over 509 kb, a mean depth of ~3.7, yet `mean_depth` reads 1,328 — an implied read length of **29,661 bp**. Most likely those tables include multi-mapping alignments that featureCounts discards. The first run of this analysis divided a count by a length taken from the other table's span and returned an exonic length of 600 bp for a 5-kb mRNA, inflating the density ratio 8.6×. Counts and depths are now kept apart: the lifetime uses counts only, the length-regime test uses depths only and only relatively within a library. A unit check that returns a physically impossible number — a 30-kb read — is cheap and would have caught this immediately.
 
 *General lesson, and the one worth carrying forward.* Compositional methods needing a pseudocount are hazardous on sparse, depth-variable data, and any new metric should carry a known-answer null — the noise-floor metric's failures surfaced only because pure noise *must* give 1.0, making 131 visibly impossible, whereas the original R² had no such anchor and its failure looked like a result. But note the asymmetry between the first three failures and the fourth. The first three were caught by testing against synthetic cases, which can only catch errors already imagined. The DPP assignment bias was caught by an **external measurement with a known answer** — the lab's own 2012 efficiency-calibrated qRT-PCR — and no amount of internal self-consistency checking would have found it, because every internal check shares the quantifier's assumptions. Isoform-level claims in this project should be anchored to an outside standard before they are believed.
 
