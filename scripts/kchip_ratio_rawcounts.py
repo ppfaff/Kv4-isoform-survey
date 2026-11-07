@@ -102,23 +102,92 @@ def main():
             print(f'    {str(lab):11} n={len(s):5d}  median panel reads {s.panel_reads.median():7.0f}  '
                   f'low {s.low.mean()*100:5.1f}%')
 
-    # per-type, if annotated
+    # ---------------------------------------------------------------- per cell type
     if 'subclass_label' in X.columns and X.subclass_label.notna().any():
-        U2 = U[U.subclass_label.notna()].copy()
-        U2['low'] = p_below(U2.kchip.values, U2.kv4.values, 0.10) > 0.5
-        t = (U2.groupby('subclass_label')
-               .agg(n=('low', 'size'), n_low=('low', 'sum'),
-                    med_ratio=('kchip', 'size')).reset_index())
-        t['med_ratio'] = [float((U2[U2.subclass_label == s].kchip /
-                                 U2[U2.subclass_label == s].kv4.replace(0, np.nan)).median())
-                          for s in t.subclass_label]
-        t['pct_low'] = t.n_low / t.n * 100
-        t = t[t.n >= 15].sort_values('pct_low', ascending=False)
-        print('\n' + '=' * 92)
-        print('BY SUBCLASS (total ratio, threshold 0.10, guarded, n >= 15)')
-        print('=' * 92)
-        print(t.round(2).to_string(index=False))
-        t.to_csv(f'{OUT}/tables/kchip_ratio_raw_by_subclass.csv', index=False)
+        for ratio_name, num, den, tag in (
+                ('total KChIP : total Kv4', 'kchip', 'kv4', 'total'),
+                ('Kcnip3 : Kcnd2', 'kcnip3', 'kcnd2', 'kcnip3')):
+            U2 = U[U.subclass_label.notna() & ((U[num] + U[den]) >= MIN_PANEL)].copy()
+            if U2.empty:
+                continue
+            U2['low'] = p_below(U2[num].values, U2[den].values, 0.10) > 0.5
+            U2['ratio'] = U2[num] / U2[den].replace(0, np.nan)
+
+            t = (U2.groupby('subclass_label')
+                   .agg(n=('low', 'size'), n_low=('low', 'sum'),
+                        med_ratio=('ratio', 'median'),
+                        med_panel=('panel_reads', 'median'),
+                        med_depth=('depth', 'median')).reset_index())
+            t['pct_low'] = t.n_low / t.n * 100
+            t = t[t.n >= 15].sort_values('pct_low', ascending=False)
+            print('\n' + '=' * 104)
+            print(f'BY SUBCLASS — {ratio_name}, threshold 0.10, guarded, n >= 15')
+            print('=' * 104)
+            print(t.round(2).to_string(index=False))
+
+            # ---- is the type difference real, or is it depth? Two guards.
+            # (a) within-depth-stratum fractions: a real type effect holds in every stratum.
+            q = pd.qcut(U2.panel_reads, 3, labels=['shallow', 'mid', 'deep'])
+            keep = set(t.subclass_label)
+            strat = (U2[U2.subclass_label.isin(keep)]
+                     .assign(stratum=q)
+                     .groupby(['subclass_label', 'stratum'], observed=True)
+                     .agg(n=('low', 'size'), pct_low=('low', lambda x: x.mean() * 100))
+                     .reset_index())
+            piv = strat.pivot(index='subclass_label', columns='stratum', values='pct_low')
+            npv = strat.pivot(index='subclass_label', columns='stratum', values='n')
+            piv = piv.reindex(t.subclass_label)
+            print('\n  % low within panel-read tertiles (a real type effect persists across all three):')
+            print(piv.round(1).to_string())
+            print('  cells per tertile:')
+            print(npv.reindex(t.subclass_label).to_string())
+
+            # (b) logistic regression: subclass effect after adjusting for log depth
+            try:
+                from scipy import stats as _st
+                sub = U2[U2.subclass_label.isin(keep)].copy()
+                x = np.log10(np.maximum(sub.panel_reads.values, 1.0))
+                y = sub.low.values.astype(float)
+                D = pd.get_dummies(sub.subclass_label, drop_first=True).values.astype(float)
+                X0 = np.column_stack([np.ones(len(y)), x])
+                X1 = np.column_stack([X0, D])
+
+                def irls(Xm, y, iters=60):
+                    b = np.zeros(Xm.shape[1])
+                    for _ in range(iters):
+                        eta = np.clip(Xm @ b, -30, 30)
+                        mu = 1 / (1 + np.exp(-eta))
+                        W = np.maximum(mu * (1 - mu), 1e-9)
+                        z = eta + (y - mu) / W
+                        b_new = np.linalg.lstsq(Xm * np.sqrt(W)[:, None],
+                                                z * np.sqrt(W), rcond=None)[0]
+                        if np.max(np.abs(b_new - b)) < 1e-9:
+                            b = b_new; break
+                        b = b_new
+                    eta = np.clip(Xm @ b, -30, 30)
+                    mu = np.clip(1 / (1 + np.exp(-eta)), 1e-12, 1 - 1e-12)
+                    return float(np.sum(y * np.log(mu) + (1 - y) * np.log(1 - mu)))
+
+                ll0, ll1 = irls(X0, y), irls(X1, y)
+                lr, df = 2 * (ll1 - ll0), D.shape[1]
+                pv = _st.chi2.sf(max(lr, 0), df)
+                print(f'\n  cell type adds information beyond sequencing depth: '
+                      f'LR = {lr:.1f} on {df} df, p = {pv:.3g}')
+                print('  (depth alone is the null; a small p means composition really differs by type)')
+            except Exception as e:
+                print(f'  [logistic test skipped: {e}]')
+
+            t.to_csv(f'{OUT}/tables/kchip_ratio_raw_by_subclass_{tag}.csv', index=False)
+            if 'cluster_label' in U2.columns:
+                tc = (U2.groupby('cluster_label')
+                        .agg(n=('low', 'size'), n_low=('low', 'sum'),
+                             med_ratio=('ratio', 'median'),
+                             med_panel=('panel_reads', 'median')).reset_index())
+                tc['pct_low'] = tc.n_low / tc.n * 100
+                tc = tc[tc.n >= 15].sort_values('pct_low', ascending=False)
+                tc.to_csv(f'{OUT}/tables/kchip_ratio_raw_by_cluster_{tag}.csv', index=False)
+                print(f'\n  top clusters ({ratio_name}):')
+                print(tc.head(10).round(2).to_string(index=False))
 
     os.makedirs(f'{OUT}/tables', exist_ok=True)
     X.to_csv(f'{OUT}/tables/panel_counts_per_cell_summary.csv')
