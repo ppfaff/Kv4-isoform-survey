@@ -1043,6 +1043,30 @@ The quantitative anchor: the measured all-or-none distributions give predicted 1
 
 ## Recommended additional analyses
 
+**0. Recover the gene-level per-cell tables — now the top item, and blocked on locating files.**
+Three of the open questions need per-cell, per-gene read counts for the panel, which no table in this
+repo currently carries:
+- the KChIP:Kv4 ratio recomputed on **raw counts** rather than CPM, so the Dirichlet guard actually
+  constrains a low-ratio call (at present it does not, which is why guarded and naive fractions are
+  identical);
+- the **KChIP3-specific** ratio per cell, which is the exact analogue of the CHO BAPTA × ratio
+  experiment and which could move the GABAergic answer from "a 9.5% tail" to "most of the population";
+- calibration of the **Kv4 and KChIP variant panels**, still outstanding while DPP is the only
+  calibrated panel.
+
+`pipeline/collapse_ctx.py` regenerates them from `quant/*/quant.sf` plus
+`ref/gencode.vM36.transcripts.fa.gz`, `tables/ena_runs.tsv` and `anno.csv`. On `pfaff-lambda`,
+`C:\Users\paulp\kv4_cif\kv4_isoforms` holds only `anno.csv` and `run_kv4_isoforms_wsl.sh` — the
+salmon output is not on the Windows side. Given the `_wsl` script name it is most likely inside the
+WSL filesystem on that machine, or on `PAULP-ALIEN` / `PFAFF10` where the original run was split.
+Neither is reachable from a cloud session (UNC paths to `\\wsl$` are refused, and the other two
+machines are not linked).
+
+**This matters disproportionately because the fallback is expensive.** Re-quantifying means
+re-downloading PRJNA291624 — ~1,800 SMART-seq libraries, on the order of a hundred-plus GB — and
+re-running salmon, which is the multi-day two-machine job done originally. Locating the existing
+`quant/` tree instead is a copy. Worth checking before anything else is attempted.
+
 | Priority | Analysis | Why |
 | --- | --- | --- |
 | 1 | Extend the deep inhibitory recordings to n = 20 per genotype | 97% power to establish the mixture and a CI on p excluding zero; d is already known to be ~3.9 from the existing 5/7 cells |
