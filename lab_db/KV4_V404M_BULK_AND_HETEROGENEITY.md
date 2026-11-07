@@ -1042,6 +1042,69 @@ numbers are low (KChIP3.1 at 2–26 molecules per cell) **and** KChIP3 is their 
 their *total* ratio really is near 0.38 with cells below 0.10. Hippocampal interneurons reach a low
 *KChIP3* ratio while keeping a high *total* ratio; DA neurons do not have that fallback.
 
+**Homeostatic compensation as a working hypothesis, and where the data puts it.** The proposal is
+that cells sensitive to this Ca²⁺ regulation might *lower* their A-current when V404M is present, to
+renormalise excitability — with cortical pyramidal neurons not doing so (their A-currents are
+elevated) while DG might, which would account for DG hyperexcitability.
+
+*The sign of the loop works.* More A-current → less excitable → less Ca²⁺ → weaker KChIP binding →
+less A-current. That is negative feedback on A-current, hence stabilising for excitability, and it is
+available only to cells where KChIP is not in large excess. A cell with KChIP at 10-fold excess
+cannot use the mechanism at all.
+
+*But "which cell type" is the wrong cut.* `scripts/kchip_headroom_vs_kv4.py`: KChIP expression does
+not track Kv4 within a cell type — median within-subclass Spearman(KChIP, Kv4) = **+0.00**, range
+−0.15 to +0.47. This is the single-cell version of the near-constitutive auxiliary result (Fig. 7 of
+`KV4_SURVEY_CONCLUSIONS.md`). The consequence is arithmetic but decisive: **within every subclass,
+the ratio falls monotonically as Kv4 rises**, because the numerator does not follow.
+
+| subclass | median KChIP:Kv4 by Kv4 quartile (Q1 → Q4) | fall |
+|---|---|---|
+| CT SUB | 39.0 → 5.7 → 1.8 → **0.6** | 66× |
+| DG | 79.8 → 9.2 → 3.5 → **1.8** | 45× |
+| Lamp5 | 31.2 → 5.9 → 2.3 → **1.0** | 31× |
+| Sst | 10.2 → 1.5 → 0.7 → **0.5** | 21× |
+| Pvalb | 35.6 → 14.3 → 5.9 → 3.0 | 12× |
+| CA1-ProS | 7.1 → 3.7 → 2.4 → 1.7 | 4× |
+
+So **the Ca²⁺-sensitive population is not a cell class — it is the high-Kv4 tail inside every class**,
+which is also the population where a homeostatic reduction of A-current would have the largest
+absolute effect. That both sharpens the hypothesis and explains why the subclass-level cut above
+found only Sst: Sst is simply the subclass whose *typical* cell already sits where other subclasses'
+top quartile sits.
+
+*On the specific guess about DG:* on the occupancy-relevant total ratio DG sits at a median of 3.85
+with 0% of cells below the cusp at adequate depth, so DG as a whole is not the sensitive population.
+Its top Kv4 quartile reaches 1.8, and splitting DG by Kv4 level directly (`dg_cells_markers.csv`)
+gives Kv4-high cells a median total ratio of 2.17 against 7.37 for Kv4-low, with 53.5% of Kv4-high
+cells below 0.10 on the Kcnip3 ratio against 29.3% of Kv4-low. So if DG compensates, it would be the
+**Kv4-high granule cells** doing it, not DG generally.
+
+*An important consequence for the lab's own ephys result.* Compensation predicts the **same inflated
+variance** as the Kv4.2-negative mixture model, because cells would differ in how much they
+renormalise. The 1.97× SD ratio in the deep inhibitory recordings therefore no longer uniquely
+supports the mixture interpretation, and the convergence noted earlier between that SD ratio and the
+RNA's 20–40% should be read with that in mind. The two are distinguishable: the mixture predicts a
+**discrete** subpopulation sitting at wild-type values, compensation predicts a **continuum** of
+partial correction. More cheaply, they differ under manipulation — **BAPTA-AM should remove
+compensation**, so the V404M–WT difference should grow and its variance shrink, while the mixing
+proportion of a genuine Kv4.2-negative population is unaffected by Ca²⁺.
+
+*On the proposed culture design.* Applying BAPTA-AM to newly plated cells, where little A-current has
+accumulated, is the right geometry for the same reason the DPP6 RNAi worked at DIV 2→10: it watches
+accumulation rather than decay of a standing pool, and the pool is what buffers everything. Two
+caveats: the KChIP repertoire itself shifts with DIV, so an early readout is not sampling the mature
+complement; and chronic Ca²⁺ chelation over days has broad effects, so a vehicle arm and a
+viability/marker check carry more weight here than in an acute experiment.
+
+*Transcriptional context.* The mechanism proposed is post-translational, so flat transcripts are the
+expected result and most are: Kcnd2 moves −0.13 to −0.31 across tissues, none surviving FDR. The one
+exception is **Kcnip3, up 0.311 in V404M hippocampus (padj = 0.020)** — the only FDR-significant
+Kv4-complex transcript change in any tissue, and hippocampus-specific. Direction is *toward* more
+KChIP, which would raise rather than lower occupancy, so it does not fit a compensatory reduction of
+A-current; it may be a separate, slower transcriptional arm, or a response to something else entirely.
+Worth not over-reading from one gene.
+
 **Sst remains the convergence point.** It now carries four independent marks: the lowest total
 KChIP:Kv4 of any subclass and the only one with cells genuinely below the Ca²⁺ cusp; no KChIP3, so
 its complex depends entirely on KChIP1 and KChIP4; those two being the shortest-lived proteins in the
