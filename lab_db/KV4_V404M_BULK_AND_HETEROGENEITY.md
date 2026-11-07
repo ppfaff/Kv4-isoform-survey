@@ -998,6 +998,56 @@ Worth noting too: the median Kcnip3:Kcnd2 of **0.394** is close to the **0.38** 
 dopaminergic neurons. If DA neurons are "on the cusp", so is the median hippocampal neuron on this
 measure.
 
+**The per-cell-type breakdown, and a correction to how the previous paragraph framed it.**
+With `hip_filtered_runlist.tsv` joined, all 6,259 cells carry subclass labels. Cell type adds
+enormous information beyond sequencing depth — likelihood ratio 488 on 11 df, p = 1 × 10⁻⁹⁷ for the
+Kcnip3 ratio — so these are real compositional differences, not a depth map.
+
+| subclass | n | **Kcnip3:Kcnd2** median | % < 0.10 | **total KChIP:Kv4** median | % < 0.10 (all depths) | % < 0.10 (deepest tertile) |
+|---|---|---|---|---|---|---|
+| Sncg | 87 | **0.00** | 82.8% | 7.52 | 1.2% | 0.0% |
+| Sst | 93 | **0.00** | 81.7% | **1.04** | 16.4% | **4.1%** |
+| Pvalb | 29 | **0.00** | 75.9% | 6.76 | 0.0% | 0.0% |
+| Vip | 89 | 0.00 | 50.6% | 7.55 | 0.4% | 0.4% |
+| DG | 1621 | 0.26 | 36.6% | 3.85 | 0.7% | 0.0% |
+| Lamp5 | 363 | 0.18 | 34.2% | 3.43 | 9.2% | 0.8% |
+| CA1-ProS | 924 | 0.39 | 28.4% | 2.90 | 0.1% | 0.0% |
+| CA3 | 180 | 0.85 | 13.9% | 3.99 | 0.0% | 0.0% |
+| CT SUB | 56 | 2.37 | 5.4% | 1.97 | 9.5% | 0.0% |
+| SUB-ProS | 222 | 1.63 | 1.8% | 5.76 | 0.0% | 0.0% |
+
+**The compositional result is clean and new: hippocampal Sst, Pvalb and Sncg interneurons have
+essentially no KChIP3 at all** (median Kcnip3:Kcnd2 of exactly 0.00, 76–83% of cells below 0.10),
+while subicular and CA3 principal cells are KChIP3-rich. That split is flat across depth tertiles —
+Sst runs 80.0 / 84.6 / 81.5 — so it is biology, not sampling.
+
+**But a low Kcnip3:Kcnd2 ratio does not mean a cell is KChIP-starved, and the previous paragraph
+treated the two as equivalent. They are not.** The CHO experiment had KChIP3 as the *only* KChIP, so
+its x-axis is effectively *total* KChIP:Kv4. An Sst cell with no KChIP3 but abundant KChIP1 and
+KChIP4 is not in the low-occupancy regime — it is simply using different family members. The
+"≈32% of hippocampal neurons in the Ca²⁺-sensitive regime" figure above conflated those two things
+and should be read as *32% carry little KChIP3*, which is a statement about composition only.
+
+**Corrected answer, on the ratio that actually governs occupancy.** At adequate depth, on total
+KChIP:Kv4, essentially no hippocampal neuron sits below the cusp. The pooled exceptions all collapse
+with depth — Lamp5 15.0 → 0.8%, CT SUB 12.5 → 0.0% — with one partial survivor: **Sst, which falls
+from 18.4% to 4.1% but not to zero, and which has the lowest median total ratio of any subclass
+(1.04, against 2.9–7.6 elsewhere).** So Sst interneurons sit closest to the cusp, with a few percent
+genuinely below it, and every other hippocampal type is comfortably buffered by mass action.
+
+That vindicates the original expectation: *given the excess of KChIP over Kv4, Ca²⁺-dependent
+occupancy should not matter much in most neurons* — and now with the exception identified. It also
+explains why dopaminergic neurons are different in kind rather than degree: per Liss their absolute
+numbers are low (KChIP3.1 at 2–26 molecules per cell) **and** KChIP3 is their principal KChIP, so
+their *total* ratio really is near 0.38 with cells below 0.10. Hippocampal interneurons reach a low
+*KChIP3* ratio while keeping a high *total* ratio; DA neurons do not have that fallback.
+
+**Sst remains the convergence point.** It now carries four independent marks: the lowest total
+KChIP:Kv4 of any subclass and the only one with cells genuinely below the Ca²⁺ cusp; no KChIP3, so
+its complex depends entirely on KChIP1 and KChIP4; those two being the shortest-lived proteins in the
+Dörrbaum set (2nd and 5th percentile); and the lab's own deep inhibitory recordings showing a 1.97×
+SD ratio. Whatever makes A-current variable, Sst is where to look for it.
+
 **This makes one experiment decisive and cheap: repeat the BAPTA × ratio curve with KChIP1 and KChIP4
 in place of KChIP3a.** It determines which of the two rows above is the real one, and with it whether
 a third of hippocampal neurons have an activity-dependent A-current or essentially none do.
