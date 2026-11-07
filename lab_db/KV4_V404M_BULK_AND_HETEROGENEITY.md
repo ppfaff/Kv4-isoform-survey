@@ -907,6 +907,52 @@ TTX) should shorten KChIP protein half-life while leaving Kv4 half-life unchange
 chase under BAPTA, blotting KChIP3 and Kv4.2, tests the exchange model directly in the same preparation
 that produced the ratio curve.
 
+**Redone on raw counts, and the earlier figures do not survive — but a different one appears.**
+`pipeline/extract_panel_counts.py` recovered per-cell salmon `NumReads` for all 54 panel transcripts
+across **6,259 Allen SSv4 hippocampal cells** (median depth 711,372 reads; median 337 panel reads),
+and `scripts/kchip_ratio_rawcounts.py` redoes the ratio properly. The two candidate ratios give
+opposite answers, and the difference is the whole result.
+
+**Total KChIP : total Kv4** — median 3.76, and only 2.5% of cells below 0.10. Depth-stratified, that
+2.5% is revealed as an artefact:
+
+| panel-read quartile | median panel reads | % below 0.10 |
+|---|---|---|
+| Q1 lowest | 166 | 6.8% |
+| Q2 | 289 | 2.4% |
+| Q3 | 408 | 0.8% |
+| **Q4 highest** | **620** | **0.1%** |
+
+The low-ratio calls vanish with depth, so they are dropout, not biology. **On the total ratio, almost
+no neuron is in the Ca²⁺-sensitive regime** — and the earlier CPM-based figures (5.95% overall, 9.5%
+of GABAergic) should be treated as inflated by exactly the problem flagged above. A Gamma posterior on
+raw counts does not fix this on its own, because zero KChIP reads in a shallow cell is *confidently*
+a low ratio; only the depth stratification exposes it.
+
+**Kcnip3 : Kcnd2 — the exact analogue of the CHO experiment — behaves completely differently.**
+Median 0.394, first quartile 0.0, and **32.4% of cells below 0.10**. Depth-stratified it is flat:
+38.2%, 31.3%, 29.4%, **30.6%** from shallowest to deepest quartile. It survives at the best depth, so
+it is real.
+
+So the answer to "are there cells with a ratio near 10%?" is **region- and subunit-dependent**:
+- If the Ca²⁺ requirement is **shared** across the EF-hand family, the total ratio governs and
+  essentially no hippocampal neuron is Ca²⁺-labile.
+- If it is **KChIP3-specific**, as the CHO experiment directly tested, then **roughly a third of
+  hippocampal neurons sit at or below the cusp**, robustly.
+
+That dichotomy is consistent with the regional KChIP composition already in this document:
+hippocampal principal cells carry only 18.3% of their KChIP as KChIP3 (GABAergic 2.7%), against 76.5%
+in cortical excitatory neurons. Hippocampus is KChIP3-poor, so a KChIP3-specific Ca²⁺ requirement
+would bite there and spare cortical pyramidal cells.
+
+Worth noting too: the median Kcnip3:Kcnd2 of **0.394** is close to the **0.38** midpoint from Liss's
+dopaminergic neurons. If DA neurons are "on the cusp", so is the median hippocampal neuron on this
+measure.
+
+**This makes one experiment decisive and cheap: repeat the BAPTA × ratio curve with KChIP1 and KChIP4
+in place of KChIP3a.** It determines which of the two rows above is the real one, and with it whether
+a third of hippocampal neurons have an activity-dependent A-current or essentially none do.
+
 **Methodological note on the ratio calculation.** The Dirichlet guard in that script is weak, because
 CPM values were used as pseudo-counts and CPM overstates the true count for shallow libraries — which
 is why the guarded and naive percentages are identical. Re-running it on raw counts would widen the
