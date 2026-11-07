@@ -1,0 +1,7 @@
+cls,threshold,naive_pct,guarded_pct,n_guarded,n_cells
+GABA,0.1,9.52,9.52,50,525
+GABA,0.2,12.95,12.95,68,525
+GABA,0.5,19.24,19.24,101,525
+Glut,0.1,2.99,2.99,19,635
+Glut,0.2,4.25,4.25,27,635
+Glut,0.5,8.5,8.5,54,635

@@ -831,6 +831,89 @@ ratio; exchange predicts near-independence. And if KChIP and Kv4 decay at the sa
 matched expression, the 2× difference seen in neurons is neuron-imposed and belongs with whatever makes
 DPP obligatory there.
 
+### Ca²⁺-dependent KChIP binding, and which neurons sit in the sensitive regime
+
+**The lab's CHO data.** Two results, both bearing directly on whether KChIP occupancy is dynamic.
+
+*Zn²⁺-site / EF-hand.* A Zn²⁺-site mutant Kv4.2 gives no current; co-expressed KChIP3a rescues it;
+mutating KChIP3's EF-hands abolishes the rescue **but leaves intact its ability to promote WT Kv4.2
+expression**. So KChIP has two separable activities — general chaperoning, which is EF-hand
+independent, and stabilisation of a compromised T1 interface, which requires Ca²⁺-loaded KChIP3.
+
+*BAPTA × ratio.* Chelating Ca²⁺ costs ~**6-fold** of the current at low KChIP3a:Kv4.2 but only ~1.4-fold
+at high ratio, with the transition near **10%**. Read as mass action: KChIP3 binds Kv4.2 much more
+weakly without Ca²⁺, so with KChIP in excess the channel is still saturated at low affinity, while with
+KChIP limiting, weak binding means poor occupancy and little current.
+
+Note this is not contradicted by the literature statement that KChIPs modulate recovery from
+inactivation "Ca²⁺-independently" — that is about *gating*, whereas this is about *assembly and surface
+expression*. Different endpoints.
+
+**So which neurons are below 10%?** (`scripts/kchip_ratio_ca_sensitivity.py`, 1,160 cortical neurons
+with Kv4 ≥ 10 CPM.)
+
+| class | p5 | p10 | median | **% below 0.10** |
+|---|---|---|---|---|
+| GABA | 0.01 | 0.12 | 1.98 | **9.5%** |
+| Glut | 0.23 | 0.58 | 2.66 | **3.0%** |
+
+Overall **5.95%** of neurons sit below the cusp — a tail, not a population, so Ca²⁺-dependent occupancy
+should show up as a few outlying recordings rather than a shifted mean. But the tail is not randomly
+distributed: *Sst Myh8* 34.5%, *Vip Parm1* 22.6%, *Sst Cdk6* 20.0%, *Vip Gpc3* 15.0%, **_Sst Chodl_
+12.8%**, *Sst Cbln4* 11.7% — against 8.7% for *L6a Sla* and 5.8% for *L2/3 Ptgs2*. Inhibitory neurons
+are ~3× more likely to be Ca²⁺-labile, and *Sst Chodl* — already flagged as the best deep-layer
+recording target — is among the most affected.
+
+That is a third independent reason the deep inhibitory population is the volatile one, alongside its
+reliance on the two shortest-lived KChIPs and the lab's own 1.97× SD ratio.
+
+**A caveat that could enlarge this a lot.** The ratio above is *total* KChIP against *total* Kv4, while
+the CHO experiment was KChIP3a with Kv4.2. In cortical excitatory neurons KChIP3 is 76.5% of KChIP so
+the two nearly coincide (KChIP3:Kv4 ≈ 2.0, safely above the cusp). In GABAergic neurons KChIP3 is only
+8.4%, giving **KChIP3:Kv4 ≈ 0.17 — right at the cusp**. Whether that matters depends on whether the
+Ca²⁺ requirement is shared by KChIP1 and KChIP4. All four are EF-hand NCS-family proteins, so it
+plausibly is, in which case the total ratio is the right one and the table above stands. If it is
+KChIP3-specific, essentially the whole GABAergic population is in the sensitive regime for its KChIP3
+component and only rescued by Ca²⁺-independent chaperoning from KChIP1/4. **This is worth testing
+directly**, by repeating the BAPTA × ratio experiment with KChIP1 and KChIP4 in place of KChIP3a.
+
+**Dopaminergic neurons sit squarely on the cusp.** Liss et al., *EMBO J* 20:5715 (2001), single-cell
+TaqMan in SN DA neurons: Kv4.3L 6–68 molecules/cell, KChIP3.1 2–26. Midpoint ratio ≈ 0.38, but
+individual cells span **~0.03 to ~4.3**, straddling 0.10 with a real fraction below it. Unlike the
+cortical case this is a whole cell type near the threshold rather than a tail, which makes DA neurons
+the natural preparation in which to test whether Ca²⁺-dependent KChIP occupancy actually sets A-current
+in a live neuron. It also suggests a feedback loop worth stating: activity → Ca²⁺ → more KChIP bound →
+more A-current → slower pacemaking → less Ca²⁺, which would stabilise firing rate.
+
+**And a number in that paper is the strongest challenge to the surplus-exclusion above.** Liss estimates
+~1.5 nS of A-conductance per Kv4.3L transcript against ~10.8 nS per KChIP3 transcript — ~7× more per
+KChIP3 molecule — and *suggests* this may be higher translation efficiency of the β subunit. If that is
+translation efficiency, the cortical protein-level ratio becomes 3.24 × 7 ≈ **22.7**, which is exactly
+the excess surplus QC needs to explain KChIP4's 2.02 d half-life at a 12 h free pool. The
+surplus-exclusion would collapse.
+
+Two things argue it is not simply translation efficiency. Within Liss's own data, A-current correlates
+with KChIP3 transcript number at r = 0.90 — if KChIP3 were in 20-fold excess, adding transcripts could
+not raise current, so KChIP3 is **limiting** in those cells. And both subunits correlate with current
+at r = 0.90, which is the signature of co-limitation near stoichiometry rather than of one subunit in
+vast excess. The 7× is therefore better read as catalytic leverage — each KChIP3 unlocks a lot of
+channel trafficking — than as a large standing surplus. But this is an argument, not a measurement, and
+**the protein-level KChIP:Kv4 ratio remains the one number that settles both this and the exchange
+question.**
+
+**A direct test of exchange, using the lab's own reagent.** If Ca²⁺ strengthens KChIP binding, then
+lowering Ca²⁺ increases the free KChIP pool — and free cytosolic KChIP is degraded. So **BAPTA-AM (or
+TTX) should shorten KChIP protein half-life while leaving Kv4 half-life unchanged.** A cycloheximide
+chase under BAPTA, blotting KChIP3 and Kv4.2, tests the exchange model directly in the same preparation
+that produced the ratio curve.
+
+**Methodological note on the ratio calculation.** The Dirichlet guard in that script is weak, because
+CPM values were used as pseudo-counts and CPM overstates the true count for shallow libraries — which
+is why the guarded and naive percentages are identical. Re-running it on raw counts would widen the
+confidence on each per-cell ratio and could move the low-ratio fractions. The gene-level per-cell
+tables needed for that (and for a proper KChIP3-specific ratio) are the ones lost with the old
+container, and regenerating them is now worth doing.
+
 ### What this predicts for recorded A-currents, and it is a prediction about shape rather than spread
 
 Two earlier findings now combine. The DPPs are the **longest-lived** members of the complex, and their
