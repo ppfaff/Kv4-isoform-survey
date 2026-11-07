@@ -14,7 +14,26 @@ What the mutants *do* show is **a reactive astrocyte state in hippocampus and co
 
 **A quantification artefact was found and bounded in the course of testing that claim, and it invalidates a different result.** salmon's assignment of the DPP N-terminal variants is *exact* under full-length coverage — 100% correct for all seven variants, verified at 51,000–306,000 reads and again at 385–705 reads, in both SE 100 bp and PE 50 bp — but under 3′ coverage bias it collapses into two default bins, one per gene: DPP6K and DPP6L flow into **DPP6S**, DPP10a flows into **DPP10d**. Applying the measured confusion matrix to the efficiency-calibrated qRT-PCR composition of cerebellar granule cells (Jerng & Pfaffinger 2012) predicts DPP6S at 50–57% against the 53.7% actually observed in the V404M bulk, so the artefact is real and quantitatively sufficient. Consequently **the V404M bulk DPP variant results are withdrawn**, while the single-cell results stand: SMART-seq is full-length, shows none of the collapse signature, and recovers DPP10a at 62.5% of the DPP panel in excitatory cells, consistent with DPP10a being the dominant N-type variant in cortical pyramidal neurons.
 
-Four methodological failures found and fixed are recorded in *Technical findings*, because each produced a confident wrong result that looked like a finding. The fourth is the most instructive: the first three were caught by testing against synthetic cases, which can only catch errors already imagined, whereas this one was caught by an external measurement with a known answer.
+**Lifetimes, and an unexpected consequence for complex assembly.** Kcnd2 mRNA has a half-life of
+**2.6–13 h** (exon:intron density ratio 112:1 in total-RNA libraries, with the splicing regime measured
+rather than assumed), while Kv4.2 **protein** lasts **4.81 days** — a ~20-fold gap. The long protein
+pool retires the bursting objection to the 19.4% Kv4.2-negative figure and replaces it with a harder
+one: that state must persist for *days*, which no single-observation method can test. The surprise is
+in the auxiliary subunits. Within one preparation the order is **DPP6 4.52 d > Kv4.3 3.87 d > KChIP1
+2.67 d > KChIP4 2.02 d** — the KChIPs turn over faster than the channel they sit inside, which a
+protected non-exchanging pool cannot do. Surplus degradation of unassembled KChIP is the obvious
+alternative, and the lab's own DPP6-rescue experiment rules it out by *measuring* the excess: at the
+observed KChIP:Kv4 ratio of ~3.2, surplus can produce an apparent half-life no shorter than 2.84 d
+against KChIP4's 2.02 d. So **KChIP4 must leave intact complexes**, with KChIP1 borderline. The lab's
+CHO data then supplies the mechanism — KChIP3 binds Kv4.2 far more weakly without Ca²⁺, costing
+~6-fold of the current below a KChIP:Kv4 ratio of ~0.10 — and per-cell counts say who is exposed:
+**on the total ratio essentially nobody** (the apparent low-ratio cells are a sequencing-depth
+artefact, which also retracts an earlier figure of ours), but **on the Kcnip3:Kcnd2 ratio ~32% of
+hippocampal neurons**, robustly across depth. Which of those is the real exposure depends on whether
+the Ca²⁺ requirement is KChIP3-specific or shared across the EF-hand family — one experiment, not yet
+done.
+
+Six methodological failures found and fixed are recorded in *Technical findings*, because each produced a confident wrong result that looked like a finding. The fourth is the most instructive: the first three were caught by testing against synthetic cases, which can only catch errors already imagined, whereas this one was caught by an external measurement with a known answer.
 
 ## Datasets and methods
 
@@ -24,6 +43,10 @@ Four methodological failures found and fixed are recorded in *Technical findings
 | Tasic 2016 (GSE71585) | V1, SMART-Seq v1, 100 bp SE, ~8.7 M reads/cell | 1,677 cells, 49 types | Deepest; drives the heterogeneity result |
 | Allen SSv4 hippocampal formation (Yao 2021, NeMO) | SMART-Seq v4, 50 bp PE, ~0.70 M reads/cell | 8,131 cells, 26 subclasses | Heterogeneity replication at low depth |
 | Allen SSv4 VISp (Tasic 2018 cells, NeMO) | SMART-Seq v4, 50 bp PE, ~2.5 M reads/cell | 1,511 cells | Intermediate depth; the √depth check |
+| Farris laminar (total RNA) | CA1/CA2/CA3/DG, soma vs dendrite, ribo-depleted | 24 libraries | mRNA lifetime; polyA⁺ sets cannot be used for this |
+| Dörrbaum 2018, *eLife* 7:e34202 | SILAC pulse-chase, rat cortex/hippocampus cultures 18–19 DIV, light→heavy at t=0,1,3,7 d | ~3,500 proteins × 3 culture types | All protein half-lives |
+| Qiu 2026, *Nat Neurosci* 29:2685 | in vivo 4sU + SLAM, scNT-seq2 and spatial NT-seq, E16.5/P7/P12 and P56 | 12,483 genes × 15 cortical types | RNA kinetics modules (membership only; per-gene half-lives not published) |
+| Allen SSv4 HPF, re-extracted raw counts | salmon `NumReads` for 54 panel transcripts, via `pipeline/extract_panel_counts.py` | 6,259 cells, median 711 k reads | The KChIP:Kv4 ratio done on counts rather than CPM |
 
 Reference GENCODE vM36 / GRCm39 throughout; all coordinates are GRCm39. salmon 1.10.3 selective alignment, STAR 2.7.11b, featureCounts 2.1.1, samtools 1.24, pydeseq2 0.5.4. Allele counting is done on whole haplotypes straight from the FASTQs, not from alignment, because a read carrying the mutation has one extra mismatch and aligns marginally less well — an alignment-based allele ratio is biased against the mutant.
 
@@ -392,6 +415,32 @@ effect size measured in a diluted population is understated by 1/(1−p). And th
 experiment is not in deep layers: `Nos1`-driven `Sst Chodl` cells are 4.8% Kv4.2-negative and sit in deep
 layers and at the white-matter border, so switching to them would move p from ~0.25 to ~0.05 and bring the
 measured shift close to the true one.
+
+## Lifetimes: how long the complex and its parts last, and what that forces
+
+This section was built in one sitting from a single question — how long do these mRNAs live — and it
+ended somewhere else: at the stoichiometry and Ca²⁺-dependence of KChIP binding. Because several
+claims here were **revised or withdrawn as better inputs arrived**, the order below is logical rather
+than chronological, and each revision is marked where it occurred rather than silently corrected.
+
+The thread, so the turns are legible:
+
+1. Kcnd2 mRNA lives hours; its protein lives days. That retires one caveat on the 19.4% prediction
+   (bursting) and replaces it with a harder one (how long the Kv4.2-negative state persists).
+2. The KChIP subunits turn over **faster than the channel they sit in**, which is not possible for a
+   protected, non-exchanging pool — so either KChIP leaves intact complexes, or a large unassembled
+   surplus is being destroyed.
+3. Three attempts to decide between those: curve shape (**inconclusive** — too few timepoints), the
+   lab's DPP6 RNAi (**withdrawn** — it is an assembly experiment, not a turnover one), and the
+   location of degradation (**inverted** — cytosolic, not ERAD, which *helps* the surplus model).
+4. What decides it is the lab's DPP6 rescue, because it pins the subunit excess at a measured value
+   instead of a free parameter. At that value surplus cannot account for KChIP4.
+5. Ca²⁺-dependence of KChIP binding then supplies a mechanism, and the per-cell ratio data says which
+   neurons it could matter for — an answer that itself turned on redoing the ratio with raw counts.
+
+The single measurement that would settle the most open questions here is a **protein-level KChIP:Kv4
+ratio**, and the single cheapest decisive experiment is **repeating the BAPTA × ratio curve with
+KChIP1 and KChIP4 in place of KChIP3a**.
 
 ### Mature mRNA lifetime, and why it retires the bursting caveat — solid for Kcnd2
 
@@ -1083,13 +1132,27 @@ The quantitative anchor: the measured all-or-none distributions give predicted 1
 6. Bulk RNA cannot exclude a small, severely reactive astrocyte subpopulation.
 7. `region_compare3.py` and the three-way comparison it produced are not currently reproducible (dead paths, and the CLR metric issue applies to its distance calculations).
 8. The DPP calibration covers the DPP panel only. The Kv4 and KChIP panels have not been calibrated, and the Kv4.3L 3′UTR underestimate found earlier shows that panel is not immune. The same script covers them with one flag change.
-9. Whether the per-cell heterogeneity is a stable property or a dynamic state is untested, and it decides whether composition could be reprogrammed.
-10. The ~19% Kv4.2-negative figure assumes a cell with no detectable Kcnd2 mRNA has no Kv4.2 protein. Bursting makes that an upper bound, by an amount set by the protein half-life relative to the message, which nothing here measures.
+9. Whether the per-cell heterogeneity is a stable property or a dynamic state is untested, and it decides whether composition could be reprogrammed. The lifetime work sharpens the timescale: the relevant question is now stability over **days**, not minutes.
+10. The ~19% Kv4.2-negative figure assumes a cell with no detectable Kcnd2 mRNA has no Kv4.2 protein. **Partly resolved.** The mRNA half-life (2.6–13 h) retires the bursting objection — the pool integrates over many bursts — but the protein half-life (4.81 d) replaces it with a stricter requirement: the negative state must persist for days. No single-observation method, patch-seq included, can test that. A Kv4.2 reporter followed over days, or an immunostain asking whether the protein-negative fraction matches 19%, would.
 11. The mixture experiment is infeasible below d = 2 regardless of n, so measuring d comes before designing it.
+12. **Which KChIPs carry the Ca²⁺ requirement is unknown and it changes the answer by ~30-fold.** On the total KChIP:Kv4 ratio essentially no hippocampal neuron is in the Ca²⁺-sensitive regime; on the Kcnip3:Kcnd2 ratio ~32% are. Repeating the BAPTA × ratio curve with KChIP1 and KChIP4 decides it.
+13. **The protein-level KChIP:Kv4 ratio is the single most load-bearing unmeasured number.** It settles whether KChIP4 must exchange (the mRNA-ratio argument is 3–18× short of what surplus needs, but rests on mRNA standing in for synthesis), and Liss's ~7×-per-transcript figure would close that gap if it reflects translation efficiency rather than catalytic leverage.
+14. The KChIP3 protein half-life in pyramidal neurons is unmeasured, and KChIP3 is both the dominant excitatory KChIP (76.5% in cortex) and the family's transcription factor. Protein coverage is 78% of KChIP reads for cortical inhibitory neurons but only 19% for excitatory.
+15. Immediate-early genes are down in V404M across all four tissues (p < 0.001 competitively in each). Most likely the cell-composition dilution of item 1 rather than biology, and the neuronal-fraction covariate is the test — but it should not be left unexamined.
 
 ## Recommended additional analyses
 
-**0. Recover the gene-level per-cell tables — now the top item, and blocked on locating files.**
+**0. Recover the gene-level per-cell tables — PARTLY DONE.** Raw per-cell `NumReads` for all 54 panel
+transcripts across 6,259 Allen SSv4 hippocampal cells is now in hand via `pipeline/extract_panel_counts.py`
+(run inside WSL on `pfaff-lambda`, where `~/allen_meta/quant` lives — UNC paths to `\\wsl$` are
+unreachable from a cloud session, so the extraction runs there and only the small CSV comes back).
+That unblocked the ratio-on-raw-counts work. Still outstanding: **`hip_filtered_runlist.tsv`** from the
+same directory, which carries `subclass_label` / `cluster_label` / `region_label` and would break the
+32% Kcnip3-poor fraction down by cell type; and the equivalent extraction for the **Tasic 2016 cortex**
+quants, which are on `PAULP-ALIEN` / `PFAFF10` rather than lambda. The original wording of this item
+follows, since the cortical half still applies.
+
+**0b. The original blocker, for the cortical dataset —**
 Three of the open questions need per-cell, per-gene read counts for the panel, which no table in this
 repo currently carries:
 - the KChIP:Kv4 ratio recomputed on **raw counts** rather than CPM, so the Dirichlet guard actually
