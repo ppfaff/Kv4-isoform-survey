@@ -1142,6 +1142,82 @@ in the DPP-dependent parameters and smooth spread in the KChIP-dependent ones. T
 preparation — only that both kinds of parameter be extracted from the same recordings and their
 distributions examined separately rather than pooled into a single SD.
 
+### What else changes transcriptionally in V404M, and where — a survey
+
+`scripts/v404m_transcriptome_survey.py`. Asked as a separate question from occupancy and turnover: a
+transcript change is a different mechanism, not evidence for the same one.
+
+**The regional asymmetry is the first result and it is extreme.**
+
+| tissue | tested | padj < 0.05 | padj < 0.01 | sig & \|log2FC\| > 1 |
+|---|---|---|---|---|
+| hippocampus | 19,631 | **401** | 207 | 40 |
+| cortex | 20,474 | **87** | 38 | 38 |
+| thalamus | 21,139 | 2 | 2 | 0 |
+| cerebellum | 20,237 | 3 | 3 | 0 |
+
+The two tissues with a transcriptome response are the two with astrogliosis. Thalamus and cerebellum
+have essentially none — and cerebellum expresses the *most* Kcnd2 of any tissue (341 CPM). The
+response tracks circuit involvement, not mutant protein dose, exactly as the astrogliosis does.
+Overlap between tissues is near zero: 13 genes shared between hippocampus and cortex, 1 or 0 for
+every other pair.
+
+**Hippocampus: a coherent adult-neurogenesis / immature granule cell signature.** Competitive panel
+median +0.124, **p = 7.4 × 10⁻⁴, and in hippocampus only** (cortex p = 0.64, thalamus 0.89,
+cerebellum 0.86):
+
+| gene | log2FC | padj | |
+|---|---|---|---|
+| Igfbpl1 | **+1.473** | <1e-4 | immature granule marker |
+| Sox11 | **+0.981** | <1e-4 | immature granule / neurogenic TF |
+| Eomes (Tbr2) | +0.931 | 0.141 | intermediate progenitor |
+| Mki67 | +0.661 | 0.128 | proliferation |
+| Dcx | **+0.550** | 0.0002 | immature neuron |
+| Sox4 | +0.224 | 0.097 | |
+
+Mature granule markers do **not** move (Prox1 +0.058, Calb1, Neurod1 all flat; mature panel −0.117,
+p = 0.23). Proliferation and intermediate-progenitor markers moving together with the immature
+markers, while mature markers stay put, is the signature of **increased adult neurogenesis** rather
+than a relabelling of existing cells. Chronic seizure activity is a well-known driver of exactly
+this, and adult-born granule cells are themselves hyperexcitable — so this is a plausible
+*contributor* to DG hyperexcitability rather than merely a consequence of it. It is also a second,
+independent composition signal in hippocampus, and it means hippocampal DG results in this dataset
+carry a maturation-state confound that the Kv4-level split (`dg_cells_markers.csv`) may partly track.
+
+**Hippocampus: Kcnq3 is the standout channel change.** −0.417 at a baseMean of 11,114, padj < 1e-4 —
+by far the most significant ion-channel result in any tissue, in a very well-powered gene. Kcnq2 is
+flat (+0.015), so this is Kcnq3-specific rather than an M-current-wide effect. Loss of M-current is
+itself pro-excitatory and *Kcnq2/Kcnq3* mutations cause epilepsy, so a 25% reduction compounds
+whatever V404M does directly. Kcnd2 itself is −0.125 (p = 0.02, padj = 0.31) and the hippocampal K
+channel panel as a whole is flat (−0.020), so this is one gene, not a class effect.
+
+**Cortex: a channel-specific decrease that is not neuronal dilution.** K channels −0.371
+(p = 4.7 × 10⁻⁶) and Na/Ca channels −0.475 (p = 3.3 × 10⁻⁷). The obvious reading is the known cortical
+composition confound, but the guard argues against it: the neuron-identity panel falls only −0.099
+(p = 0.052) and the glia panel does not move (+0.035, n.s.), so the channel panels fall **3.8× and
+4.8× faster than neuron identity itself**. Dilution moves both by the same factor. Something is
+specifically reducing channel transcripts in cortex beyond any change in cell makeup. (In hippocampus
+the same comparison gives −0.020 against −0.019 — pure proportionality, i.e. nothing.)
+
+**Elk1 is the only gene significant in three tissues, and the single most consistent change in the
+dataset:** hippocampus **+0.575** (padj 4.0e-08), cortex **+0.343** (padj 9.1e-04), thalamus
+**+0.319** (padj 1.1e-03), cerebellum +0.034 (n.s.). Up in all three forebrain regions, absent in
+cerebellum. Elk1 is the ternary complex factor that partners with SRF at the serum response element
+to drive immediate-early transcription, and is the principal nuclear effector of ERK/MAPK. Two things
+make this worth following rather than filing: Kv4.2 is itself an ERK substrate, so an ERK-pathway
+change is mechanistically adjacent rather than incidental; and **Elk1 rising while its own IEG targets
+fall** (IEG panel −0.389 hippocampus, −0.438 cortex) is the pattern expected if pathway *activity* is
+down and transcript level is compensating, since Elk1 is regulated by phosphorylation rather than
+abundance. A phospho-Elk1 or phospho-ERK blot would distinguish that from the alternative, which is
+that the transcript change means nothing functional.
+
+**A refinement to the IEG result recorded above.** In cortex the IEG decrease sits alongside a general
+channel and neuron-identity decrease, consistent with dilution contributing. In **hippocampus** the
+neuron-identity panel is flat (−0.019, n.s.) and the channel panel is flat, while IEGs are still down
+(−0.389, p = 0.013). So the hippocampal IEG decrease is **not** explained by composition and is more
+likely a real reduction in activity-dependent transcription — which sits oddly next to an
+epileptogenic phenotype and deserves its own look.
+
 ### Technical findings worth recording
 
 **Six methodological failures, each of which produced a confident wrong answer.**
