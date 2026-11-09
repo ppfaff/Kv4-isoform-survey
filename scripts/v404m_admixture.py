@@ -13,9 +13,12 @@ Writes OUT/tables/v404m_admixture_per_sample.csv and OUT/figures/v404m_admixture
 """
 import os, sys
 import numpy as np, pandas as pd
-import matplotlib
-matplotlib.use('Agg')
-import matplotlib.pyplot as plt
+try:
+    import matplotlib
+    matplotlib.use('Agg')
+    import matplotlib.pyplot as plt
+except ImportError:          # the kv4 env has no matplotlib; tables are the deliverable, figure is optional
+    plt = None
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from v404m_panels import load_counts, load_meta  # noqa: E402
 
@@ -86,6 +89,9 @@ if len(ctx) > 3:
     rho = ctx['idx_striatum (MSN)'].corr(ctx['Kcnip2_over_Kcnip3'], method='spearman')
     print(f'\ncortex: Spearman(striatal index, Kcnip2/Kcnip3) = {rho:.2f}  (n={len(ctx)})')
 
+if plt is None:
+    print('\nmatplotlib not available: skipped the figure; plot from tables/v404m_admixture_per_sample.csv elsewhere')
+    sys.exit(0)
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 tis = ['cortex', 'hippocampus', 'thalamus', 'cerebellum']
 cols = {'cortex': '#999999', 'hippocampus': '#666666', 'thalamus': '#D6372E', 'cerebellum': '#BBBBBB'}
