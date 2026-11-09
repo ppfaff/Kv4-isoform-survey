@@ -13,12 +13,29 @@ Writes OUT/tables/v404m_admixture_per_sample.csv and OUT/figures/v404m_admixture
 """
 import os, sys
 import numpy as np, pandas as pd
-from scipy import stats
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from v404m_panels import load_counts, load_meta  # noqa: E402
+
+
+def mannwhitney_p(a, b):
+    """Two-sided Mann-Whitney U, normal approximation with tie correction (no scipy in the kv4 env)."""
+    a, b = np.asarray(a, float), np.asarray(b, float)
+    n1, n2 = len(a), len(b)
+    if n1 < 3 or n2 < 3:
+        return np.nan
+    allv = np.concatenate([a, b]); ranks = pd.Series(allv).rank().values
+    u1 = ranks[:n1].sum() - n1 * (n1 + 1) / 2
+    mu = n1 * n2 / 2
+    _, cnt = np.unique(allv, return_counts=True); n = n1 + n2
+    sigma = np.sqrt(n1 * n2 / 12 * ((n + 1) - (cnt ** 3 - cnt).sum() / (n * (n - 1))))
+    if sigma == 0:
+        return 1.0
+    z = (abs(u1 - mu) - 0.5) / sigma
+    import math
+    return float(2 * (1 - 0.5 * (1 + math.erf(z / np.sqrt(2)))))
 
 TABLES = sys.argv[1] if len(sys.argv) > 1 else 'tables'
 OUT = sys.argv[2] if len(sys.argv) > 2 else '.'
@@ -62,12 +79,12 @@ print(A.groupby('tissue')['idx_striatum (MSN)'].std().round(2).to_string())
 print('\nstriatal index by genotype within tissue (Mann-Whitney p):')
 for t, sub in A.groupby('tissue'):
     a, b = sub[sub.genotype.str.startswith('mut')]['idx_striatum (MSN)'], sub[~sub.genotype.str.startswith('mut')]['idx_striatum (MSN)']
-    p = stats.mannwhitneyu(a, b).pvalue if len(a) > 2 and len(b) > 2 else np.nan
+    p = mannwhitney_p(a, b)
     print(f'  {t:12s} mut {a.mean():.2f}  wt {b.mean():.2f}  p={p:.3f}')
 ctx = A[A.tissue == 'cortex']
 if len(ctx) > 3:
-    rho, p = stats.spearmanr(ctx['idx_striatum (MSN)'], ctx['Kcnip2_over_Kcnip3'])
-    print(f'\ncortex: Spearman(striatal index, Kcnip2/Kcnip3) = {rho:.2f}, p = {p:.3f}  (n={len(ctx)})')
+    rho = ctx['idx_striatum (MSN)'].corr(ctx['Kcnip2_over_Kcnip3'], method='spearman')
+    print(f'\ncortex: Spearman(striatal index, Kcnip2/Kcnip3) = {rho:.2f}  (n={len(ctx)})')
 
 fig, axes = plt.subplots(1, 2, figsize=(12, 4.5))
 tis = ['cortex', 'hippocampus', 'thalamus', 'cerebellum']
