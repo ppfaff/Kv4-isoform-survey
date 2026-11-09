@@ -111,7 +111,8 @@ By-product for the thalamus work: Vglut2-Cre covers thalamic relay neurons, so t
 2. **Cell assignment of the bulk program**: RNAscope for Penk, Npy, Pdyn and Kcnip3 on the existing ΔFosB-stained sections, granule layer vs hilus vs CA3; the per-animal bulk values give the expected effect sizes.
 3. **Granule-cell A-current and firing in V404M/+ vs +/+** (slice; the lab's recording design document already specifies the mixture analysis): the direct test of the intrinsic reading, and of whether KChIP/DPP composition in granule cells (DPP6K-rich, KChIP4bL/4a) changes the mutant's effect.
 4. **EEG–histology pairing**: depth electrode in dentate alongside the frontal lead in constitutive heterozygotes, to ask whether dentate events are independent of spike-wave discharges, as the conditional suggests.
-5. **Kcnip3/DREAM**: nuclear vs cytoplasmic KChIP3 in granule cells by immunostaining; Pdyn and Fos DRE occupancy is a later step.
+5. **Recombination efficiency at the Kcnd2 conditional locus (planned).** Cross each Cre line to cKI;Ai14, FACS-sort tdTomato⁺ and tdTomato⁻ cells, and measure the trapped:excised allele ratio in each population — genomic qPCR/ddPCR with one assay across the intact degron trap and one across the excision scar, plus RT-PCR or junction-spanning reads for the transcript. Ai14 is a permissive reporter locus, so tdTomato marks a history of Cre activity rather than excision at Kcnd2; the sorted-cell ratio gives the true per-population V404M dose and is the denominator for interpreting every negative conditional result (a Cre population that is 60% excised has tested V404M in 60% of its cells).
+6. **Kcnip3/DREAM**: nuclear vs cytoplasmic KChIP3 in granule cells by immunostaining; Pdyn and Fos DRE occupancy is a later step.
 
 ## Methods and provenance
 
