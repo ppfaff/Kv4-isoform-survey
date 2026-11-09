@@ -68,6 +68,14 @@ V404M inverts that order, and the ΔFosB map says how. If the dentate gate had f
 
 Two readings remain open: (1) cell-autonomous reduction of the Kv4.2-dependent A-current in granule cells and CA1 pyramids, or (2) increased entorhinal drive if V404M also disinhibits entorhinal layer II/III cells (which project to both DG and CA1 and express Kcnd2 strongly) — note that (2) would *also* spare CA3 if the direct entorhinal→CA1 (temporoammonic) path and the perforant path to DG were the carriers. CaMKII-Cre hits both; a granule-cell-restricted Cre predicts DG ΔFosB without CA1 ΔFosB under (1), and neither under (2). Recording CA1 and granule-cell A-currents in V404M/+ slices is the direct test of (1).
 
+## The learning deficit segregates with the hippocampal state, not with the spike-wave discharges
+
+Constitutive V404M/+ mice have a fear-conditioning deficit; Viaat-Cre × conditional V404M mice do not (lab result, Nov 2026). The conditional animals carry the mutation in hippocampal as well as cortical interneurons, have spike-wave discharges, and have elevated ΔFosB in upper-layer cortex and TRN — yet DG and CA1 are quiet and learning is intact. The deficit therefore segregates with the DG/CA1 activation state and not with the thalamocortical phenotype, and the inhibitory-network route to the learning phenotype is excluded even within the hippocampus.
+
+A mechanism that does not require seizures during training is available: ΔFosB accumulation in dentate granule cells represses c-Fos and calbindin and impairs hippocampus-dependent memory (Chin laboratory, epileptic and Alzheimer-model mice; memory is restored when ΔFosB's transcriptional activity is blocked), and c-Fos/Egr1/Arc induction in DG and CA1 is required for consolidation. The V404M chain would be: Kv4.2-dependent principal cells chronically over-active → ΔFosB high → acute plasticity genes suppressed (Fos 0.33× cortex, 0.70× hippocampus by qPCR; Fos, Egr1, Npas4, Arc down in bulk) → consolidation fails. This predicts the deficit is reversible if the ΔFosB-driven repression is lifted, independently of any effect on excitability.
+
+Two qualifications. Contextual fear is hippocampus-dependent and cued (tone) fear is amygdala-dependent; if constitutive animals are impaired on context but intact on tone the hippocampal attribution is clean, whereas a tone deficit would implicate the basolateral amygdala (also Kv4.2-rich) as a second site that the Viaat-Cre comparison cannot separate. Retrosplenial cortex, elevated in the constitutive mice, is itself part of the contextual-fear circuit. And the dissociation rests on two genotypes; CaMKII-Cre × V404M is predicted to show the DG/CA1 state and the deficit with or without spike-wave discharges, and a Dock10-Cre animal would ask whether the dentate alone is sufficient.
+
 ## Reliability
 
 | claim | rating | basis |
@@ -77,6 +85,7 @@ Two readings remain open: (1) cell-autonomous reduction of the Kv4.2-dependent A
 | Chronic rather than acute state | moderately solid | no IEG/Bdnf elevation; IEGs trend down |
 | Kcnip3 ↑ and Pdyn ↓ as one DREAM event | tentative | both significant, mechanism from literature, cell type unknown |
 | DG + CA1 activation needs V404M in glutamatergic cells | tentative | Viaat-Cre: DG 1.02×, cortex/TRN up; CaMKII-Cre in progress |
+| Learning deficit tracks the DG/CA1 state, not SWDs | moderately solid | constitutive impaired, Viaat-Cre intact despite SWDs and interneuron V404M in hippocampus; two genotypes only |
 | ΔFosB high / c-Fos low state in cortex and hippocampus | solid | IHC (RSC, DG, CA1) + qPCR c-Fos in a second cohort + bulk RNA-seq agree in direction and size |
 | Activation tracks Kv4.2-dependent cell types (DG, CA1; not CA3) | moderately solid | ΔFosB map vs Allen Kcnd2 expression by field; CA2 (1.3×, high Kcnd2) is the one discordance |
 | Hippocampal astrogliosis (Gfap, Serpina3n) | downgraded | fold changes persist (+0.69, +0.73) but lose significance once choroid-plexus content is a covariate |
@@ -85,11 +94,11 @@ Two readings remain open: (1) cell-autonomous reduction of the Kv4.2-dependent A
 
 0. **CaMKII-Cre × conditional V404M (in progress, animals being weaned Nov 2026).** Forebrain glutamatergic neurons, the reciprocal of Viaat-Cre. Prediction if the two phenotypes are class-dissociated: dentate ΔFosB and the Penk/Pdyn/Npy/Drd1 program present, spike-wave discharges absent. Spike-wave discharges present would mean pyramidal-cell V404M (L6 corticothalamic / L5) can drive the loop on its own. The Cre line's thalamic expression should be confirmed (T29-1 is sparse in relay nuclei and absent from RT; other Camk2a-Cre lines differ). A qPCR panel (Penk, Pdyn, Npy, Drd1, Cck vs Snap25/Prox1) on whole hippocampus is a one-day readout of the dentate program across the three genotypes; bulk effect sizes support n = 4-5 per group.
 
-| | spike-wave (frontal EEG) | dentate ΔFosB / program |
-| --- | --- | --- |
-| constitutive V404M/+ | yes (+ RSC ΔFosB) | yes (DG 2.4×, CA1 2.7×, CA3 flat) |
-| Viaat-Cre (GABAergic) | yes (+ cortical and TRN ΔFosB) | no (1.02×) |
-| CaMKII-Cre (forebrain glutamatergic) | predicted no | predicted yes |
+| | spike-wave (frontal EEG) | DG / CA1 ΔFosB and program | fear-conditioning deficit |
+| --- | --- | --- | --- |
+| constitutive V404M/+ | yes (+ RSC ΔFosB) | yes (DG 2.4×, CA1 2.7×, CA3 flat; c-Fos 0.70×) | yes |
+| Viaat-Cre (GABAergic) | yes (+ upper-cortical and TRN ΔFosB) | no (DG 1.02×) | **no** |
+| CaMKII-Cre (forebrain glutamatergic) | predicted no | predicted yes | predicted yes |
 
 1. **Granule-cell-restricted conditional**: Dock10-Cre (Kohara et al. 2014; granule-cell-specific within hippocampus, constitutive) × conditional V404M as the first choice; Prox1-CreERT2 (inducible; also recombines CGE-derived VIP/Lamp5 interneurons, cerebellar granule cells and lymphatics) as the alternative, with the advantage that adult induction tests for a developmental component. Score ΔFosB in DG *and CA1* and Penk/Npy by smFISH. DG-only ΔFosB → cell-autonomous; DG + CA1 → propagation or shared drive; neither → entorhinal drive. Pair with Emx1-Cre (all forebrain glutamatergic) to cover the entorhinal alternative.
 2. **Cell assignment of the bulk program**: RNAscope for Penk, Npy, Pdyn and Kcnip3 on the existing ΔFosB-stained sections, granule layer vs hilus vs CA3; the per-animal bulk values give the expected effect sizes.

@@ -25,7 +25,7 @@ SUMMARY = ("In the 3-month littermate bulk RNA-seq, V404M/+ hippocampus shows th
            "Viaat-Cre x conditional V404M (GABAergic neurons only) shows frontal spike-wave discharges without dentate dFosB, so the "
            "dentate activation requires V404M in glutamatergic cells - most simply a cell-autonomous loss of the granule-cell A-current gate. "
            "Records the Nov 9 finding that the bulk blocks carried genotype-correlated contamination (olfactory bulb in cortex, choroid plexus "
-           "in hippocampus) that withdraws the cortical astrogliosis and leaves the hippocampal astrogliosis unconfirmed. Proposes granule-cell "
+           "in hippocampus) that withdraws the cortical astrogliosis and leaves the hippocampal astrogliosis unconfirmed. Viaat-Cre animals also show no fear-conditioning deficit, unlike constitutive V404M, so the learning phenotype segregates with the DG/CA1 state rather than with the spike-wave discharges; a dFosB-mediated suppression of plasticity genes (c-Fos, Egr1, Arc) is the proposed route. Proposes granule-cell "
            "(Prox1/Dock10-Cre) and Emx1-Cre conditionals, RNAscope cell assignment, granule-cell A-current recordings and paired dentate/frontal EEG.")
 TAGS = ["V404M", "Kv4.2", "Kcnd2", "dentate gyrus", "granule cells", "deltaFosB", "Penk", "Pdyn", "Npy", "Drd1", "Kcnip3", "DREAM",
         "spike-wave discharge", "Viaat-Cre", "conditional", "bulk RNA-seq", "tissue composition", "hippocampus", "provisional"]
