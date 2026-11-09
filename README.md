@@ -58,3 +58,9 @@ Thalamus extension (2026-11-09) — see thalamus/README.md. Tier 1 = ABC Atlas 1
 THALMANAC MERFISH nucleus map (gene level; run on a lab machine), tier 2 = ThalamoSeq / TRN full-length
 isoforms (next), tier 3 = scripts/v404m_thalamus_view.py on the existing V404M bulk tables
 (tables/thalamus_bulk_kv4_summary.csv, tables/thalamus_bulk_kchip_classes.csv, figures/thalamus_bulk_kv4_complex.png).
+
+Admixture check (2026-11-09): the bulk 'cortex' libraries carry striatal MSN markers (Gpr88, Adora2a, Ppp1r1b,
+Penk) at 20-25x hippocampal levels, explaining Kcnip2 ~= Kcnip3 in bulk cortex where Tasic 2016 neurons give
+Kcnip2 at ~5% of Kcnip3. Per-library scoring: scripts/v404m_admixture.py (needs the counts matrix; run on Lambda:
+python3 ~/Kv4-isoform-survey/scripts/v404m_admixture.py tables ~/Kv4-isoform-survey). Bulk variant fractions
+are separately unreliable (3' collapse; scripts/bulk_vs_tasic_variants.py).
