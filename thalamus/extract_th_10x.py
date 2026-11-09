@@ -44,9 +44,12 @@ print(f'{len(cell):,} cells in WMB-10X')
 
 is_th_dissection = cell['feature_matrix_label'].str.endswith('-TH')
 # thalamic subclasses as THALMANAC defines them (vendored taxonomy slice); this is what --extra-matrices adds
-tax = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'taxonomy_CCN20230722_th_zi_only.csv'))
-th_subclasses = set(tax['subclass'].unique())
-is_th_subclass = cell['subclass'].isin(th_subclasses)
+# loop-relevant thalamic populations that may be dissected with HY or MB: TH Glut and MH-LH Glut cells anywhere,
+# plus the GABAergic TRN / ZI / LGv-IGL / pretectal subclasses. (The full THALMANAC taxonomy slice also lists whole
+# PAG/SC/hypothalamic subclasses that merely touch the thalamus MERFISH subset; those are not wanted.)
+EXTRA_SUBCLASSES = {'093 RT-ZI Gnb3 Gaba', '101 ZI Pax6 Gaba', '109 LGv-ZI Otx2 Gaba',
+                    '168 SPA-SPFm-SPFp-POL-PIL-PoT Sp9 Glut', '203 LGv-SPFp-SPFm Nkx2-2 Tcf7l2 Gaba', '202 PRT Tcf7l2 Gaba'}
+is_th_subclass = cell['subclass'].isin(EXTRA_SUBCLASSES) | cell['class'].isin(['18 TH Glut', '17 MH-LH Glut'])
 if args.extra_matrices:
     # thalamic subclasses dissected with hypothalamus or midbrain (RT-ZI, ZI, LGv/IGL, PF ...); other dissections
     # contribute only stray cells and would cost tens of GB of matrices
