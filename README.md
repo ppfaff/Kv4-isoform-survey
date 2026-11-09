@@ -53,3 +53,8 @@ libraries, ~45-60 M pairs each). Sample sheet: tables/v404m_sample_info.csv. On 
 Analysis (in the container, on the small tables): scripts/v404m_stress.py (ISR/UPR/apoptosis/gliosis panels, DESeq2
 per tissue) and scripts/v404m_kv4.py (allele ratio, Kv4 variants, Kcnd2 exon:intron, XBP1/dFosB/Kv4.3L junctions).
 Each sample is staged to local disk before processing, so the source drive only needs ~30 MB/s to keep up.
+
+Thalamus extension (2026-11-09) — see thalamus/README.md. Tier 1 = ABC Atlas 10x thalamus dissections +
+THALMANAC MERFISH nucleus map (gene level; run on a lab machine), tier 2 = ThalamoSeq / TRN full-length
+isoforms (next), tier 3 = scripts/v404m_thalamus_view.py on the existing V404M bulk tables
+(tables/thalamus_bulk_kv4_summary.csv, tables/thalamus_bulk_kchip_classes.csv, figures/thalamus_bulk_kv4_complex.png).
