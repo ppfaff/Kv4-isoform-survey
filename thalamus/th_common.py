@@ -17,7 +17,8 @@ BURST = ['Cacna1g', 'Cacna1h', 'Cacna1i', 'Hcn1', 'Hcn2', 'Hcn3', 'Hcn4',
          'Kcnn2', 'Kcnn3', 'Kcnk1', 'Kcnk2', 'Cacna1a', 'Cacna1b', 'Cacna1e', 'Gabra1', 'Gabra4', 'Gabrd', 'Gabrb3']
 # identity markers: relay vs TRN vs interneuron; TRN subtypes; cortical layers (for the cortex-side join)
 MARKERS = ['Slc17a6', 'Slc17a7', 'Gad1', 'Gad2', 'Pvalb', 'Sst', 'Calb1', 'Calb2', 'Tcf7l2', 'Prkcd', 'Grin2c',
-           'Gnb3', 'Spp1', 'Ecel1', 'Ntsr1', 'Rorb', 'Foxp2', 'Fezf2', 'Syt6', 'Snap25', 'Rbfox3', 'Gfap', 'Mbp']
+           'Gnb3', 'Spp1', 'Ecel1', 'Ntsr1', 'Rorb', 'Foxp2', 'Fezf2', 'Syt6', 'Snap25', 'Rbfox3', 'Gfap', 'Mbp',
+           'Camk2a', 'Slc32a1', 'Prox1']   # Cre-line coverage: CaMKII-Cre, Viaat-Cre, Prox1-Cre
 PANEL = COMPLEX + BURST + MARKERS
 
 # ----------------------------------------------- thalamocortical loop grouping of CCFv3 nuclei

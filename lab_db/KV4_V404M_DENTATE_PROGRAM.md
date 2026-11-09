@@ -68,6 +68,14 @@ Two readings remain open: (1) a cell-autonomous reduction in granule-cell A-curr
 
 ## Proposed experiments
 
+0. **CaMKII-Cre × conditional V404M (in progress, animals being weaned Nov 2026).** Forebrain glutamatergic neurons, the reciprocal of Viaat-Cre. Prediction if the two phenotypes are class-dissociated: dentate ΔFosB and the Penk/Pdyn/Npy/Drd1 program present, spike-wave discharges absent. Spike-wave discharges present would mean pyramidal-cell V404M (L6 corticothalamic / L5) can drive the loop on its own. The Cre line's thalamic expression should be confirmed (T29-1 is sparse in relay nuclei and absent from RT; other Camk2a-Cre lines differ). A qPCR panel (Penk, Pdyn, Npy, Drd1, Cck vs Snap25/Prox1) on whole hippocampus is a one-day readout of the dentate program across the three genotypes; bulk effect sizes support n = 4-5 per group.
+
+| | spike-wave (frontal EEG) | dentate ΔFosB / program |
+| --- | --- | --- |
+| constitutive V404M/+ | yes | yes |
+| Viaat-Cre (GABAergic) | yes | no |
+| CaMKII-Cre (forebrain glutamatergic) | predicted no | predicted yes |
+
 1. **Granule-cell-restricted conditional**: Prox1-CreERT2 or Dock10-Cre × conditional V404M, scored for dentate ΔFosB and for Penk/Npy by smFISH or in-situ. Positive → cell-autonomous gate failure. Pair with Emx1-Cre (all forebrain glutamatergic) to cover the entorhinal alternative.
 2. **Cell assignment of the bulk program**: RNAscope for Penk, Npy, Pdyn and Kcnip3 on the existing ΔFosB-stained sections, granule layer vs hilus vs CA3; the per-animal bulk values give the expected effect sizes.
 3. **Granule-cell A-current and firing in V404M/+ vs +/+** (slice; the lab's recording design document already specifies the mixture analysis): the direct test of the intrinsic reading, and of whether KChIP/DPP composition in granule cells (DPP6K-rich, KChIP4bL/4a) changes the mutant's effect.
