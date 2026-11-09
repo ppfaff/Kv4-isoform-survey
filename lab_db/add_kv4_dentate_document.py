@@ -21,7 +21,7 @@ SUMMARY = ("In the 3-month littermate bulk RNA-seq, V404M/+ hippocampus shows th
            "hyperactive dentate granule cells: Penk up (+1.0 to +1.2 log2), Pdyn down (-0.9), Npy up, Drd1 up, Ecel1 up, Cck down, "
            "Igfbpl1 and Rprm up, acute IEGs flat or lower; Penk, Npy and Drd1 separate all 6 mutants from all 7 wild types "
            "(exact p 0.001). Hippocampus-specific, robust to tissue-composition covariates, and the transcriptional counterpart of "
-           "the dFosB immunohistochemistry (DG 2.4x, CA1 2.7x, CA2/CA3 flat, retrosplenial cortex 1.6x) and the qPCR c-Fos decrease (cortex ~0.3x, hippocampus 0.7x). The field pattern tracks Kv4.2 expression by cell type (DG, CA1 high; CA3 low), favouring cell-autonomous activation over propagation from the dentate. Kcnip3 (DREAM) is up with Pdyn down, consistent with DREAM repression of the Pdyn DRE. "
+           "the dFosB immunohistochemistry (DG 2.4x, CA1 2.7x, CA2/CA3 flat, retrosplenial cortex 1.6x) and the qPCR c-Fos decrease (cortex 0.33x, hippocampus 0.70x). The field pattern tracks Kv4.2 expression by cell type (DG, CA1 high; CA3 low), favouring cell-autonomous activation over propagation from the dentate. Kcnip3 (DREAM) is up with Pdyn down, consistent with DREAM repression of the Pdyn DRE. "
            "Viaat-Cre x conditional V404M (GABAergic neurons only) shows frontal spike-wave discharges without dentate dFosB, so the "
            "dentate activation requires V404M in glutamatergic cells - most simply a cell-autonomous loss of the granule-cell A-current gate. "
            "Records the Nov 9 finding that the bulk blocks carried genotype-correlated contamination (olfactory bulb in cortex, choroid plexus "
