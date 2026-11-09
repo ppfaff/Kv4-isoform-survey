@@ -86,8 +86,24 @@ for t, sub in A.groupby('tissue'):
     print(f'  {t:12s} mut {a.mean():.2f}  wt {b.mean():.2f}  p={p:.3f}')
 ctx = A[A.tissue == 'cortex']
 if len(ctx) > 3:
-    rho = ctx['idx_striatum (MSN)'].corr(ctx['Kcnip2_over_Kcnip3'], method='spearman')
+    rho = ctx['idx_striatum (MSN)'].rank().corr(ctx['Kcnip2_over_Kcnip3'].rank())   # Spearman via ranks (no scipy)
     print(f'\ncortex: Spearman(striatal index, Kcnip2/Kcnip3) = {rho:.2f}  (n={len(ctx)})')
+
+# per-gene genotype ratios for the striatal signature: admixture moves MSN-specific genes (Gpr88, Adora2a,
+# Drd1/2) together with the shared ones; an activity-induced granule-cell response moves Penk/Ppp1r1b/Pde10a alone
+print('\nstriatal-signature genes, log2(mutant/WT mean CPM) per tissue:')
+rows = []
+for t, sub in meta.groupby('tissue'):
+    mut = sub.index[sub.genotype.str.startswith('mut')]; wt = sub.index[~sub.genotype.str.startswith('mut')]
+    for g in SIG['striatum (MSN)'] + ['Kcnip2', 'Fosb', 'Npy', 'Bdnf', 'Arc', 'Fos', 'Egr1']:
+        if g in cpm.index:
+            rows.append(dict(tissue=t, gene=g, wt_cpm=cpm.loc[g, wt].mean(),
+                             log2_mut_over_wt=np.log2((cpm.loc[g, mut].mean() + 0.5) / (cpm.loc[g, wt].mean() + 0.5)),
+                             p=mannwhitney_p(cpm.loc[g, mut], cpm.loc[g, wt])))
+G = pd.DataFrame(rows)
+G.to_csv(f'{OUT}/tables/v404m_admixture_genes.csv', index=False)
+print(G.pivot(index='gene', columns='tissue', values='log2_mut_over_wt').round(2).to_string())
+print('\n(p-values in tables/v404m_admixture_genes.csv)')
 
 if plt is None:
     print('\nmatplotlib not available: skipped the figure; plot from tables/v404m_admixture_per_sample.csv elsewhere')
