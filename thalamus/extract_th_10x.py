@@ -38,18 +38,28 @@ cache.load_manifest(f'releases/{args.release}/manifest.json')
 print('manifest', cache.current_manifest)
 
 cell = cache.get_metadata_dataframe(directory='WMB-10X', file_name='cell_metadata_with_cluster_annotation',
-                                    dtype={'cell_label': str})
+                                    dtype={'cell_label': str}, low_memory=False)
 cell.set_index('cell_label', inplace=True)
 print(f'{len(cell):,} cells in WMB-10X')
 
 is_th_dissection = cell['feature_matrix_label'].str.endswith('-TH')
-is_th_class = cell['class'].isin(TH_ZI_CLASSES) & ~cell['subclass'].str.contains(
-    r'PVHd|DMH|AHN|ARH|TU-|SBPV|PVpo|LHA|MPN|Gsc|PVa|Tbx3|Onecut3', regex=True)
-keep = is_th_dissection | (is_th_class if args.extra_matrices else (is_th_class & is_th_dissection))
+# thalamic subclasses as THALMANAC defines them (vendored taxonomy slice); this is what --extra-matrices adds
+tax = pd.read_csv(os.path.join(os.path.dirname(os.path.abspath(__file__)), 'taxonomy_CCN20230722_th_zi_only.csv'))
+th_subclasses = set(tax['subclass'].unique())
+is_th_subclass = cell['subclass'].isin(th_subclasses)
+if args.extra_matrices:
+    # thalamic subclasses dissected with hypothalamus or midbrain (RT-ZI, ZI, LGv/IGL, PF ...); other dissections
+    # contribute only stray cells and would cost tens of GB of matrices
+    extra_ok = cell['feature_matrix_label'].str.contains(r'-(HY|MB)$', regex=True)
+    keep = is_th_dissection | (is_th_subclass & extra_ok)
+else:
+    keep = is_th_dissection
 cells = cell[keep].copy()
 if args.matrices:
     cells = cells[cells['feature_matrix_label'].isin(args.matrices)]
-print(f'{len(cells):,} cells selected; matrices: {sorted(cells.feature_matrix_label.unique())}')
+print(f'{len(cells):,} cells selected')
+print(cells.groupby('feature_matrix_label').size().to_string())
+print(f'  of which thalamic-subclass cells outside TH dissections: {(is_th_subclass & ~is_th_dissection)[keep].sum():,}')
 
 gene = cache.get_metadata_dataframe(directory='WMB-10X', file_name='gene').set_index('gene_identifier')
 gsel = gene[gene['gene_symbol'].isin(PANEL)]
@@ -62,7 +72,8 @@ frames = []
 for fml, sub in cells.groupby('feature_matrix_label'):
     ds = sub['dataset_label'].iloc[0]
     t0 = time.time()
-    path = cache.get_file_path(directory=ds, file_name=f'{fml}/log2')
+    getter = getattr(cache, 'get_data_path', None) or getattr(cache, 'get_file_path')
+    path = getter(directory=ds, file_name=f'{fml}/log2')
     ad = anndata.read_h5ad(path, backed='r')
     idx = ad.obs_names.intersection(sub.index)
     expr = ad[idx, gsel.index].to_df()
