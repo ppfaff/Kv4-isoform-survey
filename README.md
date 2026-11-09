@@ -64,3 +64,9 @@ Penk) at 20-25x hippocampal levels, explaining Kcnip2 ~= Kcnip3 in bulk cortex w
 Kcnip2 at ~5% of Kcnip3. Per-library scoring: scripts/v404m_admixture.py (needs the counts matrix; run on Lambda:
 python3 ~/Kv4-isoform-survey/scripts/v404m_admixture.py tables ~/Kv4-isoform-survey). Bulk variant fractions
 are separately unreliable (3' collapse; scripts/bulk_vs_tasic_variants.py).
+
+Dentate program write-up (2026-11-09): lab_db/KV4_V404M_DENTATE_PROGRAM.md (+ add_kv4_dentate_document.py / run_add_kv4_dentate_doc.bat
+to register it in the lab database), figure scripts/v404m_dg_program.py -> figures/v404m_dg_program.png. For the per-animal panel,
+on Lambda (kv4py): python3 ~/Kv4-isoform-survey/scripts/v404m_dg_program.py tables ~/Kv4-isoform-survey --extract ; then rerun the
+figure script here. Composition-adjusted DE: scripts/v404m_de_composition.py (pydeseq2 in kv4py; bioconda). The Nov 9 revision
+section at the top of lab_db/KV4_V404M_BULK_AND_HETEROGENEITY.md records the block-contamination findings and what they withdraw.

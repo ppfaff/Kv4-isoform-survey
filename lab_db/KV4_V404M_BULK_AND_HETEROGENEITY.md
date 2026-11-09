@@ -4,6 +4,8 @@ Nov 6, 2026 · @Paul
 
 ## Summary
 
+_Revised Nov 9, 2026 — see **Revision, Nov 9 2026** below: the dissected blocks carried genotype-correlated contamination (olfactory bulb in cortex, choroid plexus in hippocampus); the cortical astrogliosis is withdrawn, the hippocampal astrogliosis is unconfirmed, the bulk KChIP variant fractions join the DPP ones as uninterpretable, and the surviving hippocampal DE is a chronic dentate granule-cell activity program._
+
 Two separate pieces of work, reported together because the second changes how the first should be read.
 
 **V404M bulk RNA-seq** (48 libraries, littermate pairs, 4 tissues, 3-month-old mice) answers the four questions put to it, three of them negatively. Mutant animals are heterozygous with **both alleles expressed at parity** (knock-in fraction 0.495; the two haplotype windows carry 5,510 and 5,485 reads), so the missense change does not destabilise its own transcript. There is **no integrated stress response, no unfolded-protein response and no apoptotic program** in any tissue: the XBP1/IRE1 splice shows no mutant elevation anywhere, and the one nominal hit (thalamus, p = 0.022) runs the wrong way. The **Kcnd2 exonic:intronic ratio is unchanged**, and the direction in hippocampus is *less* intron retention in mutants (0.0292 vs 0.0390, p = 0.0221 nominal, q ≈ 0.8 across ~36 gene×tissue tests) — the opposite of an increased unprocessed/null fraction. The **ΔFosB junction** is elevated 2.3-fold in mutant hippocampus (0.0667 vs 0.0294, p = 0.100), the largest of the four tissues, with cortex flat and cerebellum at zero; the tissue-specificity matches the lab's ΔFosB immunostaining, but at 109 reads pooled across 48 libraries this is underpowered, and ΔFosB accumulates through protein half-life rather than transcript abundance, so bulk junction counts are the wrong assay for it either way.
@@ -34,6 +36,30 @@ the Ca²⁺ requirement is KChIP3-specific or shared across the EF-hand family �
 done.
 
 Six methodological failures found and fixed are recorded in *Technical findings*, because each produced a confident wrong result that looked like a finding. The fourth is the most instructive: the first three were caught by testing against synthetic cases, which can only catch errors already imagined, whereas this one was caught by an external measurement with a known answer.
+
+## Revision, Nov 9 2026: tissue composition of the blocks, and what it changes
+
+**Read this before the Results.** Per-library marker indices (`scripts/v404m_admixture.py`, `tables/v404m_composition_indices.csv`) show that the dissected blocks were not pure, and that the impurity is genotype-correlated:
+
+| block | contaminant | evidence | genotype imbalance (mut − wt, log2) |
+| --- | --- | --- | --- |
+| cortex | striatum | Gpr88, Adora2a, Ppp1r1b, Penk at 20–25× hippocampal level; Kcnip2/Kcnip3 tracks the striatal index across libraries (ρ = 0.69) | −0.21 (WT blocks slightly more striatal) |
+| cortex | olfactory bulb | Omp +3.5, S100a5 +3.9, Stoml3, Doc2g, Tbx21, Th, Slc6a3 all higher in mutant blocks | +0.95 |
+| hippocampus | choroid plexus | Ttr, Kcnj13, Slc4a5, Cldn3, Otop1, Atp6v1b1 higher in mutant blocks | +0.95 |
+| thalamus | medial habenula (and forebrain) | Chrnb4, Chrna3, Gabre, Rxfp3 higher in mutants; Ddn, Itpka, Camk2a vary | +0.29 (striatal index) |
+
+Re-running the per-tissue DESeq2 with composition covariates (`scripts/v404m_de_composition.py`, `tables/v404m_de_adjusted_*.csv`):
+
+- **Cortex: 87 → 11 DE genes.** The up-regulated list was olfactory bulb. The cortical astrocyte calls (Gfap, Serpina3n) fall to +0.43 and +0.18 and lose significance — olfactory ensheathing glia are Gfap/Serpina3n-rich — so the *cortical* astrogliosis reported above is withdrawn. The IEG suppression (Npas4 −1.5, Egr2 −1.5, Fos −1.2, Egr1 −1.1) keeps its effect sizes but loses significance because the bulb index is itself confounded with genotype (0.95 log2) and the model cannot apportion the variance; it is retained as suggestive only.
+- **Hippocampus: 80 → 119 DE genes, and the core result strengthens.** Penk, Drd1, Igfbpl1 and Rprm are padj < 0.001 in both models; Pdyn, Npy, Ecel1 and Cck are at the margin after adjustment. The hippocampal astrocyte genes keep their fold changes (Gfap +0.69, Serpina3n +0.73) but lose significance once plexus content is a covariate; the *hippocampal* astrogliosis is downgraded to unconfirmed. Kcnip3 is up (+0.31 → +0.55, padj 0.02 → 0.006).
+- **Thalamus: 2 → 41 DE genes, all artefact.** The gained genes are habenular (up) and forebrain (down) markers whose fold changes were ~0 before adjustment; three covariates on 13 libraries over-fit. Thalamus remains transcriptionally quiet.
+- **Cerebellum: unchanged (3 → 2).**
+
+Consequences for the sections below: *Gene-level Kv4 changes in cortex are cell composition* now has a second composition axis (bulb, striatum) on top of the neuronal one; *Astrogliosis* is withdrawn for cortex and unconfirmed for hippocampus, and the "regional pattern tracks circuit vulnerability" argument built on it no longer stands on its own; *What else changes transcriptionally in V404M* should be read with the cortex list discounted. The separate observation that bulk N-terminal variant fractions collapse under 3′ bias now extends from DPP to the KChIP panel (`scripts/bulk_vs_tasic_variants.py`, `tables/bulk_vs_tasic_variant_calibration.csv`: KChIP2x 0.77 in Tasic 2016 cortex → 0.001 here; KChIP1c 0.19 → 0.01; only Kcnip3 variants and Kv4.3S/L survive), so the bulk variant tables are not interpretable for any gene except Kcnip3 and Kcnd3.
+
+**New result.** The hippocampal DE that survives is a coherent, chronic, granule-cell activity program — Penk ↑, Pdyn ↓, Cck ↓, Npy ↑, Drd1 ↑, Ecel1 ↑, Igfbpl1 ↑, Rprm ↑, Kcnip3 ↑, acute IEGs flat or down — with complete per-animal separation for Penk, Npy and Drd1. It is written up separately in *V404M/+ dentate gyrus runs a chronic seizure-type transcriptional program* (`lab_db/KV4_V404M_DENTATE_PROGRAM.md`, `figures/v404m_dg_program.png`), together with the Viaat-Cre conditional observation (spike-wave discharges without dentate ΔFosB) that dissociates the dentate phenotype from the spike-wave phenotype.
+
+The genotype-correlated contamination in two tissues at the same magnitude (0.95 log2) suggests the animals were dissected in genotype order or by different hands; the dissection log should be checked, because it bounds how far any further bulk result from these blocks can be taken.
 
 ## Datasets and methods
 
