@@ -1,0 +1,9 @@
+tissue,fdr,n_without,n_with,n_both,lost,gained,striatum_mut_minus_wt,olfactory_bulb_mut_minus_wt,choroid_plexus_mut_minus_wt,cortex_mut_minus_wt,hippocampus_mut_minus_wt
+cortex,0.05,87,11,2,85,9,-0.207,0.953,,,
+cortex,0.1,144,15,6,138,9,-0.207,0.953,,,
+hippocampus,0.05,80,119,39,41,80,,,0.952,0.306,
+hippocampus,0.1,99,261,61,38,200,,,0.952,0.306,
+thalamus,0.05,2,41,2,0,39,0.285,,,0.063,-0.178
+thalamus,0.1,2,71,2,0,69,0.285,,,0.063,-0.178
+cerebellum,0.05,3,2,2,1,0,,,0.711,,
+cerebellum,0.1,3,3,3,0,0,,,0.711,,
