@@ -36,9 +36,9 @@ def mannwhitney_p(a, b):
     sigma = np.sqrt(n1 * n2 / 12 * ((n + 1) - (cnt ** 3 - cnt).sum() / (n * (n - 1))))
     if sigma == 0:
         return 1.0
-    z = (abs(u1 - mu) - 0.5) / sigma
+    z = max(abs(u1 - mu) - 0.5, 0.0) / sigma
     import math
-    return float(2 * (1 - 0.5 * (1 + math.erf(z / np.sqrt(2)))))
+    return float(min(1.0, 2 * (1 - 0.5 * (1 + math.erf(z / np.sqrt(2))))))
 
 TABLES = sys.argv[1] if len(sys.argv) > 1 else 'tables'
 OUT = sys.argv[2] if len(sys.argv) > 2 else '.'
