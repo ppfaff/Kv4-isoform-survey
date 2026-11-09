@@ -47,7 +47,18 @@ KChIP3 is DREAM. In the absence of Ca²⁺ it binds the downstream regulatory el
 
 ### The Viaat-Cre conditional dissociates the two phenotypes
 
-Viaat-Cre × conditional V404M animals (mutation in GABAergic neurons only) show spike-wave discharges at the frontal electrode but no dentate ΔFosB. Read with the bulk result: the spike-wave phenotype can be produced by the mutation in inhibitory neurons alone (cortical interneurons and/or the reticular nucleus — the tier-1 thalamus analysis will say which carry Kv4.2), while the dentate activation needs the mutation in glutamatergic cells. Absence-type spike-wave discharges in rodent models generally do not recruit the hippocampus, so the absence of dentate ΔFosB in the conditional is consistent with the two phenotypes having separate circuit origins. In the constitutive heterozygote both occur, and whether the dentate activation then also feeds back on cortical excitability is open.
+Viaat-Cre × conditional V404M animals (mutation in GABAergic neurons only; cohort 6, n = 5 Viaat-Cre;+/+ and 6 Viaat-Cre;M/+, 4 M + 2 F mutants; ΔFosB immunohistochemistry scored by Manu, DG quantified as in Jerng et al. 2026) show spike-wave discharges at the frontal electrode and:
+
+| region | readout | result |
+| --- | --- | --- |
+| dentate gyrus | mean grey value, fold of WT | 1.02×, no trend in either sex |
+| cortex, upper 50% | % area ΔFosB⁺ nuclei | +32% (p = 0.065); mean intensity also higher |
+| cortex, lower 50% | % area ΔFosB⁺ nuclei | weak, non-significant increase; less ΔFosB overall |
+| TRN | ΔFosB⁺ cell counts, 2 sections/animal | males ≈ 100 vs 50 (trend); females no trend (n = 2) |
+
+So the mutation in inhibitory neurons alone produces the loop phenotype with a histological footprint in both of its GABAergic nodes — upper-layer cortex and TRN — while leaving the dentate silent. Read with the bulk result: the spike-wave phenotype arises from V404M in inhibitory neurons (cortical interneurons and/or the reticular nucleus — the tier-1 thalamus analysis will say which carry Kv4.2), while the dentate activation needs the mutation in glutamatergic cells. Absence-type spike-wave discharges in rodent models generally do not recruit the hippocampus, consistent with the quiet dentate here. The cortical ΔFosB elevation in Viaat-Cre also gives the constitutive bulk's cortical IEG suppression a companion: "ΔFosB high, acute Fos/Egr1 low" is the cortical state as well as the dentate one. The male-only TRN trend rests on two mutant females and is a question, not a finding; the constitutive bulk (3 mutants of each sex) is the place to test a genotype × sex interaction, for the cortical IEGs in particular (the dentate program itself shows no sex split: mutant F −7.02, mutant M −7.12, WT F −7.63, WT M −7.68 on the per-animal index).
+
+Open point on the constitutive staining: the CA pyramidal layer and cortex also appear darker in the V404M section than in the wild type (image, Nov 9). Whether the CA1/CA3 pyramidal layer is quantitatively elevated decides between a gate-failure confined to granule cells and a broader hippocampal activation; the text below assumes the former pending that number.
 
 ## Interpretation: where dentate hyperactivity comes from
 
@@ -73,7 +84,7 @@ Two readings remain open: (1) a cell-autonomous reduction in granule-cell A-curr
 | | spike-wave (frontal EEG) | dentate ΔFosB / program |
 | --- | --- | --- |
 | constitutive V404M/+ | yes | yes |
-| Viaat-Cre (GABAergic) | yes | no |
+| Viaat-Cre (GABAergic) | yes (+ cortical and TRN ΔFosB) | no (1.02×) |
 | CaMKII-Cre (forebrain glutamatergic) | predicted no | predicted yes |
 
 1. **Granule-cell-restricted conditional**: Prox1-CreERT2 or Dock10-Cre × conditional V404M, scored for dentate ΔFosB and for Penk/Npy by smFISH or in-situ. Positive → cell-autonomous gate failure. Pair with Emx1-Cre (all forebrain glutamatergic) to cover the entorhinal alternative.
