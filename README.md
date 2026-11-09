@@ -17,7 +17,7 @@ Write-up: https://claude.ai/artifact/BdsYCYmxtyRcaqM968Bj9Z
 Dendrite vs soma follow-up (2026-10-29) — Farris 2019 (GSE116342 / PRJNA478217, laminar LCM: cell-body vs
 dendritic layers, CA1/CA2/CA3/DG x 3 animals) and Middleton 2019 (GSE115480 / PRJNA475141 / SRP150011,
 16 cultured neurons, paired soma + dendrite). Run on Lambda, in a fresh work dir (e.g. ~/kv4_dendrite):
-  conda activate kv4; git clone/pull this repo; cp pipeline/{build_dendrite_runlist.py,run_dendrite_isoforms.sh,collapse_dendrite.py} .
+  micromamba activate kv4; git clone/pull this repo; cp pipeline/{build_dendrite_runlist.py,run_dendrite_isoforms.sh,collapse_dendrite.py} .
   python3 build_dendrite_runlist.py                      # tables/dendrite_samples.tsv (+ runlist); fix any '?' rows
   KEEP_FASTQ=1 N_Q=3 T_Q=8 nohup nice -n 19 bash run_dendrite_isoforms.sh > run_dendrite.log 2>&1 &
   python3 collapse_dendrite.py                           # tables/dendrite_isoform_per_sample.csv, dendrite_gene_tpm.csv.gz
@@ -38,7 +38,7 @@ Read-level Kcnd2 in DG granule cells (why are 18% of cells exonic-null but intro
 V404M vs wild-type bulk RNA-seq (3-month littermates; cortex, hippocampus, thalamus, cerebellum; 48 paired-end
 libraries, ~45-60 M pairs each). Sample sheet: tables/v404m_sample_info.csv. On Lambda, in ~/kv4_v404m:
   sudo mkdir -p /mnt/t && sudo mount -t drvfs 'T:' /mnt/t        # network drives are not auto-mounted in WSL
-  conda activate kv4
+  micromamba activate kv4
   cp ~/Kv4-isoform-survey/pipeline/{build_v404m_runlist.py,run_v404m_salmon.sh,run_v404m_star.sh,find_v404m_codon.py,v404m_allele_extract.py,count_v404m_allele.sh,collapse_v404m.py,make_intron_saf.py} .
   mkdir -p ref tables && ln -sf ~/kv4_dendrite/ref/star_idx ref/ \
     && ln -sf ~/kv4_dendrite/ref/GRCm39.primary_assembly.genome.fa ref/ \
