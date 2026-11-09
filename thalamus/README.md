@@ -52,6 +52,10 @@ log2(CPM+1), which is what the scripts assume when they back-transform to CPM fo
 - Clusters of `151 TH Prkcd Grin2c Glut` (the big sensory/motor relay subclass) are resolved to nuclei only
   through the THALMANAC annotation table; unannotated ones are reported as "relay (nucleus unresolved)".
 - Tier 3 result (bulk): thalamus Kcnd2 share of Kv4 = 0.50 (lowest of the four tissues; cortex 0.64,
-  cerebellum 0.71); 12% transmembrane KChIP (KChIP4a/4e) and 18% myristoylated KChIP1a/b, both far above cortex
-  and hippocampus; DPP6K 13%, DPP6a 9%. No V404M-induced change survives FDR. Which cell type carries the
-  TM-KChIP / Kcnd3-rich profile is what tier 1 should tell us.
+  cerebellum 0.71), Kcnd3 0.45; no V404M-induced gene-level change. **The bulk N-terminal variant fractions
+  (panels C-E of thalamus_bulk_kv4_complex.png) are NOT reliable**: the 3'-biased polyA libraries collapse
+  5'-distinguished variants into one sink per gene. Shown by simulation for DPP (lab_db write-up) and now
+  empirically for KChIP against the Tasic 2016 pseudo-bulk (scripts/bulk_vs_tasic_variants.py,
+  tables/bulk_vs_tasic_variant_calibration.csv): KChIP2x 0.77 -> 0.001, KChIP1c 0.19 -> 0.01, DPP6a 0.53 -> 0.01.
+  Only Kcnip3 (3a / cys-rich), Kv4.3S/L and the gene-level numbers survive. Thalamic variant composition
+  therefore has to come from tier 2 (full-length data), not from the bulk.

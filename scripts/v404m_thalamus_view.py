@@ -9,6 +9,11 @@ tables/v404m_variant_fracs.csv) to answer, for the thalamus specifically:
      differ from cortex/hippocampus (the tissues already surveyed at single-cell resolution)?
   3. Does the heterozygous V404M knock-in change any of this in thalamus (compensation test)?
 
+CAVEAT (2026-11-09): the bulk libraries are 3'-biased polyA and collapse 5'-distinguished N-terminal variants
+into one sink isoform per gene (DPP shown by simulation; KChIP shown empirically by scripts/bulk_vs_tasic_variants.py:
+KChIP2x 0.77 in Tasic 2016 cortex vs 0.001 here). Panels C-E and thalamus_bulk_kchip_classes.csv are therefore
+NOT interpretable as composition; only Kcnip3 variants, Kv4.3S/L and the gene-level panels A-B are trustworthy.
+
 Membrane-association classes of the KChIP N-termini follow the lab's 2015 review, extended with
 KChIP1e as a transmembrane variant (AlphaFold). Variants not in the published scheme
 (Kcnip1-new_short, Kcnip3-new-cys_rich, 'other/fragment') are left as 'unclassified'.
@@ -176,7 +181,8 @@ ax.set_xlabel('mutant − wild-type fraction'); ax.set_title('E  Thalamus: V404M
 for i, (d, p) in enumerate(zip(th['diff'], th.p)):
     ax.text(d + (0.002 if d >= 0 else -0.002), i, f'p={p:.2f}', va='center', ha='left' if d >= 0 else 'right', fontsize=6)
 
-fig.suptitle('V404M bulk RNA-seq: the Kv4 complex in thalamus vs the other tissues', fontsize=13, y=0.98)
+fig.suptitle('V404M bulk RNA-seq: the Kv4 complex in thalamus vs the other tissues\n'
+             'CAUTION: panels C-E are 3\'-bias-collapsed variant calls (see bulk_vs_tasic_variant_calibration.csv); only A-B, Kcnip3 and Kv4.3S/L are reliable', fontsize=12, y=1.0)
 fig.savefig(f'{OUT}/figures/thalamus_bulk_kv4_complex.png', dpi=160, bbox_inches='tight')
 print(summary.round(3).T.to_string())
 print()
