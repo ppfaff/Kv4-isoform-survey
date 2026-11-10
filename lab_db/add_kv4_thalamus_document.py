@@ -1,4 +1,4 @@
-"""Add the V404M dentate-gyrus activity-program write-up to the lab database's documents table as a
+"""Add the Kv4 thalamocortical-loop write-up to the lab database's documents table as a
 PROVISIONAL summary document (paulp, 2026-11-09). Same pattern as add_kv4_dendrite_document.py (LabDB API
 from the HHModels repo). Run on the Windows machine holding lab_data.db, from this folder, with the hh env:
 
