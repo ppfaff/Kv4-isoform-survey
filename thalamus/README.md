@@ -78,3 +78,18 @@ Cross-gene ratios are calibrated for gene length by anchoring each gene's whole-
   Kcnd1 negligible everywhere. Medial habenula: KChIP1 88%.
 - Tier-2 variant targets: TRN = KChIP1a/b/c/e, KChIP2a/2x, DPP10a/d (cortical Pvalb interneuron variants as first proxy);
   relay = KChIP3a/3x, KChIP4a/b/bL/d/e, DPP6a/K/S.
+
+## Tier-2 proxy (2026-11-10): TRN variants predicted from cortical interneurons (Tasic 2016, already analysed)
+TRN shares lineage and gene-level complex with cortical Pvalb/Sst interneurons; their variant fractions are the
+working guess for TRN until full-length TRN data exist (tables/ctx_variant_frac_of_gene_by_type.csv, GABA types).
+
+| gene | Pvalb cells (proxy for Spp1+ core) | Sst cells (proxy for shell) |
+| --- | --- | --- |
+| Kcnip1 | 1c 32%, 1a 23%, 1b 18%, 1e 6% (TM), new-short 20% | 1b 41%, 1a 27%, 1c 12%, 1e 0% |
+| Kcnip2 | 2x 78% (TM), 2a 18% | 2x 71%, 2a 25% (but 6x less Kcnip2 than Pvalb) |
+| Dpp10 | 10d 86%, 10c 13%, 10a 1% | 10d 79%, 10a 13%, 10c 8% |
+| Dpp6 | 6a 56%, 6S 29%, 6K 9% | 6a 54%, 6K 27%, 6S 15% |
+
+Predicted core-TRN complex: Kv4.2 + KChIP1 (myristoyl/palmitoyl mix, some 1e TM) + KChIP2x + DPP10d; no Kv4.3, little KChIP4.
+Measurement requires full-length RNA-seq of TRN (ThalamoSeq likely excludes RT; a Viaat-Cre/Spp1-Cre;Ai14 sort with
+SMART-seq would give both the variants and the cKI recombination efficiency in the same cells).
