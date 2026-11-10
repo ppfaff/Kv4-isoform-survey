@@ -59,3 +59,22 @@ log2(CPM+1), which is what the scripts assume when they back-transform to CPM fo
   tables/bulk_vs_tasic_variant_calibration.csv): KChIP2x 0.77 -> 0.001, KChIP1c 0.19 -> 0.01, DPP6a 0.53 -> 0.01.
   Only Kcnip3 (3a / cys-rich), Kv4.3S/L and the gene-level numbers survive. Thalamic variant composition
   therefore has to come from tier 2 (full-length data), not from the bulk.
+
+## Tier-1 results (2026-11-10), ABC Atlas 10x, 183,553 thalamic neurons — tables/th10x_*.csv, figures/th10x_kv4_calibrated.png
+Cross-gene ratios are calibrated for gene length by anchoring each gene's whole-thalamus 10x mean to the bulk exon CPM
+(thalamus/calibrate_th10x.py; within-gene contrasts between cell types are the raw 10x values).
+- **TRN is the most Kv4.2-dependent thalamic population**: Kcnd3 ~12 CPM vs 200-340 in every relay group (raw), calibrated
+  Kcnd2 share 0.77, Kcnd2 in 96% of cells; partners KChIP1 (57%) + KChIP2 (36%), DPP10-dominant, KChIP:Kv4 ~3.4,
+  DPP:Kv4 ~8.9 - the cortical interneuron signature. Slc32a1 in 93% of RT cells (Viaat-Cre is a clean TRN driver);
+  Camk2a transcript in 83% of RT cells at half the relay level.
+- **Hartley 2024 subnetworks** (thalamus/trn_subnetworks.py, per cell; tables/th10x_trn_core_vs_shell.csv): 415 Spp1+ core
+  cells (4.6%), concentrated in supertype Gnb3_5 (cluster 1604 is 79% Spp1+). Core vs rest: Kcnd3 7 vs 38 (0.5% of Kcnd2),
+  Kcnip1 830 vs 410, Kcnip4 109 vs 450, Dpp10 3,020 vs 2,250, Cacna1h detected 59% vs 19%; differences hold within
+  Pvalb-high cells. The FO-projecting core is the purest Kv4.2-only population in the dataset, with a Kv4.2-KChIP1-DPP10
+  complex and the strongest T-type expression. Spp1-Cre x cKI is the targeted test.
+- **Relay neurons co-express Kcnd2/Kcnd3** with a gradient: first-order sensory and anterior/motor most Kv4.3-balanced
+  (LGd 0.31, VPM/VPL 0.30, LD 0.28, AD 0.34, AV 0.42); higher-order/midline/intralaminar Kcnd2-dominant (LP/SGN 0.70,
+  PVT/IMD 0.69, Xi 0.70, CM 0.62). Partners KChIP3 (first-order) or KChIP4 (intralaminar/anterior/motor) with DPP6 60-75%.
+  Kcnd1 negligible everywhere. Medial habenula: KChIP1 88%.
+- Tier-2 variant targets: TRN = KChIP1a/b/c/e, KChIP2a/2x, DPP10a/d (cortical Pvalb interneuron variants as first proxy);
+  relay = KChIP3a/3x, KChIP4a/b/bL/d/e, DPP6a/K/S.
