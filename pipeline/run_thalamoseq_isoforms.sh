@@ -12,6 +12,8 @@
 # a later STAR pass can reuse them (~200 GB kept).
 set -uo pipefail
 KEEP_FASTQ=${KEEP_FASTQ:-0}
+DUMP_TMP=${DUMP_TMP:-$HOME/fasterq_tmp}   # fasterq-dump temp files must be on a Linux filesystem (NTFS /mnt/e fails with rcNotFound)
+mkdir -p "$DUMP_TMP"; export DUMP_TMP
 N_DL=${N_DL:-2}          # parallel downloads (SRA is happy with 2-3)
 N_Q=${N_Q:-3}            # concurrent salmon jobs
 T_Q=${T_Q:-8}            # threads per salmon job
@@ -54,7 +56,7 @@ download_sra() {   # $1 = run
     echo "attempt $attempt timed out/failed" >> logs/$run.prefetch.log; rm -rf sra/$run; sleep 60
   done
   [ $got = 1 ] \
-    && fasterq-dump -q -e 4 --split-3 -t sra/$run/tmp -O fastq/$run sra/$run > logs/$run.dump.log 2>&1 \
+    && fasterq-dump -q -e 4 --split-3 -t "${DUMP_TMP:-$HOME/fasterq_tmp}/$run" -O fastq/$run sra/$run > logs/$run.dump.log 2>&1 \
     && ls fastq/$run/*.fastq >/dev/null 2>&1
   rc=$?
   rm -rf sra/$run
