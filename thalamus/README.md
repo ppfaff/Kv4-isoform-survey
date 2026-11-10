@@ -93,3 +93,17 @@ working guess for TRN until full-length TRN data exist (tables/ctx_variant_frac_
 Predicted core-TRN complex: Kv4.2 + KChIP1 (myristoyl/palmitoyl mix, some 1e TM) + KChIP2x + DPP10d; no Kv4.3, little KChIP4.
 Measurement requires full-length RNA-seq of TRN (ThalamoSeq likely excludes RT; a Viaat-Cre/Spp1-Cre;Ai14 sort with
 SMART-seq would give both the variants and the cKI recombination efficiency in the same cells).
+
+## Tier-2 data sources (2026-11-10)
+- ThalamoSeq (Phillips et al. 2019, Nat Neurosci; GSE133911 pooled, GSE133912 single cell): 22 retrogradely-labelled,
+  cortex-projecting nuclei, 120 pooled samples (3-8 replicates/nucleus), ~1,950 single cells from 5 projection systems.
+  Relay neurons only - RT does not project to cortex and is absent. Confirm library chemistry/read length from the GEO
+  record on Lambda (NCBI not reachable from the sandbox); if full-length, run the pooled FASTQs through the salmon isoform
+  pipeline, labelled by nucleus, for KChIP3/KChIP4/DPP6/Kv4.3 variant fractions across the relay gradient.
+- Patch-seq TRN datasets are not suitable for variant calling: ~0.5-1 M reads/cell with strong 3' bias leaves ~0 reads
+  on the 5' variant-defining exons of these long, moderately expressed genes, and pooling a few hundred cells does not
+  rescue the 3' collapse.
+- TRN variants need new full-length libraries: (a) sorted tdTomato+ pools from Viaat-Cre / Spp1-Cre / Pvalb-Cre;Ai14
+  (500-2,000 cells/pool, SMART-seq v4, 20-40 M PE reads, 3-4 pools/line) - also the cKI recombination-efficiency sample;
+  or (b) microdissected TRN bulk with full-length polyA chemistry (no core/shell split, includes glia, cheapest).
+  Any new V404M tissue libraries should be full-length for the same reason.
