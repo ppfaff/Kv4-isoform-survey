@@ -70,3 +70,5 @@ to register it in the lab database), figure scripts/v404m_dg_program.py -> figur
 on Lambda (kv4py): python3 ~/Kv4-isoform-survey/scripts/v404m_dg_program.py tables ~/Kv4-isoform-survey --extract ; then rerun the
 figure script here. Composition-adjusted DE: scripts/v404m_de_composition.py (pydeseq2 in kv4py; bioconda). The Nov 9 revision
 section at the top of lab_db/KV4_V404M_BULK_AND_HETEROGENEITY.md records the block-contamination findings and what they withdraw.
+
+Thalamus loop write-up (2026-11-10): lab_db/KV4_THALAMUS_LOOP.md (+ add_kv4_thalamus_document.py / run_add_kv4_thalamus_doc.bat).
