@@ -107,3 +107,19 @@ SMART-seq would give both the variants and the cKI recombination efficiency in t
   (500-2,000 cells/pool, SMART-seq v4, 20-40 M PE reads, 3-4 pools/line) - also the cKI recombination-efficiency sample;
   or (b) microdissected TRN bulk with full-length polyA chemistry (no core/shell split, includes glia, cheapest).
   Any new V404M tissue libraries should be full-length for the same reason.
+
+## ThalamoSeq run (tier 2, relay side) — on Lambda, kv4 env, ~190 GB SRA + ~200 GB FASTQ buffer, 4.4 G reads
+```bash
+micromamba activate kv4
+cd ~/Kv4-isoform-survey && git pull
+mkdir -p /mnt/e/Claude_workspace/thalamoseq && cd /mnt/e/Claude_workspace/thalamoseq
+mkdir -p tables && cp ~/Kv4-isoform-survey/tables/thalamoseq_runs.tsv tables/
+python3 ~/Kv4-isoform-survey/pipeline/build_thalamoseq_runlist.py --ena        # ENA FASTQ paths as fallback
+cp ~/Kv4-isoform-survey/pipeline/run_thalamoseq_isoforms.sh ~/Kv4-isoform-survey/pipeline/collapse_thalamoseq.py .
+REF_DIR=$HOME/kv4_cortex/ref N_DL=3 N_Q=4 T_Q=8 nohup nice -n 19 bash run_thalamoseq_isoforms.sh > run_thalamoseq.log 2>&1 &
+tail -f logs/progress.log            # one line per finished pool; ~120 pools, ~10-15 min each at 8 threads
+python3 collapse_thalamoseq.py       # when logs/progress.log has 120 lines
+cp tables/thalamoseq_isoform_per_sample.csv tables/thalamoseq_run_qc.csv ~/Kv4-isoform-survey/tables/ && cd ~/Kv4-isoform-survey && git add tables/thalamoseq_* && git commit -m "ThalamoSeq isoform tables" && git push
+```
+Check the first finished pool's library type in logs/progress.log: SMART-seq pools should come out as unstranded
+(`U`) with 5' coverage; a stranded 3'-type result (`SF`/`SR`) would mean the variant calls are not usable.
