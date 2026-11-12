@@ -81,7 +81,7 @@ rt = C[C.subclass.str.contains('RT-ZI') & (C.n_cells >= 50)].copy()
 rt.to_csv(f'{OUT}/tables/th10x_rt_clusters.csv', index=False)
 
 # ---------------- figure
-fig, axes = plt.subplots(1, 3, figsize=(17, 7.2), gridspec_kw={'width_ratios': [1.1, 1.2, 1.2]})
+fig, axes = plt.subplots(1, 3, figsize=(18, 7.6), gridspec_kw={'width_ratios': [1.1, 1.2, 1.2], 'wspace': 0.45})
 order = [i for i in CL.index if i != 'other']
 y = np.arange(len(order))
 cols = {'Kcnd1': '#4FA8D8', 'Kcnd2': '#E8822D', 'Kcnd3': '#B9A3D9'}
@@ -90,8 +90,8 @@ for g in KV4:
     v = CL.loc[order, f'share_{g}'].values
     ax.barh(y, v, left=left, color=cols[g], label=g.replace('Kcnd', 'Kv4.'), edgecolor='k', lw=0.3); left += v
 for i, o in enumerate(order):
-    ax.text(1.01, i, f'n={CL.loc[o, "n_cells"]:,}', va='center', fontsize=7)
-ax.set_yticks(y); ax.set_yticklabels(order, fontsize=9); ax.invert_yaxis(); ax.set_xlim(0, 1)
+    ax.text(1.02, i, f'n={CL.loc[o, "n_cells"]:,}', va='center', fontsize=10)
+ax.set_yticks(y); ax.set_yticklabels(order, fontsize=11); ax.invert_yaxis(); ax.set_xlim(0, 1)
 ax.set_xlabel('share of Kv4 mRNA (calibrated)'); ax.set_title('A  Kv4 paralog share by loop element', loc='left', fontsize=10)
 ax.legend(fontsize=12, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=3)
 kc = {'Kcnip1': '#7B4FA3', 'Kcnip2': '#4FA8D8', 'Kcnip3': '#4CAF50', 'Kcnip4': '#E8822D'}
@@ -106,9 +106,9 @@ for g, c in zip(DPP, ['#7B4FA3', '#E8822D']):
     v = CL.loc[order, f'DPP_comp_{g}'].values
     ax.barh(y, v, left=left, color=c, label=g.replace('Dpp', 'DPP'), edgecolor='k', lw=0.3); left += v
 for i, o in enumerate(order):
-    ax.text(1.01, i, f'KChIP/Kv4 {CL.loc[o, "KChIP_per_Kv4"]:.1f}, DPP/Kv4 {CL.loc[o, "DPP_per_Kv4"]:.1f}', va='center', fontsize=7)
+    ax.text(1.02, i, f'KChIP:Kv4 {CL.loc[o, "KChIP_per_Kv4"]:.1f}\nDPP:Kv4 {CL.loc[o, "DPP_per_Kv4"]:.1f}', va='center', fontsize=10)
 ax.set_yticks(y); ax.set_yticklabels([]); ax.invert_yaxis(); ax.set_xlim(0, 1)
-ax.set_xlabel('share of DPP mRNA (calibrated)'); ax.set_title('C  DPP partner and subunit:channel ratios', loc='left', fontsize=10); ax.legend(fontsize=12, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=2)
+ax.set_xlabel('share of DPP mRNA (calibrated)'); ax.set_title('C  DPP partner; right: total auxiliary mRNA per Kv4 mRNA', loc='left', fontsize=10); ax.legend(fontsize=12, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=2)
 fig.suptitle('Kv4 complex across the thalamocortical loop — ABC Atlas 10x (183,553 thalamic neurons), cross-gene ratios calibrated to ThalamoSeq full-length relay-neuron TPM', y=1.0)
 fig.savefig(f'{OUT}/figures/th10x_kv4_calibrated.png', dpi=160, bbox_inches='tight')
 pd.set_option('display.width', 220)
