@@ -17,9 +17,9 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MD = os.path.join(HERE, "KV4_THALAMUS_LOOP.md")
 
 TITLE = "The Kv4 complex across the thalamocortical loop: which thalamic neurons depend on Kv4.2 and with which auxiliary subunits (ABC Atlas 10x / THALMANAC + ThalamoSeq full-length variants)"
-SUMMARY = ("ABC Atlas 10x thalamus (183,553 neurons, THALMANAC annotations), calibrated for gene length against the bulk thalamus exon data. "
-           "The reticular nucleus is the most Kv4.2-dependent thalamic population: Kcnd3 is 10-30x lower than in any relay group (calibrated Kcnd2 share 0.77), "
-           "with the cortical-interneuron auxiliary complement (KChIP1 + KChIP2, DPP10-dominant, subunits in large excess). The Spp1+ core TRN cells of "
+SUMMARY = ("ABC Atlas 10x thalamus (183,553 neurons, THALMANAC annotations), calibrated for gene length against the ThalamoSeq full-length relay-neuron TPM. "
+           "The reticular nucleus is the most Kv4.2-dependent thalamic population: Kcnd3 is 10-30x lower than in any relay group (calibrated Kv4.2 share 0.71, Kv4.3 0.17), "
+           "with the cortical-interneuron auxiliary complement (KChIP1 76% + KChIP2 15%, DPP10 81%, subunits in large excess). The Spp1+ core TRN cells of "
            "Hartley 2024 are the extreme case (Kcnd3 0.5% of Kcnd2, KChIP1-rich, KChIP4-poor, strongest T-type expression). Relay neurons co-express "
            "Kcnd2/Kcnd3 with a first-order (Kv4.3-balanced; LGd 0.31, VPM/VPL 0.30) to higher-order/midline (Kcnd2-dominant; LP 0.70, PVT 0.69) gradient, "
            "partners KChIP3/KChIP4 + DPP6. Viaat-Cre covers 93% of RT cells and ~1% of relay cells. TRN is the natural substrate of the Viaat-Cre spike-wave "

@@ -4,9 +4,9 @@ Nov 10–12, 2026 · Paul Pfaffinger (analysis with Claude) · PROVISIONAL
 
 ## Summary
 
-To ask which thalamic neurons are substrates for the spike-wave discharges of Kv4.2-V404M/+ mice, the Allen Brain Cell Atlas 10x whole-brain data were subset to 183,553 thalamic neurons (TH and HY/MB dissections; the THALMANAC taxonomy slice and cluster-to-nucleus annotations), summarized per thalamocortical-loop element and per CCFv3 nucleus, and anchored for gene-length bias to the lab's bulk thalamus exon counts.
+To ask which thalamic neurons are substrates for the spike-wave discharges of Kv4.2-V404M/+ mice, the Allen Brain Cell Atlas 10x whole-brain data were subset to 183,553 thalamic neurons (TH and HY/MB dissections; the THALMANAC taxonomy slice and cluster-to-nucleus annotations), summarized per thalamocortical-loop element and per CCFv3 nucleus, and anchored for gene-length bias to the ThalamoSeq full-length relay-neuron TPM (originally to the lab's bulk thalamus exon counts; re-anchored 2026-11-12 once ThalamoSeq was in).
 
-**The reticular nucleus is the most Kv4.2-dependent neuronal population in the thalamus.** RT neurons express Kcnd3 at ~12 CPM against 200–340 in every relay group (a 10–30-fold within-gene deficit), so their A-current is built on Kv4.2 with essentially no Kv4.3 to buffer a dominant-negative mutant; calibrated Kcnd2 share is 0.77, with Kcnd2 detected in 96% of RT cells. Their auxiliary complement is the cortical-interneuron one — KChIP1 (57%) + KChIP2 (36%), DPP10-dominant, with auxiliary subunits in large excess (KChIP:Kv4 ≈ 3.4, DPP:Kv4 ≈ 8.9) — and shares nothing with relay neurons, which use KChIP3/KChIP4 + DPP6. Within RT, the Spp1⁺ "core" cells of Hartley et al. (2024; first-order-projecting, Spp1-Cre-accessible) are the extreme case: Kcnd3 at 0.5% of Kcnd2, KChIP1 twice and KChIP4 a quarter of the rest of RT, DPP10 highest, and the strongest T-type channel expression (Cacna1h detected in 59% vs 19%). They are concentrated in the Allen supertype RT-ZI Gnb3_5.
+**The reticular nucleus is the most Kv4.2-dependent neuronal population in the thalamus.** RT neurons express Kcnd3 at ~12 CPM against 200–340 in every relay group (a 10–30-fold within-gene deficit), so their A-current is built on Kv4.2 with essentially no Kv4.3 to buffer a dominant-negative mutant; calibrated Kv4 share is Kv4.2 71% / Kv4.1 12% / Kv4.3 17%, with Kcnd2 detected in 96% of RT cells. Their auxiliary complement is the cortical-interneuron one — KChIP1 (76%) + KChIP2 (15%), DPP10 81%, with auxiliary subunits in large excess (KChIP:Kv4 ≈ 3.0, DPP:Kv4 ≈ 9.2) — and shares nothing with relay neurons, which use KChIP3/KChIP4 + DPP6. Within RT, the Spp1⁺ "core" cells of Hartley et al. (2024; first-order-projecting, Spp1-Cre-accessible) are the extreme case: Kcnd3 at 0.5% of Kcnd2, KChIP1 twice and KChIP4 a quarter of the rest of RT, DPP10 highest, and the strongest T-type channel expression (Cacna1h detected in 59% vs 19%). They are concentrated in the Allen supertype RT-ZI Gnb3_5.
 
 **Relay neurons co-express Kcnd2 and Kcnd3, with a gradient — and ThalamoSeq full-length data show they are more Kv4.3-weighted than the 10x map suggested.** First-order sensory and anterior relays have Kcnd3 ≥ Kcnd2 (ThalamoSeq TPM: LGd 0.61 vs 0.34, VB 0.59 vs 0.29, AD, AV, LD, LP, VL likewise); only the intralaminar/midline nuclei, VPMpc and VM are Kcnd2-dominant (CL 0.65, IMD 0.61, PF 0.58). Kcnd1 contributes 6–27%. Partners are KChIP4 (KChIP4bL) everywhere, KChIP3a added in sensory relays and MD, with DPP10d as the main DPP partner and DPP6S/DPP6K secondary; the transmembrane KChIP variants are rare in relay neurons.
 
@@ -16,22 +16,24 @@ Read with the lab's conditional results — Viaat-Cre × cKI reproduces the spik
 
 ## Data and methods
 
-ABC Atlas WMB-10Xv2/v3 (release 20250531; log2 CPM+1 matrices), cells from the TH dissections plus RT-ZI, ZI, LGv/IGL, SPA/PoT and pretectal subclasses and TH/MH-LH classes from the HY and MB dissections (282,078 cells, 183,553 neurons after neurotransmitter filtering). Loop elements defined from CCFv3 nucleus labels (THALMANAC `annotations_c2n_combined.csv`) with subclass fallback (`thalamus/th_common.py`). Because 10x counts include intronic reads, the very long Kv4-complex genes (Kcnip4 1.2 Mb, Dpp10 1.4 Mb, Dpp6 1 Mb, Kcnd2 0.5 Mb) are inflated relative to each other; cross-gene ratios were calibrated with one factor per gene anchoring the whole-thalamus 10x mean to the bulk thalamus WT exon CPM (`thalamus/calibrate_th10x.py`). Within-gene contrasts between cell types are uncalibrated 10x values. Hartley subnetworks: per-cell Spp1 > 0 (415 of 9,075 GABAergic RT-ZI cells; Spp1 mRNA is sparse in 10x) vs rest (`thalamus/trn_subnetworks.py`). Scripts, tables and figures in `thalamus/` and `tables/th10x_*`, `figures/th10x_*` of the Kv4-isoform-survey repository.
+ABC Atlas WMB-10Xv2/v3 (release 20250531; log2 CPM+1 matrices), cells from the TH dissections plus RT-ZI, ZI, LGv/IGL, SPA/PoT and pretectal subclasses and TH/MH-LH classes from the HY and MB dissections (282,078 cells, 183,553 neurons after neurotransmitter filtering). Loop elements defined from CCFv3 nucleus labels (THALMANAC `annotations_c2n_combined.csv`) with subclass fallback (`thalamus/th_common.py`). Because 10x counts include intronic reads, the very long Kv4-complex genes (Kcnip4 1.2 Mb, Dpp10 1.4 Mb, Dpp6 1 Mb, Kcnd2 0.5 Mb) are inflated relative to each other; cross-gene ratios were calibrated with one factor per gene anchoring the 10x cell-weighted mean over the relay loop groups to the ThalamoSeq full-length relay-neuron TPM (neurons only, same populations; `thalamus/calibrate_th10x.py`, which falls back to the bulk thalamus exon CPM if the ThalamoSeq table is absent). TRN, ZI and epithalamus are scaled with the same per-gene factors. Within-gene contrasts between cell types are uncalibrated 10x values. Hartley subnetworks: per-cell Spp1 > 0 (415 of 9,075 GABAergic RT-ZI cells; Spp1 mRNA is sparse in 10x) vs rest (`thalamus/trn_subnetworks.py`). Scripts, tables and figures in `thalamus/` and `tables/th10x_*`, `figures/th10x_*` of the Kv4-isoform-survey repository.
 
 ## Results
 
 ### 1. Kv4 paralogs by loop element (calibrated; Kcnd2 share of Kv4 mRNA)
 
-| loop element | n cells | Kcnd2 share | Kcnd3 raw CPM | Kcnd2⁺ cells | KChIP partners | DPP6 share | KChIP:Kv4 | DPP:Kv4 |
+| loop element | n cells | Kv4.1 / 4.2 / 4.3 share | Kcnd3 raw CPM | Kcnd2⁺ cells | KChIP partners (%) | DPP10 share | KChIP:Kv4 | DPP:Kv4 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| TRN (RT) | 9,082 | 0.71 (0.77 RT-annotated) | 39 | 96% | KChIP1 57, KChIP2 36 | 45% | 3.1 | 8.4 |
-| first-order sensory relay (VPM/VPL, LGd, MG) | 30,799 | 0.43 | 343 | 100% | KChIP3 61, KChIP4 35 | 72% | 1.0 | 1.6 |
-| higher-order relay (PO, LP, MD, SGN) | 24,533 | 0.53 | 214 | 100% | KChIP3 53, KChIP4 38 | 71% | 1.4 | 1.7 |
-| motor relay (VAL, VM) | 3,153 | 0.47 | 213 | 100% | KChIP4 75 | 63% | 0.7 | 2.2 |
-| intralaminar / midline | 29,838 | 0.57 | 144 | 100% | KChIP4 51, KChIP3 21, KChIP1 18 | 66% | 1.1 | 2.7 |
-| anterior / limbic (AD, AV, AM, LD, PVT) | 26,773 | 0.47 | 265 | 100% | KChIP4 54, KChIP1 22 | 69% | 0.9 | 2.1 |
-| epithalamus (MH, LH) | 6,223 | 0.47 | 331 | 98% | KChIP1 60 | 69% | 0.7 | 2.1 |
-| ZI / LGv / IGL | 37,781 | 0.54 | 119 | 99% | KChIP1 51, KChIP2 19 | 72% | 1.2 | 3.6 |
+| TRN (RT) | 9,082 | 0.12 / 0.71 / 0.17 | 39 | 96% | KChIP1 76, KChIP2 15 | 81% | 3.0 | 9.2 |
+| first-order sensory relay (VPM/VPL, LGd, MG) | 30,799 | 0.05 / 0.46 / 0.48 | 343 | 100% | KChIP4 60, KChIP3 39 | 58% | 1.5 | 1.3 |
+| higher-order relay (PO, LP, MD, SGN) | 24,533 | 0.06 / 0.56 / 0.38 | 214 | 100% | KChIP4 63, KChIP3 32 | 59% | 2.2 | 1.4 |
+| motor relay (VAL, VM) | 3,153 | 0.10 / 0.50 / 0.40 | 213 | 100% | KChIP4 90 | 67% | 1.5 | 2.0 |
+| intralaminar / midline | 29,838 | 0.09 / 0.59 / 0.32 | 144 | 100% | KChIP4 73, KChIP1 13, KChIP3 11 | 64% | 2.0 | 2.4 |
+| anterior / limbic (AD, AV, AM, LD, PVT) | 26,773 | 0.07 / 0.50 / 0.43 | 265 | 100% | KChIP4 75, KChIP1 16 | 62% | 1.7 | 1.8 |
+| epithalamus (MH, LH) | 6,223 | 0.04 / 0.50 / 0.46 | 331 | 98% | KChIP1 56, KChIP4 34 | 61% | 1.1 | 1.9 |
+| ZI / LGv / IGL | 37,781 | 0.10 / 0.56 / 0.35 | 119 | 99% | KChIP1 55, KChIP4 24, KChIP3 15 | 58% | 1.5 | 3.0 |
+
+(Calibrated to ThalamoSeq relay TPM, 2026-11-12. The TRN Kv4.3 share rests on 39 raw CPM scaled by a factor fitted on relay cells and is the least certain number in the table; the within-gene 10–30× Kcnd3 deficit is not affected.)
 
 Per-nucleus values for 50 nuclei with ≥300 cells are in `tables/th10x_calibrated_nuclei.csv`; the Kcnd2-share ranking runs from RT 0.77 and LP/SGN, Xi, PVT/IMD ~0.70 down to LGd 0.31, VPM/VPL 0.30, LD 0.28.
 
@@ -85,7 +87,7 @@ Full-length (unstranded SMART-seq-type, 30–45 M single-end reads per pool) lib
 | --- | --- | --- |
 | RT has 10–30× less Kcnd3 than relay neurons | solid | within-gene 10x contrast, 9,082 cells, no calibration needed |
 | RT uses KChIP1/KChIP2 + DPP10; relay uses KChIP3/4 + DPP6 | solid | within-gene contrasts; consistent with Serôdio & Rudy 1998 ISH for Kv4.3 vs Kv4.2 |
-| Calibrated cross-gene shares (Kcnd2 0.77 in RT etc.) | moderately solid | one calibration factor per gene from bulk exon data; assumes neuron-dominated bulk |
+| Calibrated cross-gene shares (Kv4.2 0.71 in RT etc.) | moderately solid | one factor per gene anchoring relay-group 10x means to ThalamoSeq full-length TPM; relay rows reproduce ThalamoSeq by construction, TRN/ZI/epithalamus rows assume the same factors apply |
 | Spp1⁺ core = purest Kv4.2-only, KChIP1-rich, T-type-rich TRN cells | moderately solid | 415 cells; holds within Pvalb-high; Spp1 under-detection dilutes the contrast |
 | FO vs HO relay Kcnd2 gradient | solid | per-nucleus, thousands of cells each |
 | TRN variant composition | prediction only | cortical interneuron proxy; needs full-length TRN libraries |

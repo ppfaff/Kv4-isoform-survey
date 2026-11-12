@@ -1,6 +1,9 @@
 #!/usr/bin/env python3
 """Calibrate the ABC Atlas 10x thalamus summaries for gene-length (intronic) bias and make the main figure.
 
+Anchor (2026-11-12): ThalamoSeq full-length relay-neuron TPM (tables/thalamoseq_gene_level_by_nucleus.csv) when present -
+neurons only and the same relay populations - falling back to the bulk thalamus exon CPM otherwise.
+
 The WMB 10x counts include intronic reads, so the Kv4-complex genes - all very long (Kcnd2 ~0.5 Mb, Kcnip4
 ~1.2 Mb, Dpp10 ~1.4 Mb, Dpp6 ~1 Mb; Kcnd1 ~10 kb) - are inflated relative to short genes and to each other.
 Within-gene comparisons across cell types are unaffected; cross-gene quantities (Kv4 paralog share, KChIP and
@@ -29,12 +32,25 @@ GENES = KV4 + KCHIP + DPP
 L = pd.read_csv(f'{TABLES}/th10x_loop_summary.csv', index_col=0)
 N = pd.read_csv(f'{TABLES}/th10x_nucleus_summary.csv', index_col=0)
 C = pd.read_csv(f'{TABLES}/th10x_cluster_means.csv')
-b = pd.read_csv(f'{TABLES}/v404m_kv4_genes.csv'); b = b[b.tissue == 'thalamus'].set_index('gene')
-bulk = 2.0 ** b.mean_logCPM_wt
-L2 = L[L.index != 'other']; w = L2.n_cells / L2.n_cells.sum()
+# ---- anchor: ThalamoSeq full-length relay-neuron TPM (neurons only, 22 nuclei) when available, else bulk thalamus exon CPM.
+# The 10x side of the anchor is the cell-weighted mean over the relay loop groups only (TRN/ZI/epithalamus excluded), so the
+# factor compares like with like; TRN and the other non-relay groups are then scaled with the same per-gene factors.
+RELAY = ['first-order sensory relay', 'higher-order relay', 'motor relay', 'intralaminar / midline', 'anterior / limbic']
+ts_path = f'{TABLES}/thalamoseq_gene_level_by_nucleus.csv'
+if os.path.exists(ts_path):
+    T = pd.read_csv(ts_path, index_col=0)
+    anchor = T[GENES].mean()                                  # mean TPM over nuclei (each nucleus = mean of its pools)
+    anchor_name = 'thalamoseq_relay_tpm'
+    L2 = L.loc[[g for g in RELAY if g in L.index]]
+else:
+    b = pd.read_csv(f'{TABLES}/v404m_kv4_genes.csv'); b = b[b.tissue == 'thalamus'].set_index('gene')
+    anchor = 2.0 ** b.mean_logCPM_wt; anchor_name = 'bulk_exon_cpm_wt'
+    L2 = L[L.index != 'other']
+w = L2.n_cells / L2.n_cells.sum()
 tenx = pd.Series({g: (L2[f'cpm_{g}'] * w).sum() for g in GENES})
-cal = bulk[GENES] / tenx
-pd.DataFrame({'bulk_exon_cpm_wt': bulk[GENES], 'tenx_mean_cpm': tenx, 'factor': cal}).to_csv(f'{OUT}/tables/th10x_calibration_factors.csv')
+cal = anchor[GENES] / tenx
+pd.DataFrame({anchor_name: anchor[GENES], 'tenx_relay_mean_cpm': tenx, 'factor': cal}).to_csv(f'{OUT}/tables/th10x_calibration_factors.csv')
+print('calibration anchor:', anchor_name)
 
 
 def calibrate(df):
@@ -93,7 +109,7 @@ for i, o in enumerate(order):
     ax.text(1.01, i, f'KChIP/Kv4 {CL.loc[o, "KChIP_per_Kv4"]:.1f}, DPP/Kv4 {CL.loc[o, "DPP_per_Kv4"]:.1f}', va='center', fontsize=7)
 ax.set_yticks(y); ax.set_yticklabels([]); ax.invert_yaxis(); ax.set_xlim(0, 1)
 ax.set_xlabel('share of DPP mRNA (calibrated)'); ax.set_title('C  DPP partner and subunit:channel ratios', loc='left', fontsize=10); ax.legend(fontsize=12, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.12), ncol=2)
-fig.suptitle('Kv4 complex across the thalamocortical loop — ABC Atlas 10x (183,553 thalamic neurons), calibrated to bulk thalamus exon CPM', y=1.0)
+fig.suptitle('Kv4 complex across the thalamocortical loop — ABC Atlas 10x (183,553 thalamic neurons), cross-gene ratios calibrated to ThalamoSeq full-length relay-neuron TPM', y=1.0)
 fig.savefig(f'{OUT}/figures/th10x_kv4_calibrated.png', dpi=160, bbox_inches='tight')
 pd.set_option('display.width', 220)
 print(CL[['n_cells', 'share_Kcnd2', 'share_Kcnd3', 'KChIP_comp_Kcnip1', 'KChIP_comp_Kcnip2', 'KChIP_comp_Kcnip3', 'KChIP_comp_Kcnip4', 'DPP_comp_Dpp6', 'KChIP_per_Kv4', 'DPP_per_Kv4']].round(2).to_string())
