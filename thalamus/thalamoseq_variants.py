@@ -194,9 +194,19 @@ for ax, fam in zip(axes, FAM):
                 ax.plot([i - 0.4, i + 0.4], [b, b], color='k', lw=1.2)   # gene boundary
     ax.set_ylim(0, 1); ax.set_ylabel(f'fraction of all {fam} transcripts', fontsize=10)
     ax.set_title({'Kv4': 'A  Kv4 subunits (Kv4.1, Kv4.2, Kv4.3S/L)', 'KChIP': 'B  KChIP subunits by gene and N-terminal variant', 'DPP': 'C  DPP subunits by gene and N-terminal variant'}[fam], loc='left', fontsize=11)
-    ax.legend(handles.values(), handles.keys(), fontsize=9, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.22 if fam == 'DPP' else -0.02), ncol=min(len(handles), 7))
+    # variants that never reach 5% of the family in any nucleus: legend text in red
+    fmax = F[F.family == fam].groupby('vclass').fam_frac.max()
+    single = {g.replace('Kcnd', 'Kv4.'): g for g in ('Kcnd1', 'Kcnd2')}
+    def _max(lab):
+        if lab in single:
+            return F[(F.family == fam) & (F.gene == single[lab])].fam_frac.max()
+        return fmax.get(lab, 0.0)
+    leg = ax.legend(handles.values(), handles.keys(), fontsize=9, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.22 if fam == 'DPP' else -0.02), ncol=min(len(handles), 7))
+    for txt in leg.get_texts():
+        if _max(txt.get_text()) < 0.05:
+            txt.set_color('#C62828')
 axes[-1].set_xticks(range(len(nuc_order))); axes[-1].set_xticklabels([f'{n}\n{SHORT.get(S.loc[n, "loop_group"], "")}' for n in nuc_order], fontsize=8)
-fig.suptitle('ThalamoSeq relay neurons: Kv4-complex composition per nucleus (coding variants scaled by gene share; black lines = gene boundaries)', y=1.0)
+fig.suptitle('ThalamoSeq relay neurons: Kv4-complex composition per nucleus (coding variants scaled by gene share; black lines = gene boundaries; red legend = <5% of family in every nucleus)', y=1.0)
 fig.subplots_adjust(hspace=0.6)
 fig.savefig(f'{args.out}/figures/thalamoseq_family_composition.png', dpi=160, bbox_inches='tight'); plt.close(fig)
 print('\nwrote figures/thalamoseq_family_composition.png')
