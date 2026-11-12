@@ -26,7 +26,7 @@ LOOP_GROUPS = {
     'TRN (RT)': ['RT'],
     'first-order sensory relay': ['VPM', 'VPL', 'VPMpc', 'VPLpc', 'LGd', 'MG'],
     'higher-order relay': ['PO', 'LP', 'POL', 'PoT', 'SGN', 'MD', 'Eth'],
-    'motor relay': ['VAL', 'VM'],
+    'motor relay': ['VAL', 'VA', 'VL', 'VM'],
     'intralaminar / midline': ['CM', 'CL', 'PCN', 'PF', 'IMD', 'IAD', 'IAM', 'RH', 'RE', 'Xi', 'SMT', 'PR'],
     'anterior / limbic': ['AD', 'AV', 'AM', 'LD', 'PVT', 'PT'],
     'epithalamus': ['MH', 'LH'],
