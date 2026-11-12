@@ -83,7 +83,8 @@ download_ena() {   # $1 = run, $2 = fastq_ftp (one or two ';'-separated paths)
 download_one() {
   run=$1; ftp=${2:-}
   [ -s quant/$run/quant.sf ] && return 0
-  [ -f fastq/$run/.ready ] && return 0
+  [ -f fastq/$run/.ready ] && { echo "$run already ready" >> logs/download_trace.log; return 0; }
+  echo "$run attempting ($(date '+%T'))" >> logs/download_trace.log
   while [ "$(ls fastq 2>/dev/null | while read d; do [ -f fastq/$d/.ready ] && echo x; done | wc -l)" -ge "$BUFFER" ]; do sleep 30; done
   rm -rf fastq/$run; mkdir -p fastq/$run
   if [ "$DL_MODE" = sra ]; then download_sra "$run"; else download_ena "$run" "$ftp"; fi
@@ -94,7 +95,7 @@ download_one() {
   fi
 }
 export -f download_one download_sra download_ena; export BUFFER DL_MODE
-( awk -F'\t' '{print $1"\t"$2}' "$RUNLIST" | xargs -P "$N_DL" -L 1 bash -c 'download_one "$0" "$1"'; touch fastq/.all_downloaded ) &
+( awk -F'\t' '{print $1"\t"$2}' "$RUNLIST" | xargs -P "$N_DL" -L 1 bash -c 'download_one "$0" "$1"' ; echo "xargs exit $?" >> logs/download_trace.log; touch fastq/.all_downloaded ) &
 DL_PID=$!
 log "downloader started (pid $DL_PID, $N_DL parallel, mode $DL_MODE)"
 
