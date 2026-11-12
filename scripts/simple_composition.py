@@ -73,7 +73,7 @@ for ri, (region, d, classes) in enumerate(rows):
         if prev_inh is not None and inh != prev_inh: y += 0.7
         ypos[(region, label)] = y; region_of[(region, label)] = region; y += 1.0; prev_inh = inh
 ymax = y
-fig, axes = plt.subplots(1, 4, figsize=(19, 0.5 * ymax + 2.0), sharey=True, gridspec_kw={'width_ratios': [3, 3, 3, 1.1]})
+fig, axes = plt.subplots(1, 3, figsize=(19, 0.5 * ymax + 1.2), sharey=True)
 BH = 0.72
 for ax, panel in zip(axes[:3], PANEL_V):
     for region, label, fr, n, nu in comp:
@@ -94,36 +94,39 @@ for lbl, k in zip(axes[0].get_yticklabels(), keys):
 for region, d, classes in rows:
     top = ymax - ypos[(region, classes[0][0])] + 0.75
     axes[0].text(-0.02, top, region, fontsize=12, fontweight='bold', ha='right', va='bottom', color='#333', transform=axes[0].get_yaxis_transform())
-# n cells
-ax = axes[3]
-nmax = max(n for _, _, _, n, _ in comp)
-for region, label, fr, n, nu in comp:
-    yy = ymax - ypos[(region, label)]
-    ax.barh(yy, n, color='#3A6EA5', height=BH)
-    ax.text(n + nmax * 0.04, yy, f'{n:,}', va='center', ha='left', fontsize=10)
-ax.set_xlim(0, nmax * 1.5); ax.set_xticks([]); ax.set_title('neurons', fontsize=13, fontweight='bold')
-for sp in ax.spines.values(): sp.set_visible(False)
 # legends
+DISPLAY = {'Kcnip1-new_short': 'Kcnip1 short', 'Kcnip3-new-cys_rich': 'Kcnip3 Cys-rich'}
+maxfrac = {}
+for region, label, fr, n, nu in comp:
+    for panel in PANEL_V:
+        for vc, f in fr[panel].items(): maxfrac[vc] = max(maxfrac.get(vc, 0), f)
+UNSEEN = {vc for vc, m in maxfrac.items() if m < 0.05}
 def legend_patches(vlist):
     pats = []
     for vc in vlist:
         if vc == BLANK: pats.append(mpatches.Patch(facecolor='none', edgecolor='none', label=' ')); continue
         base, kind, pcolor = VSPEC[vc]
-        pats.append(mpatches.Patch(facecolor=base, edgecolor=pcolor, hatch=HATCH[kind], label=vc, linewidth=0.3))
+        pats.append(mpatches.Patch(facecolor=base, edgecolor=pcolor, hatch=HATCH[kind], label=DISPLAY.get(vc, vc), linewidth=0.3))
     return pats
 for ax, panel in zip(axes[:3], PANEL_V):
     gl = LEGEND_GROUPS[panel]; xs = [0.5] if len(gl) == 1 else [0.28, 0.76]
-    legs = [ax.legend(handles=legend_patches([x for x in vl if x in PANEL_V[panel] or x == BLANK]), loc='upper center', bbox_to_anchor=(x, -0.01),
-                      ncol=1, fontsize=9, frameon=False, handlelength=3.0, handleheight=2.3) for x, vl in zip(xs, gl)]
+    legs = []
+    for x, vl in zip(xs, gl):
+        vl = [v for v in vl if v in PANEL_V[panel] or v == BLANK]
+        leg = ax.legend(handles=legend_patches(vl), loc='upper center', bbox_to_anchor=(x, -0.01),
+                        ncol=1, fontsize=13, frameon=False, handlelength=2.6, handleheight=1.6, labelspacing=0.35)
+        for txt, vc in zip(leg.get_texts(), vl):
+            if vc in UNSEEN: txt.set_color('#D62728')
+        legs.append(leg)
     for leg in legs[:-1]: ax.add_artist(leg)
 fig.suptitle('Kv4 / KChIP / DPP variant composition — hippocampal formation vs cortex, selected classes\n'
              f'bar = mean per-neuron variant fraction (cells with ≥{MIN_READS} reads on the family); purple = inhibitory, blue = excitatory; '
-             'both datasets Allen SMART-seq v4' if CTX_SOURCE == 'visp' else
+             'both datasets Allen SMART-seq v4; red legend entries = variant below 5% in every class shown' if CTX_SOURCE == 'visp' else
              'Kv4 / KChIP / DPP variant composition — hippocampal formation (Allen SSv4) vs cortex (Tasic 2016), selected classes\n'
-             f'bar = mean per-neuron variant fraction (cells with ≥{MIN_READS} reads on the family); purple = inhibitory, blue = excitatory; note the chemistry difference between datasets',
+             f'bar = mean per-neuron variant fraction (cells with ≥{MIN_READS} reads on the family); purple = inhibitory, blue = excitatory; red legend entries = variant below 5% in every class shown; note the chemistry difference between datasets',
              fontsize=12)
-fig.subplots_adjust(left=0.17, right=0.985, top=0.89, bottom=0.36, wspace=0.08)
+fig.subplots_adjust(left=0.17, right=0.985, top=0.9, bottom=0.40, wspace=0.08)
 fig.savefig(f'{OUT}/simple_composition_{CTX_SOURCE}.png', dpi=200)
-print('written', CTX_SOURCE)
+print('written', CTX_SOURCE); print('below 5% everywhere:', sorted(UNSEEN))
 for region, label, fr, n, nu in comp:
     print(f'{region[:12]:12s} {label:16s} n={n:5d}  used Kv4/KChIP/DPP = {nu["Kv4"]}/{nu["KChIP"]}/{nu["DPP"]}')
