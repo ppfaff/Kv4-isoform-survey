@@ -16,7 +16,7 @@ Read with the lab's conditional results — Viaat-Cre × cKI reproduces the spik
 
 ## Data and methods
 
-ABC Atlas WMB-10Xv2/v3 (release 20250531; log2 CPM+1 matrices), cells from the TH dissections plus RT-ZI, ZI, LGv/IGL, SPA/PoT and pretectal subclasses and TH/MH-LH classes from the HY and MB dissections (282,078 cells, 183,553 neurons after neurotransmitter filtering). Loop elements defined from CCFv3 nucleus labels (THALMANAC `annotations_c2n_combined.csv`) with subclass fallback (`thalamus/th_common.py`). Because 10x counts include intronic reads, the very long Kv4-complex genes (Kcnip4 1.2 Mb, Dpp10 1.4 Mb, Dpp6 1 Mb, Kcnd2 0.5 Mb) are inflated relative to each other; cross-gene ratios were calibrated with one factor per gene anchoring the 10x cell-weighted mean over the relay loop groups to the ThalamoSeq full-length relay-neuron TPM (neurons only, same populations; `thalamus/calibrate_th10x.py`, which falls back to the bulk thalamus exon CPM if the ThalamoSeq table is absent). TRN, ZI and epithalamus are scaled with the same per-gene factors. Within-gene contrasts between cell types are uncalibrated 10x values. Hartley subnetworks: per-cell Spp1 > 0 (415 of 9,075 GABAergic RT-ZI cells; Spp1 mRNA is sparse in 10x) vs rest (`thalamus/trn_subnetworks.py`). Scripts, tables and figures in `thalamus/` and `tables/th10x_*`, `figures/th10x_*` of the Kv4-isoform-survey repository.
+ABC Atlas WMB-10Xv2/v3 (release 20250531; log2 CPM+1 matrices), cells from the TH dissections plus RT-ZI, ZI, LGv/IGL, SPA/PoT and pretectal subclasses and TH/MH-LH classes from the HY and MB dissections (282,078 cells, 183,553 neurons after neurotransmitter filtering). Loop elements defined from CCFv3 nucleus labels (THALMANAC `annotations_c2n_combined.csv`) with subclass fallback (`thalamus/th_common.py`). Because 10x counts include intronic reads, the very long Kv4-complex genes (Kcnip4 1.2 Mb, Dpp10 1.4 Mb, Dpp6 1 Mb, Kcnd2 0.5 Mb) are inflated relative to each other; cross-gene ratios were calibrated with one factor per gene anchoring the 10x cell-weighted mean over the relay loop groups to the ThalamoSeq full-length relay-neuron TPM (neurons only, same populations; `thalamus/calibrate_th10x.py`, which falls back to the bulk thalamus exon CPM if the ThalamoSeq table is absent). TRN, ZI and epithalamus are scaled with the same per-gene factors. Within-gene contrasts between cell types are uncalibrated 10x values. Hartley subnetworks: per-cell Spp1 > 0 (415 of 9,075 GABAergic RT-ZI cells; Spp1 mRNA is sparse in 10x) vs rest (`thalamus/trn_subnetworks.py`). Scripts, tables and figures in `thalamus/` and `tables/th10x_*`, `tables/thalamoseq_*`, `tables/ctx_loop_types_*`, `figures/th10x_*`, `figures/thalamoseq_*`, `figures/kv4_thalamocortical_loop.png` of the Kv4-isoform-survey repository.
 
 ## Results
 
@@ -72,6 +72,34 @@ Full-length (unstranded SMART-seq-type, 30–45 M single-end reads per pool) lib
 | Dpp10 | DPP10d 55–87%, DPP10c 11–23%, DPP10a 0–28% | DPP10a: VM 28%, MD 16% |
 
 **The relay complex** is therefore Kv4.3S + Kv4.2 (+ Kv4.1) with KChIP4bL (palmitoylated) and, in sensory relays, KChIP3a; DPP10d as the main DPP with DPP6S/DPP6K — a palmitoylated, non-transmembrane auxiliary set. This contrasts with the predicted TRN complex (Kv4.2 only, KChIP1 + KChIP2x, DPP10d) in both the Kv4 paralog and the membrane-anchoring class of the KChIP. The paraventricular nucleus is the one relay population that looks interneuron-like on several axes (KChIP3x 65%, Kv4.3L 19%, KChIP2 expressed with 2a present) and it is also among the most Kcnd2-dominant relay nuclei in the 10x map — a higher-order/limbic nucleus worth separate attention in V404M.
+
+### 5. Around the loop: cortex → TRN → relay (`figures/kv4_thalamocortical_loop.png`, `tables/kv4_thalamocortical_loop.csv`)
+
+Cortical populations from the Tasic 2016 full-length per-type TPM (`thalamus/ctx_loop_types_tpm.py`), TRN core/shell from 10x (calibrated), relay groups from ThalamoSeq; CA1 and DG (Allen SSv4) for reference. Exposure to a heterozygous dominant-negative Kv4.2 is taken as Kv4.2's share of the Kv4 subunit pool.
+
+| population | Kv4.2 share | Kv4.3 share | KChIP partner | DPP partner | KChIP:Kv4 / DPP:Kv4 | total Kv4 TPM |
+| --- | --- | --- | --- | --- | --- | --- |
+| L5 ET (→ HO thalamus) | **0.88** | 0.09 | KChIP3 60, KChIP4 40 | DPP10 67 | 5.8 / 4.6 | 22 |
+| Pvalb interneurons | **0.84** | 0.06 | KChIP1 36, KChIP2 31, KChIP4 29 | DPP6 77 | 14.2 / 6.8 | 10 |
+| L4 | **0.83** | 0.15 | KChIP3 78 | DPP10 67 | 7.2 / 2.8 | 29 |
+| CA1 (ref.) | **0.82** | 0.14 | KChIP2 52, KChIP4 29 | DPP6 97 | 6.6 / 1.3 | 28 |
+| TRN core (Spp1⁺) | **0.80** | 0.05 | KChIP1 90 | DPP10 85 | 4.9 / 12.8 | 38 |
+| L2/3 IT | 0.76 | 0.22 | KChIP3 59, KChIP4 31 | DPP10 65 | 5.0 / 3.7 | 28 |
+| L5 IT | 0.75 | 0.21 | KChIP3 89 | DPP10 73 | 11.5 / 4.5 | 18 |
+| L6 CT (→ relay + TRN) | 0.73 | 0.23 | KChIP3 83, KChIP4 14 | DPP10 73 | 7.6 / 3.4 | 18 |
+| TRN shell / rest | 0.70 | 0.17 | KChIP1 74, KChIP2 15 | DPP10 80 | 2.9 / 9.0 | 39 |
+| DG granule (ref.) | 0.68 | 0.30 | KChIP2 54, KChIP4 30 | DPP6 99 | 10.3 / 2.2 | 20 |
+| Sst interneurons | 0.64 | 0.30 | KChIP1 54, KChIP4 36 | DPP6 65 | 4.4 / 4.2 | 21 |
+| intralaminar / midline relay | 0.60 | 0.35 | KChIP4 73 | DPP10 64 | 1.7 / 1.9 | 90 |
+| HO relay (PO, LP, MD) | 0.52 | 0.39 | KChIP4 63, KChIP3 32 | DPP10 59 | 2.8 / 1.4 | 103 |
+| motor relay | 0.52 | 0.41 | KChIP4 90 | DPP10 67 | 1.5 / 2.0 | 91 |
+| anterior / limbic relay | 0.45 | 0.48 | KChIP4 75 | DPP10 62 | 1.6 / 1.6 | 97 |
+| Vip interneurons | 0.43 | 0.49 | KChIP4 41, KChIP1 32 | DPP6 58 | 12.0 / 4.9 | 15 |
+| FO sensory relay | **0.42** | 0.49 | KChIP4 60, KChIP3 39 | DPP10 58 | 1.7 / 1.6 | 117 |
+
+Three features. (i) The loop has two exposed limbs and one buffered station: every cortical excitatory type and the Pvalb interneurons are Kv4.2-dominant (0.73–0.88), TRN is Kv4.2-dominant (0.70–0.80), and only the relay nuclei keep Kv4.3 at 35–49%. (ii) The auxiliary complexes follow cell class, not loop position: pyramidal cells (cortex) and relay cells use KChIP3/KChIP4 with DPP10 > DPP6; Pvalb interneurons and TRN use KChIP1/KChIP2 (TRN almost purely KChIP1) — the two GABAergic populations that Viaat-Cre targets share a complex; hippocampal principal cells are a third type (KChIP2/KChIP4 + DPP6). (iii) Relay neurons carry 3–5× more Kv4 mRNA than any cortical type with auxiliary:Kv4 ratios near 1.5, whereas TRN and cortical interneurons run large auxiliary excesses (DPP:Kv4 9–13 in TRN, KChIP:Kv4 14 in Pvalb cells).
+
+Read against the conditionals: Viaat-Cre puts V404M into the two exposed GABAergic populations (Pvalb interneurons 0.84, TRN 0.70–0.80) and gives spike-wave discharges; Vglut2-Cre puts it into the buffered relay cells (0.42–0.60) and is predicted not to; CaMKII-Cre puts it into the exposed cortical pyramidal cells and hippocampus (0.68–0.88) and is predicted to reproduce the ΔFosB/learning phenotype — and, if cortical L6 CT/L5 ET exposure alone can drive the loop, spike-wave discharges too.
 
 ## Interpretation
 

@@ -29,6 +29,7 @@ SUMMARY = ("ABC Atlas 10x thalamus (183,553 neurons, THALMANAC annotations), cal
 TAGS = ["Kv4.2", "Kcnd2", "Kcnd3", "thalamus", "reticular nucleus", "TRN", "thalamocortical loop", "spike-wave discharge", "KChIP1", "KChIP2", "DPP10", "KChIP3", "KChIP4", "DPP6", "ABC Atlas", "THALMANAC", "ThalamoSeq", "Spp1", "Ecel1", "Viaat-Cre", "V404M", "provisional"]
 LINKS = [
     {"label": "Code, tables and figures (GitHub)", "target": "https://github.com/ppfaff/Kv4-isoform-survey"},
+    {"label": "Figure: kv4_thalamocortical_loop.png", "target": "https://github.com/ppfaff/Kv4-isoform-survey/blob/main/figures/kv4_thalamocortical_loop.png"},
     {"label": "Figure: th10x_kv4_calibrated.png", "target": "https://github.com/ppfaff/Kv4-isoform-survey/blob/main/figures/th10x_kv4_calibrated.png"},
     {"label": "Thalamus README (methods, run steps, tier-2 plan)", "target": "https://github.com/ppfaff/Kv4-isoform-survey/blob/main/thalamus/README.md"},
     {"label": "Companion: V404M hippocampal activation / conditional dissociation write-up", "target": "https://github.com/ppfaff/Kv4-isoform-survey/blob/main/lab_db/KV4_V404M_DENTATE_PROGRAM.md"},
