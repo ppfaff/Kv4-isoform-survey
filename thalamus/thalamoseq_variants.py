@@ -141,3 +141,53 @@ fig.savefig(f'{args.out}/figures/thalamoseq_gene_level.png', dpi=160, bbox_inche
 pd.set_option('display.width', 220)
 print(S[['loop_group', 'n_pools', 'share_Kcnd2', 'share_Kcnd3', 'KChIP_comp_Kcnip3', 'KChIP_comp_Kcnip4', 'DPP_comp_Dpp6']].round(2).sort_values('loop_group').to_string())
 print('\nFO vs HO variant contrasts (|t| > 2):'); print(C[C.welch_t.abs() > 2].round(3).to_string(index=False))
+
+# ---------------- figure 3: family-level composition — each variant scaled by its gene's share of the family (TPM-weighted)
+# One panel per family (Kv4, KChIP, DPP); bars sum to 1 over all variants of all genes in the family.
+FAM = {'Kv4': ['Kcnd1', 'Kcnd2', 'Kcnd3'], 'KChIP': ['Kcnip1', 'Kcnip2', 'Kcnip3', 'Kcnip4'], 'DPP': ['Dpp6', 'Dpp10']}
+GENE_COL = {'Kcnd1': '#4FA8D8', 'Kcnd2': '#E8822D', 'Kcnd3': '#B9A3D9',
+            'Kcnip1': '#7B4FA3', 'Kcnip2': '#4FA8D8', 'Kcnip3': '#4CAF50', 'Kcnip4': '#E8822D', 'Dpp6': '#7B4FA3', 'Dpp10': '#E8822D'}
+# per-pool TPM share of each gene within its family, averaged over pools, then times the variant fraction
+Gp = A.groupby(['sample_id', 'nucleus', 'gene'], as_index=False).agg(tpm=('TPM', 'sum'))
+fam_rows = []
+for fam, genes in FAM.items():
+    g = Gp[Gp.gene.isin(genes)].copy()
+    g['fam_tpm'] = g.groupby('sample_id').tpm.transform('sum')
+    g['gene_share'] = g.tpm / g.fam_tpm
+    gs = g.groupby(['nucleus', 'gene']).gene_share.mean().rename('gene_share').reset_index()
+    v = V[V.gene.isin(genes)].merge(gs, on=['nucleus', 'gene'])
+    v['fam_frac'] = v.frac_mean * v.gene_share
+    v['family'] = fam
+    fam_rows.append(v)
+F = pd.concat(fam_rows)
+F.to_csv(f'{args.out}/tables/thalamoseq_family_composition.csv', index=False)
+
+fig, axes = plt.subplots(3, 1, figsize=(0.6 * len(nuc_order) + 3, 11), sharex=True)
+for ax, fam in zip(axes, FAM):
+    handles = {}
+    for i, n in enumerate(nuc_order):
+        sub = F[(F.family == fam) & (F.nucleus == n)]
+        b = 0
+        for gname in FAM[fam]:                       # genes in fixed order, variants within gene by size
+            s = sub[sub.gene == gname].sort_values('fam_frac', ascending=False)
+            for _, r in s.iterrows():
+                if r.fam_frac < 0.005:
+                    continue
+                if r.vclass in VSPEC:
+                    face, hatch, hcol = VSPEC[r.vclass]
+                else:                                 # single-isoform genes (Kcnd1/2) and 'other' classes: gene colour, no hatch
+                    face, hatch, hcol = GENE_COL[gname], 'solid', 'k'
+                lab = r.vclass if r.vclass in VSPEC else (gname.replace('Kcnd', 'Kv4.') if gname in ('Kcnd1', 'Kcnd2') else f'{gname} other')
+                ax.bar(i, r.fam_frac, 0.8, bottom=b, color=face, hatch=HATCH[hatch], edgecolor=hcol if HATCH[hatch] else 'k', lw=0.4)
+                handles.setdefault(lab, Patch(facecolor=face, hatch=HATCH[hatch], edgecolor=hcol if HATCH[hatch] else 'k'))
+                b += r.fam_frac
+            if b > 0 and gname != FAM[fam][-1]:
+                ax.plot([i - 0.4, i + 0.4], [b, b], color='k', lw=1.2)   # gene boundary
+    ax.set_ylim(0, 1); ax.set_ylabel(f'fraction of all {fam} transcripts', fontsize=10)
+    ax.set_title({'Kv4': 'A  Kv4 subunits (Kv4.1, Kv4.2, Kv4.3S/L)', 'KChIP': 'B  KChIP subunits by gene and N-terminal variant', 'DPP': 'C  DPP subunits by gene and N-terminal variant'}[fam], loc='left', fontsize=11)
+    ax.legend(handles.values(), handles.keys(), fontsize=9, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.22 if fam == 'DPP' else -0.02), ncol=min(len(handles), 7))
+axes[-1].set_xticks(range(len(nuc_order))); axes[-1].set_xticklabels([f'{n}\n{SHORT.get(S.loc[n, "loop_group"], "")}' for n in nuc_order], fontsize=8)
+fig.suptitle('ThalamoSeq relay neurons: Kv4-complex composition per nucleus (variants scaled by gene share; black lines = gene boundaries)', y=1.0)
+fig.subplots_adjust(hspace=0.6)
+fig.savefig(f'{args.out}/figures/thalamoseq_family_composition.png', dpi=160, bbox_inches='tight'); plt.close(fig)
+print('\nwrote figures/thalamoseq_family_composition.png')
