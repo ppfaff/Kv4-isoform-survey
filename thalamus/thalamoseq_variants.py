@@ -40,6 +40,15 @@ A.loc[A.nucleus.isin(['SPA']), 'loop_group'] = 'ZI / LGv / IGL (non-relay)'
 GENES = ['Kcnd1', 'Kcnd2', 'Kcnd3', 'Kcnip1', 'Kcnip2', 'Kcnip3', 'Kcnip4', 'Dpp6', 'Dpp10']
 
 # ---------------- variant fractions per pool -> per nucleus
+# Figures and the FO/HO contrast use coding variants only: CDS-undefined / fragment transcript classes (e.g. Kcnip4-205,
+# a thalamus-enriched model with no ORF) are dropped and the remaining fractions renormalised within gene. The full
+# per-pool table including those classes is kept in thalamoseq_variant_fracs_by_nucleus_all.csv.
+NONCODING = A.vclass.str.contains('other|noncoding|fragment', case=False)
+P_all = A.groupby(['sample_id', 'nucleus', 'loop_group', 'gene', 'vclass'], as_index=False).agg(reads=('reads', 'sum'))
+P_all['gene_reads'] = P_all.groupby(['sample_id', 'gene']).reads.transform('sum'); P_all['frac'] = P_all.reads / P_all.gene_reads
+P_all.groupby(['gene', 'vclass', 'nucleus'], as_index=False).agg(frac_mean=('frac', 'mean'), reads=('reads', 'sum')).to_csv(
+    f'{args.out}/tables/thalamoseq_variant_fracs_by_nucleus_all.csv', index=False)
+A = A[~NONCODING]
 P = A.groupby(['sample_id', 'nucleus', 'loop_group', 'gene', 'vclass'], as_index=False).agg(reads=('reads', 'sum'))
 P['gene_reads'] = P.groupby(['sample_id', 'gene']).reads.transform('sum')
 P = P[P.gene_reads >= args.min_reads].copy()
@@ -106,7 +115,7 @@ for ax, g in zip(axes, show):
             b += r.frac_mean
     ax.set_ylim(0, 1); ax.set_ylabel(g, fontsize=10)
     if g == 'Kcnd3':
-        ax.set_title('ThalamoSeq pooled relay neurons: N-terminal variant composition by nucleus (mean of pools)', loc='left', fontsize=11)
+        ax.set_title('ThalamoSeq pooled relay neurons: N-terminal variant composition by nucleus (coding variants, mean of pools)', loc='left', fontsize=11)
 axes[-1].set_xticks(range(len(nuc_order))); SHORT = {'first-order sensory relay': 'FO', 'higher-order relay': 'HO', 'motor relay': 'motor', 'anterior / limbic': 'ant', 'intralaminar / midline': 'IL/ML', 'ZI / LGv / IGL (non-relay)': 'ZI', 'other': ''}
 axes[-1].set_xticklabels([f'{n}\n{SHORT.get(S.loc[n, "loop_group"], "")}' for n in nuc_order], fontsize=8)
 fig.legend(handles.values(), handles.keys(), fontsize=10, frameon=False, loc='lower center', ncol=8, bbox_to_anchor=(0.5, -0.02))
@@ -187,7 +196,7 @@ for ax, fam in zip(axes, FAM):
     ax.set_title({'Kv4': 'A  Kv4 subunits (Kv4.1, Kv4.2, Kv4.3S/L)', 'KChIP': 'B  KChIP subunits by gene and N-terminal variant', 'DPP': 'C  DPP subunits by gene and N-terminal variant'}[fam], loc='left', fontsize=11)
     ax.legend(handles.values(), handles.keys(), fontsize=9, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.22 if fam == 'DPP' else -0.02), ncol=min(len(handles), 7))
 axes[-1].set_xticks(range(len(nuc_order))); axes[-1].set_xticklabels([f'{n}\n{SHORT.get(S.loc[n, "loop_group"], "")}' for n in nuc_order], fontsize=8)
-fig.suptitle('ThalamoSeq relay neurons: Kv4-complex composition per nucleus (variants scaled by gene share; black lines = gene boundaries)', y=1.0)
+fig.suptitle('ThalamoSeq relay neurons: Kv4-complex composition per nucleus (coding variants scaled by gene share; black lines = gene boundaries)', y=1.0)
 fig.subplots_adjust(hspace=0.6)
 fig.savefig(f'{args.out}/figures/thalamoseq_family_composition.png', dpi=160, bbox_inches='tight'); plt.close(fig)
 print('\nwrote figures/thalamoseq_family_composition.png')
