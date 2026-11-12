@@ -107,7 +107,8 @@ for ax, g in zip(axes, show):
     ax.set_ylim(0, 1); ax.set_ylabel(g, fontsize=10)
     if g == 'Kcnd3':
         ax.set_title('ThalamoSeq pooled relay neurons: N-terminal variant composition by nucleus (mean of pools)', loc='left', fontsize=11)
-axes[-1].set_xticks(range(len(nuc_order))); axes[-1].set_xticklabels([f'{n}\n{S.loc[n, "loop_group"].split()[0]}' for n in nuc_order], fontsize=8)
+axes[-1].set_xticks(range(len(nuc_order))); SHORT = {'first-order sensory relay': 'FO', 'higher-order relay': 'HO', 'motor relay': 'motor', 'anterior / limbic': 'ant', 'intralaminar / midline': 'IL/ML', 'ZI / LGv / IGL (non-relay)': 'ZI', 'other': ''}
+axes[-1].set_xticklabels([f'{n}\n{SHORT.get(S.loc[n, "loop_group"], "")}' for n in nuc_order], fontsize=8)
 fig.legend(handles.values(), handles.keys(), fontsize=10, frameon=False, loc='lower center', ncol=8, bbox_to_anchor=(0.5, -0.02))
 fig.savefig(f'{args.out}/figures/thalamoseq_variants_by_nucleus.png', dpi=160, bbox_inches='tight'); plt.close(fig)
 

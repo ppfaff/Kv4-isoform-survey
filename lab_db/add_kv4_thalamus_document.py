@@ -16,7 +16,7 @@ import lab_db  # noqa: E402
 HERE = os.path.dirname(os.path.abspath(__file__))
 MD = os.path.join(HERE, "KV4_THALAMUS_LOOP.md")
 
-TITLE = "The Kv4 complex across the thalamocortical loop: which thalamic neurons depend on Kv4.2 and with which auxiliary subunits (ABC Atlas 10x / THALMANAC; ThalamoSeq pending)"
+TITLE = "The Kv4 complex across the thalamocortical loop: which thalamic neurons depend on Kv4.2 and with which auxiliary subunits (ABC Atlas 10x / THALMANAC + ThalamoSeq full-length variants)"
 SUMMARY = ("ABC Atlas 10x thalamus (183,553 neurons, THALMANAC annotations), calibrated for gene length against the bulk thalamus exon data. "
            "The reticular nucleus is the most Kv4.2-dependent thalamic population: Kcnd3 is 10-30x lower than in any relay group (calibrated Kcnd2 share 0.77), "
            "with the cortical-interneuron auxiliary complement (KChIP1 + KChIP2, DPP10-dominant, subunits in large excess). The Spp1+ core TRN cells of "
@@ -40,7 +40,7 @@ SESSIONS = []
 def body_from_file():
     txt = open(MD, encoding="utf-8").read()
     return ("_Provisional summary; code, tables and figures are in the GitHub repository linked below. "
-            "Figures and statistics as of 2026-11-10; relay-neuron variant section to follow the ThalamoSeq run._\n\n" + txt.strip() + "\n")
+            "Figures and statistics as of 2026-11-10; ThalamoSeq relay-neuron variant section added 2026-11-12._\n\n" + txt.strip() + "\n")
 
 
 def main():

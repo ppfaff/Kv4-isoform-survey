@@ -1,6 +1,6 @@
 # The Kv4 complex across the thalamocortical loop: which thalamic neurons depend on Kv4.2, and with which auxiliary subunits
 
-Nov 10, 2026 · Paul Pfaffinger (analysis with Claude) · PROVISIONAL — relay-neuron variant section pending ThalamoSeq run
+Nov 10–12, 2026 · Paul Pfaffinger (analysis with Claude) · PROVISIONAL
 
 ## Summary
 
@@ -8,7 +8,7 @@ To ask which thalamic neurons are substrates for the spike-wave discharges of Kv
 
 **The reticular nucleus is the most Kv4.2-dependent neuronal population in the thalamus.** RT neurons express Kcnd3 at ~12 CPM against 200–340 in every relay group (a 10–30-fold within-gene deficit), so their A-current is built on Kv4.2 with essentially no Kv4.3 to buffer a dominant-negative mutant; calibrated Kcnd2 share is 0.77, with Kcnd2 detected in 96% of RT cells. Their auxiliary complement is the cortical-interneuron one — KChIP1 (57%) + KChIP2 (36%), DPP10-dominant, with auxiliary subunits in large excess (KChIP:Kv4 ≈ 3.4, DPP:Kv4 ≈ 8.9) — and shares nothing with relay neurons, which use KChIP3/KChIP4 + DPP6. Within RT, the Spp1⁺ "core" cells of Hartley et al. (2024; first-order-projecting, Spp1-Cre-accessible) are the extreme case: Kcnd3 at 0.5% of Kcnd2, KChIP1 twice and KChIP4 a quarter of the rest of RT, DPP10 highest, and the strongest T-type channel expression (Cacna1h detected in 59% vs 19%). They are concentrated in the Allen supertype RT-ZI Gnb3_5.
 
-**Relay neurons co-express Kcnd2 and Kcnd3, with a gradient.** First-order sensory and anterior/motor relays are the most Kv4.3-balanced (LGd 0.31, VPM/VPL 0.30, LD 0.28, AD 0.34, AV 0.42, VAL 0.41 Kcnd2 share); higher-order, midline and intralaminar nuclei are Kcnd2-dominant (LP/SGN 0.70, PVT/IMD 0.69, Xi 0.70, CM 0.62, IAD 0.60). Partners are KChIP3 (first-order sensory) or KChIP4 (intralaminar, anterior, motor) with DPP6 at 60–75%. Kcnd1 is negligible everywhere.
+**Relay neurons co-express Kcnd2 and Kcnd3, with a gradient — and ThalamoSeq full-length data show they are more Kv4.3-weighted than the 10x map suggested.** First-order sensory and anterior relays have Kcnd3 ≥ Kcnd2 (ThalamoSeq TPM: LGd 0.61 vs 0.34, VB 0.59 vs 0.29, AD, AV, LD, LP, VL likewise); only the intralaminar/midline nuclei, VPMpc and VM are Kcnd2-dominant (CL 0.65, IMD 0.61, PF 0.58). Kcnd1 contributes 6–27%. Partners are KChIP4 (KChIP4bL) everywhere, KChIP3a added in sensory relays and MD, with DPP6S/DPP6K and DPP10d in comparable amounts; the transmembrane KChIP variants are rare in relay neurons.
 
 **Cre coverage from the same cells**: Slc32a1 (Viaat) is detected in 93% of RT cells and 1–2% of relay cells, so Viaat-Cre is a clean TRN driver within thalamus; Camk2a transcript is present in 83% of RT cells at half the relay level, so a CaMKIIα-Cre transgene's TRN expression has to be checked with the reporter, not assumed. Vglut2-Cre covers relay neurons (Slc17a6 in 100%) and not RT (16%).
 
@@ -51,9 +51,25 @@ The differences hold within Pvalb-high cells (Kcnip1 813 vs 498, Kcnip4 118 vs 3
 
 TRN shares lineage (Nkx2.1) and gene-level complex with cortical Pvalb/Sst interneurons, whose variant fractions were measured in Tasic 2016 (full-length): Pvalb cells carry KChIP1c 32% / 1a 23% / 1b 18% / 1e 6% (TM), KChIP2x 78% (TM), DPP10d 86%; Sst cells carry more KChIP1b, KChIP2a and DPP10a. The working prediction for the core TRN complex is therefore Kv4.2 + KChIP1 (myristoyl/palmitoyl mix with some 1e) + KChIP2x + DPP10d. Measurement needs full-length TRN libraries (sorted Viaat-Cre/Spp1-Cre;Ai14 pools, or microdissected TRN bulk); Patch-seq depth is insufficient for these 5′ variants, and 10x/MERFISH cannot see them at all.
 
-### 4. Relay-neuron variants (ThalamoSeq, in progress)
+### 4. Relay-neuron gene level and N-terminal variants (ThalamoSeq, 115 of 120 pools, 22 nuclei)
 
-ThalamoSeq (Phillips et al. 2019; 120 pooled full-length libraries from 22 retrogradely labelled cortex-projecting nuclei, single-end 100–105 bp, 30–45 M reads/pool, unstranded) is being quantified with the lab's salmon isoform pipeline. The first pool (PVT) shows reads spread across four Dpp6 and five Kcnip4 N-terminal variants and the Kcnd3 S/L pair, so the 5′ ends are covered and per-nucleus variant fractions with 3–9 replicates per nucleus will follow (`thalamus/thalamoseq_variants.py`). RT is absent from ThalamoSeq (it does not project to cortex).
+Full-length (unstranded SMART-seq-type, 30–45 M single-end reads per pool) libraries of retrogradely labelled cortex-projecting neurons, quantified with the lab's salmon isoform pipeline; 3–9 pools per nucleus (`tables/thalamoseq_variant_fracs_by_nucleus.csv`, `thalamoseq_gene_level_by_nucleus.csv`, `figures/thalamoseq_variants_by_nucleus.png`). RT is absent (does not project to cortex).
+
+**Gene level (TPM; corrects the calibrated 10x estimate).** Relay neurons are more Kv4.3-weighted than 10x suggested: Kcnd3 ≥ Kcnd2 in LGd (share 0.61 vs 0.34), VB/VPM (0.59/0.29), AD, AV, LD, LP and VL; Kcnd2-dominance is confined to the intralaminar/midline group (CL 0.65, IMD 0.61, PCN 0.59, PF 0.58), VPMpc and VM. The first-order → higher-order direction of the 10x gradient is confirmed; the whole axis is shifted toward Kv4.3. Kcnd1 contributes 6–27% (MD 45%), not negligible — the short Kcnd1 gene was under-weighted by the intronic 10x counts. Partners: KChIP4 dominant everywhere (58–100% of KChIP), KChIP3 substantial only in the sensory relays and MD (LGd/VB 31%, MD 40%); DPP6 and DPP10 at comparable levels (DPP6 28–59% of DPP) rather than the 60–75% DPP6 the 10x partner table gave. KChIP:Kv4 2–3.4, DPP:Kv4 1.1–3.2.
+
+**Variants** (mean of pools; Kcnip4 coding fractions renormalised without transcript Kcnip4-205, a CDS-undefined model that takes 13–55% of Kcnip4 reads):
+
+| gene | relay-neuron composition | notable nuclei |
+| --- | --- | --- |
+| Kcnd3 | Kv4.3S 81–97% | Kv4.3L: PVT 19%, PCN 16%, PF/CM 10% |
+| Kcnip4 | KChIP4bL ~55–80% of coding, KChIP4b 10–30%, KChIP4d 3–20%, KChIP4a (TM) 0–10% | KChIP4d: AD 15%, VL 12%, PVT 10%; KChIP4a: PF 9%, VPMpc 7% |
+| Kcnip3 | KChIP3a 60–96%; Cys-rich variant 30–80% in SPA, VPMpc, VA, PF; KChIP3x (TM) ≈ 0 | KChIP3x: PVT 65%, MD 27% |
+| Kcnip1 (intralaminar/midline only) | KChIP1b + KChIP1c mixed, 1e up to 11% (IMD), new-short 11–26% | LP: KChIP1c 75% (low expression) |
+| Kcnip2 (intralaminar/midline, PVT, RE) | KChIP2x 61–100% | PVT: KChIP2a 39% |
+| Dpp6 | DPP6S and DPP6K share the pool, DPP6a 1–28% | **only FO/HO difference in the dataset**: DPP6S 49% FO vs 34% HO (t = 3.7), DPP6K 33% vs 44% (t = −2.4); DPP6K-dominant in IMD 78%, IAD 72%, AM 63% |
+| Dpp10 | DPP10d 55–87%, DPP10c 11–23%, DPP10a 0–28% | DPP10a: VM 28%, MD 16% |
+
+**The relay complex** is therefore Kv4.3S + Kv4.2 (+ Kv4.1) with KChIP4bL (palmitoylated) and, in sensory relays, KChIP3a; DPP6S/DPP6K and DPP10d in comparable amounts — a palmitoylated, non-transmembrane auxiliary set. This contrasts with the predicted TRN complex (Kv4.2 only, KChIP1 + KChIP2x, DPP10d) in both the Kv4 paralog and the membrane-anchoring class of the KChIP. The paraventricular nucleus is the one relay population that looks interneuron-like on several axes (KChIP3x 65%, Kv4.3L 19%, KChIP2 expressed with 2a present) and it is also among the most Kcnd2-dominant relay nuclei in the 10x map — a higher-order/limbic nucleus worth separate attention in V404M.
 
 ## Interpretation
 
@@ -73,6 +89,9 @@ ThalamoSeq (Phillips et al. 2019; 120 pooled full-length libraries from 22 retro
 | Spp1⁺ core = purest Kv4.2-only, KChIP1-rich, T-type-rich TRN cells | moderately solid | 415 cells; holds within Pvalb-high; Spp1 under-detection dilutes the contrast |
 | FO vs HO relay Kcnd2 gradient | solid | per-nucleus, thousands of cells each |
 | TRN variant composition | prediction only | cortical interneuron proxy; needs full-length TRN libraries |
+| Relay-neuron variant composition (KChIP4bL/KChIP3a/DPP6S-K/DPP10d; TM variants rare) | solid | ThalamoSeq, 115 full-length pools, 3–9 per nucleus, thousands of reads per gene per pool |
+| Relay Kcnd3 ≥ Kcnd2 in first-order nuclei; Kcnd1 6–27% | solid | full-length TPM; supersedes the calibrated 10x shares for relay nuclei |
+| DPP6S (FO) vs DPP6K (HO) shift | moderately solid | t = 3.7 on 56 vs 59 pools; modest effect size |
 
 ## Proposed experiments
 
