@@ -86,24 +86,24 @@ for g, c, lab in [('Kcnd1', '#4FA8D8', 'Kv4.1'), ('Kcnd2', '#E8822D', 'Kv4.2'), 
 for i in range(n):
     ax.text(D.share_Kcnd2.iloc[i] / 2 + D.share_Kcnd1.iloc[i], i, f'{D.share_Kcnd2.iloc[i]:.2f}', ha='center', va='center', fontsize=9, color='w', fontweight='bold')
 ax.set_yticks(y); ax.set_yticklabels([f'{p}   (n={m:,})' for p, m in zip(D.population, D.n)], fontsize=11); ax.invert_yaxis(); ax.set_xlim(0, 1)
-ax.set_title('A  Kv4 subunit share (number = Kv4.2 share)', loc='left', fontsize=11); ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=3)
+ax.set_title('A  Kv4 subunit share (number = Kv4.2 share)', loc='left', fontsize=11); ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=2)
 ax = axes[1]; left = np.zeros(n)
 for g, c, lab in [('Kcnip1', '#7B4FA3', 'KChIP1'), ('Kcnip2', '#4FA8D8', 'KChIP2'), ('Kcnip3', '#4CAF50', 'KChIP3'), ('Kcnip4', '#E8822D', 'KChIP4')]:
     v = D[f'KChIP_{g}'].values; ax.barh(y, v, left=left, color=c, edgecolor='k', lw=0.3, label=lab); left += v
 ax.set_yticks(y); ax.set_yticklabels([]); ax.invert_yaxis(); ax.set_xlim(0, 1); ax.set_title('B  KChIP partner', loc='left', fontsize=11)
-ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=4)
+ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=2)
 ax = axes[2]; left = np.zeros(n)
 for g, c, lab in [('Dpp6', '#7B4FA3', 'DPP6'), ('Dpp10', '#E8822D', 'DPP10')]:
     v = D[f'DPP_{g}'].values; ax.barh(y, v, left=left, color=c, edgecolor='k', lw=0.3, label=lab); left += v
 ax.set_yticks(y); ax.set_yticklabels([]); ax.invert_yaxis(); ax.set_xlim(0, 1); ax.set_title('C  DPP partner', loc='left', fontsize=11)
-ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=2)
+ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=1)
 ax = axes[3]
 ax.barh(y - 0.2, D.KChIP_per_Kv4.clip(upper=14.5), 0.38, color='#1B9E77', label='KChIP : Kv4'); ax.barh(y + 0.2, D.DPP_per_Kv4, 0.38, color='#D62728', label='DPP : Kv4')
 for i in range(n):
     ax.text(min(D.KChIP_per_Kv4.iloc[i], 14.2) + 0.1, i - 0.2, f'{D.KChIP_per_Kv4.iloc[i]:.1f}' + (' ▶' if D.KChIP_per_Kv4.iloc[i] > 15 else ''), va='center', fontsize=8)
     ax.text(D.DPP_per_Kv4.iloc[i] + 0.1, i + 0.2, f'{D.DPP_per_Kv4.iloc[i]:.1f}', va='center', fontsize=8)
 ax.set_yticks(y); ax.set_yticklabels([]); ax.invert_yaxis(); ax.set_xlim(0, 15)
-ax.set_title('D  auxiliary mRNA per Kv4 mRNA', loc='left', fontsize=11); ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=2)
+ax.set_title('D  auxiliary mRNA per Kv4 mRNA', loc='left', fontsize=11); ax.legend(fontsize=14, frameon=False, loc='upper center', bbox_to_anchor=(0.5, -0.06), ncol=1)
 ax = axes[4]
 cols = ['#D6372E' if e >= 0.65 else '#E8822D' if e >= 0.5 else '#999999' for e in D.exposure]
 ax.barh(y, D.exposure, color=cols, edgecolor='k', lw=0.3)
